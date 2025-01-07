@@ -1,5 +1,5 @@
 import { Card, CardContent, Grid2, Stack } from '@mui/material';
-import { Overview } from '@origin/analytics/shared';
+import { OverviewView as GenericOverview } from '@origin/analytics/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { format } from 'dnum';
@@ -33,7 +33,7 @@ export const OverviewView = () => {
     });
 
   return (
-    <Overview token={tokens.mainnet.OETH} currency="ETH">
+    <GenericOverview token={tokens.mainnet.OETH} currency="ETH">
       <Grid2 size={12}>
         <Stack
           sx={{
@@ -104,6 +104,6 @@ export const OverviewView = () => {
           </Stack>
         </Stack>
       </Grid2>
-    </Overview>
+    </GenericOverview>
   );
 };

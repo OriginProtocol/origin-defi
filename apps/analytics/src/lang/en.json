@@ -161,6 +161,12 @@
       "value": "Your transaction is being processed on-chain."
     }
   ],
+  "5CDRI3": [
+    {
+      "type": 0,
+      "value": "Click the chart or use the arrow buttons to view a different date"
+    }
+  ],
   "5X3I7d": [
     {
       "type": 0,
@@ -287,6 +293,12 @@
       "value": "Strategy allocation"
     }
   ],
+  "D0xe/T": [
+    {
+      "type": 0,
+      "value": "3 months"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -297,6 +309,16 @@
     {
       "type": 0,
       "value": "Moving Average"
+    }
+  ],
+  "DkNDG7": [
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " Proof of Yield"
     }
   ],
   "DqeIg/": [
@@ -345,16 +367,6 @@
     {
       "type": 0,
       "value": "Base TVL"
-    }
-  ],
-  "HNjIxZ": [
-    {
-      "type": 1,
-      "value": "symbol"
-    },
-    {
-      "type": 0,
-      "value": " wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
     }
   ],
   "Hiq4cG": [
@@ -417,12 +429,6 @@
       "value": "6M"
     }
   ],
-  "Lv0zJu": [
-    {
-      "type": 0,
-      "value": "Details"
-    }
-  ],
   "M8UUfZ": [
     {
       "type": 0,
@@ -451,12 +457,6 @@
     {
       "type": 0,
       "value": "Actual yield distributed"
-    }
-  ],
-  "NHPvJD": [
-    {
-      "type": 0,
-      "value": "The daily APY of the current day is usually lower because yield can be dripped multiple times per day"
     }
   ],
   "NXFAgE": [
@@ -489,12 +489,6 @@
     {
       "type": 0,
       "value": "Date"
-    }
-  ],
-  "PBmSYG": [
-    {
-      "type": 0,
-      "value": "Daily APY"
     }
   ],
   "Q+8Ac/": [
@@ -571,16 +565,6 @@
     {
       "type": 0,
       "value": "Account"
-    }
-  ],
-  "Txqb4s": [
-    {
-      "type": 1,
-      "value": "symbol"
-    },
-    {
-      "type": 0,
-      "value": "'s yield is transparent, real and 100% verifiable on-chain."
     }
   ],
   "ULVduL": [
@@ -937,10 +921,22 @@
       "value": "OGN Token Metrics"
     }
   ],
+  "j5ODYV": [
+    {
+      "type": 0,
+      "value": "2 months"
+    }
+  ],
   "j9Y9nu": [
     {
       "type": 0,
       "value": "Hours"
+    }
+  ],
+  "jJVBJS": [
+    {
+      "type": 0,
+      "value": "30-day Average"
     }
   ],
   "lARTMh": [
@@ -971,30 +967,10 @@
       "value": "symbol"
     }
   ],
-  "lvvpno": [
-    {
-      "type": 0,
-      "value": "Yield distributed"
-    }
-  ],
   "lwrkXS": [
     {
       "type": 0,
       "value": "Total assets minus liabilities"
-    }
-  ],
-  "m83vWW": [
-    {
-      "type": 0,
-      "value": "See the evidence of "
-    },
-    {
-      "type": 1,
-      "value": "symbol"
-    },
-    {
-      "type": 0,
-      "value": "'s consistent performance."
     }
   ],
   "mPncEL": [
@@ -1011,6 +987,12 @@
       "value": " Boost"
     }
   ],
+  "n+21Rg": [
+    {
+      "type": 0,
+      "value": "2M"
+    }
+  ],
   "n5QvJy": [
     {
       "type": 0,
@@ -1021,6 +1003,12 @@
     {
       "type": 0,
       "value": "7-Day"
+    }
+  ],
+  "nCIzeT": [
+    {
+      "type": 0,
+      "value": "This chart shows the level of daily yield distribution"
     }
   ],
   "oRg1Ai": [
@@ -1045,6 +1033,12 @@
     {
       "type": 0,
       "value": "Copied"
+    }
+  ],
+  "pSzqnH": [
+    {
+      "type": 0,
+      "value": "Daily Yield"
     }
   ],
   "qGZxc4": [
@@ -1143,16 +1137,16 @@
       "value": "Yield distribution events"
     }
   ],
-  "t8QWDR": [
-    {
-      "type": 0,
-      "value": "Yield-earning supply"
-    }
-  ],
   "tFriEi": [
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "tOR9ZQ": [
+    {
+      "type": 0,
+      "value": "3M"
     }
   ],
   "tT9W+2": [

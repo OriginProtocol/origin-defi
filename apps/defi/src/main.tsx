@@ -24,7 +24,8 @@ import { composeContexts } from '@origin/shared/utils';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { setAutoFreeze } from 'immer';
-import { createHashRouter, RouterProvider } from 'react-router';
+import { createHashRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import { WagmiProvider } from 'wagmi';
 
 import { messages } from './lang';

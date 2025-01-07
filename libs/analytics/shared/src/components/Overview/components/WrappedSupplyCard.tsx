@@ -9,8 +9,8 @@ import {
   useTheme,
 } from '@mui/material';
 import {
+  AreaChart,
   LimitControls,
-  LineChart,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
@@ -20,27 +20,26 @@ import { toZonedTime } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { oTokenConfig } from '../../constants';
-import { useTokenChartStats } from '../../hooks';
-import { ChartTooltip } from '../Tooltips';
-import { CHART_HEADER_HEIGHT } from './constants';
+import { oTokenConfig } from '../../../constants';
+import { useTokenChartStats } from '../../../hooks';
+import { ChartTooltip } from '../../Tooltips';
+import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type { NumberLike } from '@visx/scale';
 
-export type PercentWrappedCardProps = {
+export type WrappedSupplyCardProps = {
   token: Token;
   height: number;
   from?: string;
 } & CardProps;
 
-export const PercentWrappedCard = ({
+export const WrappedSupplyCard = ({
   token,
   height,
   from,
   ...rest
-}: PercentWrappedCardProps) => {
+}: WrappedSupplyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
@@ -61,10 +60,7 @@ export const PercentWrappedCard = ({
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage(
-          { defaultMessage: 'Percentage of wrapped {symbol} (w{symbol})' },
-          { symbol: token.symbol },
-        )}
+        title={intl.formatMessage({ defaultMessage: 'Wrapped supply' })}
       />
       <Divider />
       <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
@@ -84,35 +80,35 @@ export const PercentWrappedCard = ({
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              {intl.formatNumber(activeItem?.pctWrappedSupply ?? 0)}%
+              {intl.formatNumber(activeItem?.wrappedSupply ?? 0)}
             </LoadingLabel>
           </Stack>
-          <Stack spacing={1} alignItems="flex-end">
-            <LimitControls limit={limit} setLimit={setLimit} />
-          </Stack>
+          <LimitControls limit={limit} setLimit={setLimit} />
         </Stack>
       </CardContent>
       {isLoading ? (
         <Spinner sx={{ width, height }} />
       ) : (
-        <LineChart
+        <AreaChart
           width={width}
           height={height}
-          series={[
-            {
-              label: '% wrapped',
-              data: data ?? [],
-              xKey: 'timestamp',
-              yKey: 'pctWrappedSupply',
-              color: [theme.palette.chart1, theme.palette.chart2],
-              curveType: 'base',
-            },
-          ]}
+          serie={data ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
+          xKey="timestamp"
+          yKeys={[
+            {
+              key: 'wrappedSupply',
+              fillColor: [theme.palette.chart1, theme.palette.chart2],
+            },
+          ]}
           Tooltip={ChartTooltip}
-          tickYFormat={(value: NumberLike) => `${value}%`}
+          tickYFormat={(value) =>
+            intl.formatNumber(Number(value), {
+              notation: 'compact',
+            })
+          }
         />
       )}
     </Card>

@@ -3,9 +3,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   alpha,
+  Box,
   Button,
   Divider,
-  IconButton,
   MenuList,
   Stack,
   Typography,
@@ -226,17 +226,28 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
           >
             {intl.formatMessage(route.handle.title)}
           </Typography>
-          <IconButton
+          <Box
+            role="button"
             onClick={(evt: MouseEvent) => {
               evt.stopPropagation();
               handleToggleSection(key);
+            }}
+            sx={{
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 1,
+              '&:hover': {
+                backgroundColor: 'action.hover',
+              },
             }}
           >
             <ExpandIcon
               isExpanded={expandedSections.includes(key)}
               sx={{ color: 'text.secondary', fontSize: 14 }}
             />
-          </IconButton>
+          </Box>
         </Stack>
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>

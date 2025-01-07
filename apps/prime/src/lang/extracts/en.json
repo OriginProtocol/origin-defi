@@ -161,6 +161,9 @@
   "Cpk9+u": {
     "defaultMessage": "60% YND Allocation"
   },
+  "D0xe/T": {
+    "defaultMessage": "3 months"
+  },
   "DGg45W": {
     "defaultMessage": "PrimeStaked"
   },
@@ -473,6 +476,9 @@
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
+  "j5ODYV": {
+    "defaultMessage": "2 months"
+  },
   "j9Y9nu": {
     "defaultMessage": "Hours"
   },
@@ -508,6 +514,9 @@
   },
   "mdkEkL": {
     "defaultMessage": "Your {type} is being processed"
+  },
+  "n+21Rg": {
+    "defaultMessage": "2M"
   },
   "n7chn1": {
     "defaultMessage": "7-Day"
@@ -580,6 +589,9 @@
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tOR9ZQ": {
+    "defaultMessage": "3M"
   },
   "tQxA15": {
     "defaultMessage": "Visit PrimeStaked on X"

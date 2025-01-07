@@ -68,6 +68,9 @@
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
   },
+  "5CDRI3": {
+    "defaultMessage": "Click the chart or use the arrow buttons to view a different date"
+  },
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
@@ -125,11 +128,17 @@
   "CJ19p3": {
     "defaultMessage": "Strategy allocation"
   },
+  "D0xe/T": {
+    "defaultMessage": "3 months"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
   "DOyKgT": {
     "defaultMessage": "Moving Average"
+  },
+  "DkNDG7": {
+    "defaultMessage": "{symbol} Proof of Yield"
   },
   "DqeIg/": {
     "defaultMessage": "Unallocated"
@@ -154,9 +163,6 @@
   },
   "HIM+US": {
     "defaultMessage": "Base TVL"
-  },
-  "HNjIxZ": {
-    "defaultMessage": "{symbol} wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
@@ -188,9 +194,6 @@
   "LZqvbG": {
     "defaultMessage": "6M"
   },
-  "Lv0zJu": {
-    "defaultMessage": "Details"
-  },
   "M8UUfZ": {
     "defaultMessage": "Raw yield generated"
   },
@@ -206,9 +209,6 @@
   "N2NlBB": {
     "defaultMessage": "Actual yield distributed"
   },
-  "NHPvJD": {
-    "defaultMessage": "The daily APY of the current day is usually lower because yield can be dripped multiple times per day"
-  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
@@ -220,9 +220,6 @@
   },
   "P7PLVj": {
     "defaultMessage": "Date"
-  },
-  "PBmSYG": {
-    "defaultMessage": "Daily APY"
   },
   "Q+8Ac/": {
     "defaultMessage": "OGN Performance"
@@ -259,9 +256,6 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
-  },
-  "Txqb4s": {
-    "defaultMessage": "{symbol}''s yield is transparent, real and 100% verifiable on-chain."
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
@@ -401,8 +395,14 @@
   "ihNaQ/": {
     "defaultMessage": "OGN Token Metrics"
   },
+  "j5ODYV": {
+    "defaultMessage": "2 months"
+  },
   "j9Y9nu": {
     "defaultMessage": "Hours"
+  },
+  "jJVBJS": {
+    "defaultMessage": "30-day Average"
   },
   "lARTMh": {
     "defaultMessage": "Trading Volume"
@@ -416,23 +416,23 @@
   "ldRS9x": {
     "defaultMessage": "Protocol revenue for {symbol}"
   },
-  "lvvpno": {
-    "defaultMessage": "Yield distributed"
-  },
   "lwrkXS": {
     "defaultMessage": "Total assets minus liabilities"
   },
-  "m83vWW": {
-    "defaultMessage": "See the evidence of {symbol}''s consistent performance."
-  },
   "mPncEL": {
     "defaultMessage": "x {value} Boost"
+  },
+  "n+21Rg": {
+    "defaultMessage": "2M"
   },
   "n5QvJy": {
     "defaultMessage": "Start date"
   },
   "n7chn1": {
     "defaultMessage": "7-Day"
+  },
+  "nCIzeT": {
+    "defaultMessage": "This chart shows the level of daily yield distribution"
   },
   "oRg1Ai": {
     "defaultMessage": "Difference"
@@ -445,6 +445,9 @@
   },
   "p556q3": {
     "defaultMessage": "Copied"
+  },
+  "pSzqnH": {
+    "defaultMessage": "Daily Yield"
   },
   "qGZxc4": {
     "defaultMessage": "Connect your wallet to<br></br>select the network"
@@ -485,11 +488,11 @@
   "t1srBX": {
     "defaultMessage": "Yield distribution events"
   },
-  "t8QWDR": {
-    "defaultMessage": "Yield-earning supply"
-  },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tOR9ZQ": {
+    "defaultMessage": "3M"
   },
   "tT9W+2": {
     "defaultMessage": "Asset Split:"

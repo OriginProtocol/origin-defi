@@ -1,30 +1,28 @@
 import { Grid2, Stack } from '@mui/material';
 
-import {
-  ApyCard,
-  PercentWrappedCard,
-  PriceCard,
-  ProtocolRevenueCard,
-  TotalSupplyCard,
-} from '../Cards';
-import { useLayout } from '../Layout';
+import { useLayout } from '../../Layout';
+import { ApyCard } from '../components/ApyCard';
+import { PercentWrappedCard } from '../components/PercentWrappedCard';
+import { PriceCard } from '../components/PriceCard';
+import { ProtocolRevenueCard } from '../components/ProtocolRevenueCard';
+import { TotalSupplyCard } from '../components/TotalSupplyCard';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 
-export type OverviewProps = {
+export type OverviewViewProps = {
   children?: ReactNode;
   token: Token;
   currency: 'ETH' | 'USD';
 } & StackProps;
 
-export const Overview = ({
+export const OverviewView = ({
   token,
   children,
   currency,
   ...rest
-}: OverviewProps) => {
+}: OverviewViewProps) => {
   const [{ isDrawerOpen }] = useLayout();
 
   return (

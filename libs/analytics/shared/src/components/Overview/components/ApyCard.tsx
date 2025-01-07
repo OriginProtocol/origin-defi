@@ -9,11 +9,11 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  CurrencyLabel,
   LimitControls,
   LineChart,
   LoadingLabel,
   Spinner,
+  TrailingControls,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
@@ -21,35 +21,34 @@ import { toZonedTime } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { oTokenConfig } from '../../constants';
-import { useTokenChartStats } from '../../hooks';
-import { ChartTooltip } from '../Tooltips';
-import { CHART_HEADER_HEIGHT } from './constants';
+import { oTokenConfig } from '../../../constants';
+import { useTokenChartStats } from '../../../hooks';
+import { ChartTooltip } from '../../Tooltips';
+import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
+import type { Trailing } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
+import type { NumberLike } from '@visx/scale';
 
-type SupportedCurrency = 'ETH' | 'USD';
-
-export type PriceCardProps = {
+export type ApyCardProps = {
   token: Token;
-  currency: SupportedCurrency;
   height: number;
   from?: string;
 } & CardProps;
 
-export const PriceCard = ({
-  token,
-  currency,
-  height,
-  from,
-  ...rest
-}: PriceCardProps) => {
+export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
+  const defaultTrailing = {
+    apy30DayAvg: 'apy30' as Trailing,
+    apy14DayAvg: 'apy14' as Trailing,
+    apy7DayAvg: 'apy7' as Trailing,
+  }[config?.defaultApyTrailing ?? 'apy30DayAvg'];
 
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
+  const [trailing, setTrailing] = useState<Trailing>(defaultTrailing);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
@@ -64,13 +63,9 @@ export const PriceCard = ({
 
   return (
     <Card {...rest} ref={ref}>
-      <CardHeader
-        title={intl.formatMessage(
-          { defaultMessage: '1 {symbol} equals' },
-          { symbol: token.symbol },
-        )}
-      />
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
       <Divider />
+
       <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
@@ -88,54 +83,36 @@ export const PriceCard = ({
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              {intl.formatMessage(
-                { defaultMessage: '{currency}{rate}' },
-                {
-                  currency: <CurrencyLabel currency={currency} />,
-                  rate: intl.formatNumber(
-                    currency === 'ETH'
-                      ? (activeItem?.rateETH ?? 0)
-                      : (activeItem?.rateUSD ?? 0),
-                    {
-                      maximumFractionDigits: 5,
-                    },
-                  ),
-                },
-              )}
+              {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
+            <TrailingControls trailing={trailing} setTrailing={setTrailing} />
           </Stack>
         </Stack>
       </CardContent>
+
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ height }} />
       ) : (
         <LineChart
           width={width}
           height={height}
           series={[
             {
-              label: 'Exchange rate',
+              label: 'APY',
               data: data ?? [],
               xKey: 'timestamp',
-              yKey: currency === 'ETH' ? 'rateETH' : 'rateUSD',
+              yKey: trailing,
               color: [theme.palette.chart1, theme.palette.chart2],
-              curveType: 'linear',
             },
           ]}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           Tooltip={ChartTooltip}
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-          }
-          yScaleDomain={[0.95, 1.05]}
+          tickYFormat={(value: NumberLike) => `${value}%`}
         />
       )}
     </Card>

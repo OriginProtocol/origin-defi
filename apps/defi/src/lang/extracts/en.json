@@ -383,6 +383,9 @@
   "Cyy/6q": {
     "defaultMessage": "You will receive approximately"
   },
+  "D0xe/T": {
+    "defaultMessage": "3 months"
+  },
   "DBP9Xf": {
     "defaultMessage": "Stablecoin mix"
   },
@@ -1175,6 +1178,9 @@
   "j1+qZ0": {
     "defaultMessage": "Error while depositing"
   },
+  "j5ODYV": {
+    "defaultMessage": "2 months"
+  },
   "j8y+qc": {
     "defaultMessage": "{label}"
   },
@@ -1261,6 +1267,9 @@
   },
   "mpWMMq": {
     "defaultMessage": "Send wOETH across chains"
+  },
+  "n+21Rg": {
+    "defaultMessage": "2M"
   },
   "n5cmll": {
     "defaultMessage": "LSTs"
@@ -1387,6 +1396,9 @@
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tOR9ZQ": {
+    "defaultMessage": "3M"
   },
   "tOS305": {
     "defaultMessage": "Detailed analytics on Origin products"

@@ -1,2 +1,1 @@
-export * from './PoYDetail';
-export * from './PoYList';
+export * from './views/PoYView';

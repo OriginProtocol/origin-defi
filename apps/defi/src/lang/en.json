@@ -921,6 +921,12 @@
       "value": "You will receive approximately"
     }
   ],
+  "D0xe/T": [
+    {
+      "type": 0,
+      "value": "3 months"
+    }
+  ],
   "DBP9Xf": [
     {
       "type": 0,
@@ -2891,6 +2897,12 @@
       "value": "Error while depositing"
     }
   ],
+  "j5ODYV": [
+    {
+      "type": 0,
+      "value": "2 months"
+    }
+  ],
   "j8y+qc": [
     {
       "type": 1,
@@ -3099,6 +3111,12 @@
     {
       "type": 0,
       "value": "Send wOETH across chains"
+    }
+  ],
+  "n+21Rg": [
+    {
+      "type": 0,
+      "value": "2M"
     }
   ],
   "n5cmll": [
@@ -3385,6 +3403,12 @@
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "tOR9ZQ": [
+    {
+      "type": 0,
+      "value": "3M"
     }
   ],
   "tOS305": [

@@ -188,6 +188,9 @@
   "Cnm0QA": {
     "defaultMessage": "Queued"
   },
+  "D0xe/T": {
+    "defaultMessage": "3 months"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -548,6 +551,9 @@
   "j07TC/": {
     "defaultMessage": "{duration,plural,=1{Extend lock-up to # month} other{Extend lock-up to # months}}"
   },
+  "j5ODYV": {
+    "defaultMessage": "2 months"
+  },
   "j8y+qc": {
     "defaultMessage": "{label}"
   },
@@ -586,6 +592,9 @@
   },
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"
+  },
+  "n+21Rg": {
+    "defaultMessage": "2M"
   },
   "n7chn1": {
     "defaultMessage": "7-Day"
@@ -649,6 +658,9 @@
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tOR9ZQ": {
+    "defaultMessage": "3M"
   },
   "tx8kgu": {
     "defaultMessage": "Enter address"

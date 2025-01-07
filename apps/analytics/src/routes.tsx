@@ -1,11 +1,10 @@
 import * as arm from '@origin/analytics/arm';
 import { HomeView } from '@origin/analytics/home';
-import { OverviewView } from '@origin/analytics/oeth';
+import * as oeth from '@origin/analytics/oeth';
 import {
   CollateralsPage,
-  Overview,
-  PoYDetail,
-  PoYList,
+  OverviewView,
+  PoYView,
 } from '@origin/analytics/shared';
 import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
@@ -49,7 +48,9 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Overview token={tokens.base.superOETHb} currency="ETH" />,
+            element: (
+              <OverviewView token={tokens.base.superOETHb} currency="ETH" />
+            ),
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
@@ -65,21 +66,7 @@ export const routes: RouteObject[] = [
                 defaultMessage: 'Proof of Yield',
               }),
             },
-            children: [
-              {
-                index: true,
-                element: <PoYList token={tokens.base.superOETHb} />,
-              },
-              {
-                path: ':id',
-                element: <PoYDetail token={tokens.base.superOETHb} />,
-                handle: {
-                  breadcrumb: defineMessage({
-                    defaultMessage: 'Details',
-                  }),
-                },
-              },
-            ],
+            element: <PoYView token={tokens.base.superOETHb} />,
           },
           {
             path: 'collateral',
@@ -103,7 +90,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            Component: OverviewView,
+            Component: oeth.OverviewView,
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
@@ -112,24 +99,12 @@ export const routes: RouteObject[] = [
           },
           {
             path: 'poy',
+            element: <PoYView token={tokens.mainnet.OETH} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Proof of Yield' }),
             },
-            children: [
-              {
-                index: true,
-                element: <PoYList token={tokens.mainnet.OETH} />,
-              },
-              {
-                path: ':id',
-                element: <PoYDetail token={tokens.mainnet.OETH} />,
-                handle: {
-                  breadcrumb: defineMessage({ defaultMessage: 'Details' }),
-                },
-              },
-            ],
           },
         ],
       },
@@ -144,7 +119,9 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Overview token={tokens.mainnet.OUSD} currency="USD" />,
+            element: (
+              <OverviewView token={tokens.mainnet.OUSD} currency="USD" />
+            ),
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
@@ -153,33 +130,21 @@ export const routes: RouteObject[] = [
           },
           {
             path: 'poy',
+            element: <PoYView token={tokens.mainnet.OUSD} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Proof of Yield' }),
             },
-            children: [
-              {
-                index: true,
-                element: <PoYList token={tokens.mainnet.OUSD} />,
-              },
-              {
-                path: ':id',
-                element: <PoYDetail token={tokens.mainnet.OUSD} />,
-                handle: {
-                  breadcrumb: defineMessage({ defaultMessage: 'Details' }),
-                },
-              },
-            ],
           },
           {
             path: 'collateral',
+            element: <CollateralsPage token={tokens.mainnet.OUSD} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Collateral' }),
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            element: <CollateralsPage token={tokens.mainnet.OUSD} />,
           },
         ],
       },

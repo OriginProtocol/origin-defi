@@ -359,6 +359,12 @@
       "value": "60% YND Allocation"
     }
   ],
+  "D0xe/T": [
+    {
+      "type": 0,
+      "value": "3 months"
+    }
+  ],
   "DGg45W": [
     {
       "type": 0,
@@ -1045,6 +1051,12 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "j5ODYV": [
+    {
+      "type": 0,
+      "value": "2 months"
+    }
+  ],
   "j9Y9nu": [
     {
       "type": 0,
@@ -1123,6 +1135,12 @@
     {
       "type": 0,
       "value": " is being processed"
+    }
+  ],
+  "n+21Rg": [
+    {
+      "type": 0,
+      "value": "2M"
     }
   ],
   "n7chn1": [
@@ -1293,6 +1311,12 @@
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "tOR9ZQ": [
+    {
+      "type": 0,
+      "value": "3M"
     }
   ],
   "tQxA15": [
