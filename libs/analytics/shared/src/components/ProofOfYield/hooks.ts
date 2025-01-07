@@ -16,13 +16,25 @@ export const usePoY = () => {
   const handleNext = useCallback(() => {
     setState(
       produce((draft) => {
-        const nextId = state?.data?.[selectedIdx + 1]?.id;
+        const nextIdx = selectedIdx + 1;
+        const nextId = state?.data?.[nextIdx]?.id;
         if (nextId) {
           draft.selectedId = nextId;
         }
+        if (state?.limit) {
+          if (nextIdx >= 365 && state.limit <= 365) {
+            draft.limit = undefined;
+          } else if (nextIdx >= 182 && state.limit <= 182) {
+            draft.limit = 365;
+          } else if (nextIdx >= 30 && state.limit <= 30) {
+            draft.limit = 182;
+          } else if (nextIdx >= 7 && state.limit <= 7) {
+            draft.limit = 30;
+          }
+        }
       }),
     );
-  }, [selectedIdx, setState, state?.data]);
+  }, [selectedIdx, setState, state?.data, state.limit]);
 
   const handlePrev = useCallback(() => {
     setState(
