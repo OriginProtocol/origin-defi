@@ -13,6 +13,7 @@ import {
 import {
   BarChart,
   CurrencyLabel,
+  InfoTooltipLabel,
   LimitControls,
   LoadingLabel,
   MovingAvgControls,
@@ -33,34 +34,43 @@ import type { CardProps } from '@mui/material';
 import type { MovingAvg } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
-export type ProtocolRevenueCardProps = {
+export type TradingProfitCardProps = {
   token: Token;
   height: number;
   from?: string;
 } & CardProps;
 
-export const ProtocolRevenueCard = ({
+export const TradingProfitCard = ({
   token,
   height,
   from,
   ...rest
-}: ProtocolRevenueCardProps) => {
+}: TradingProfitCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
   const theme = useTheme();
-  const [limit, setLimit] = useState<number | undefined>(
-    config?.protocolRevenueCardDefaultLimit ?? 182,
-  );
+  const [limit, setLimit] = useState<number | undefined>(30);
   const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats({
-    token,
-    limit,
-    from: from ?? config?.from,
-    offset: 1,
-  });
+  const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
+    {
+      token,
+      limit,
+      from: from ?? config?.from,
+      offset: 1,
+    },
+    {
+      select: (data) =>
+        data.map((d) => ({
+          ...d,
+          feesETH: d.feesETH * 5,
+          feesMovingAvg30Days: d.feesMovingAvg30Days * 5,
+          feesMovingAvg7Days: d.feesMovingAvg7Days * 5,
+        })),
+    },
+  );
 
   const width = measures?.width ?? 0;
   const activeItem =
@@ -69,9 +79,21 @@ export const ProtocolRevenueCard = ({
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({
-          defaultMessage: 'Protocol revenue',
-        })}
+        title={
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                '20% of those amounts are collected as performance fee',
+            })}
+          >
+            {intl.formatMessage(
+              {
+                defaultMessage: 'Daily Trading Profit',
+              },
+              { symbol: token.name },
+            )}
+          </InfoTooltipLabel>
+        }
       />
       <Divider />
       <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>

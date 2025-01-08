@@ -6,6 +6,7 @@ import { PercentWrappedCard } from '../components/PercentWrappedCard';
 import { PriceCard } from '../components/PriceCard';
 import { ProtocolRevenueCard } from '../components/ProtocolRevenueCard';
 import { TotalSupplyCard } from '../components/TotalSupplyCard';
+import { TradingProfitCard } from '../components/TradingProfitCard';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -37,6 +38,9 @@ export const OverviewView = ({
         {children}
         <Grid2 size={12}>
           <ProtocolRevenueCard token={token} height={300} />
+        </Grid2>
+        <Grid2 size={12}>
+          <TradingProfitCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <PriceCard token={token} height={300} currency={currency} />
