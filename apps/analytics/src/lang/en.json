@@ -41,6 +41,12 @@
       "value": "Amount"
     }
   ],
+  "/dlj0T": [
+    {
+      "type": 0,
+      "value": "Daily Trading Profit"
+    }
+  ],
   "/kI0V9": [
     {
       "type": 0,
@@ -135,6 +141,12 @@
     {
       "type": 0,
       "value": "Impossible to execute"
+    }
+  ],
+  "2RU7oI": [
+    {
+      "type": 0,
+      "value": "20% of those amounts are collected as performance fee"
     }
   ],
   "2qF6KB": [
@@ -311,16 +323,6 @@
       "value": "Moving Average"
     }
   ],
-  "DkNDG7": [
-    {
-      "type": 1,
-      "value": "symbol"
-    },
-    {
-      "type": 0,
-      "value": " Proof of Yield"
-    }
-  ],
   "DqeIg/": [
     {
       "type": 0,
@@ -351,6 +353,12 @@
       "value": "30-Day MA"
     }
   ],
+  "FnRTEV": [
+    {
+      "type": 0,
+      "value": "Average"
+    }
+  ],
   "FtUhr6": [
     {
       "type": 0,
@@ -367,6 +375,12 @@
     {
       "type": 0,
       "value": "Base TVL"
+    }
+  ],
+  "HQcrRS": [
+    {
+      "type": 0,
+      "value": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
     }
   ],
   "Hiq4cG": [
@@ -391,6 +405,20 @@
     {
       "type": 0,
       "value": "Proof of Yield"
+    }
+  ],
+  "Ieni8Z": [
+    {
+      "type": 0,
+      "value": "x "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": " multiplier"
     }
   ],
   "JA3MsG": [
@@ -471,6 +499,12 @@
       "value": "Your operation has been executed"
     }
   ],
+  "NbAPMb": [
+    {
+      "type": 0,
+      "value": "Dripper"
+    }
+  ],
   "O+rqDl": [
     {
       "type": 0,
@@ -483,12 +517,6 @@
     {
       "type": 0,
       "value": " that gives up yield"
-    }
-  ],
-  "P7PLVj": [
-    {
-      "type": 0,
-      "value": "Date"
     }
   ],
   "Q+8Ac/": [
@@ -543,6 +571,12 @@
       "value": "First"
     }
   ],
+  "S5HnX5": [
+    {
+      "type": 0,
+      "value": "View dripper details"
+    }
+  ],
   "SGXihn": [
     {
       "type": 0,
@@ -553,6 +587,12 @@
     {
       "type": 0,
       "value": "TVL"
+    }
+  ],
+  "TEZFSL": [
+    {
+      "type": 0,
+      "value": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
     }
   ],
   "TrKxvg": [
@@ -685,6 +725,12 @@
     {
       "type": 1,
       "value": "rate"
+    }
+  ],
+  "a/W9Oe": [
+    {
+      "type": 0,
+      "value": "Protocol revenue"
     }
   ],
   "aD585J": [
@@ -879,6 +925,12 @@
       "value": "Wrapped supply"
     }
   ],
+  "hWBcQv": [
+    {
+      "type": 0,
+      "value": "Block / Time"
+    }
+  ],
   "hZS2DW": [
     {
       "type": 0,
@@ -933,12 +985,6 @@
       "value": "Hours"
     }
   ],
-  "jJVBJS": [
-    {
-      "type": 0,
-      "value": "30-day Average"
-    }
-  ],
   "lARTMh": [
     {
       "type": 0,
@@ -957,34 +1003,10 @@
       "value": "Mins"
     }
   ],
-  "ldRS9x": [
-    {
-      "type": 0,
-      "value": "Protocol revenue for "
-    },
-    {
-      "type": 1,
-      "value": "symbol"
-    }
-  ],
   "lwrkXS": [
     {
       "type": 0,
       "value": "Total assets minus liabilities"
-    }
-  ],
-  "mPncEL": [
-    {
-      "type": 0,
-      "value": "x "
-    },
-    {
-      "type": 1,
-      "value": "value"
-    },
-    {
-      "type": 0,
-      "value": " Boost"
     }
   ],
   "n+21Rg": [
@@ -1033,12 +1055,6 @@
     {
       "type": 0,
       "value": "Copied"
-    }
-  ],
-  "pSzqnH": [
-    {
-      "type": 0,
-      "value": "Daily Yield"
     }
   ],
   "qGZxc4": [
@@ -1189,6 +1205,12 @@
     {
       "type": 0,
       "value": "Wrong Network"
+    }
+  ],
+  "wwwQgP": [
+    {
+      "type": 0,
+      "value": "OETH wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
     }
   ],
   "xN53iS": [

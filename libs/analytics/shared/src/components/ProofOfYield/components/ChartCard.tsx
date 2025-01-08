@@ -28,8 +28,7 @@ export type ChartCardProps = {
 export const ChartCard = ({ height, ...rest }: ChartCardProps) => {
   const intl = useIntl();
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { token, isLoading, limit, handleLimitChange, hoveredItem, yKey } =
-    usePoY();
+  const { isLoading, limit, handleLimitChange, hoveredItem } = usePoY();
 
   const width = measures?.width ?? 0;
 

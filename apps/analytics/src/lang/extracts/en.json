@@ -20,6 +20,9 @@
   "/0TOL5": {
     "defaultMessage": "Amount"
   },
+  "/dlj0T": {
+    "defaultMessage": "Daily Trading Profit"
+  },
   "/kI0V9": {
     "defaultMessage": "Total supply"
   },
@@ -55,6 +58,9 @@
   },
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
+  },
+  "2RU7oI": {
+    "defaultMessage": "20% of those amounts are collected as performance fee"
   },
   "2qF6KB": {
     "defaultMessage": "Arbitrum"
@@ -137,9 +143,6 @@
   "DOyKgT": {
     "defaultMessage": "Moving Average"
   },
-  "DkNDG7": {
-    "defaultMessage": "{symbol} Proof of Yield"
-  },
   "DqeIg/": {
     "defaultMessage": "Unallocated"
   },
@@ -155,6 +158,9 @@
   "FPMGr3": {
     "defaultMessage": "30-Day MA"
   },
+  "FnRTEV": {
+    "defaultMessage": "Average"
+  },
   "FtUhr6": {
     "defaultMessage": "Arbitrum TVL"
   },
@@ -163,6 +169,9 @@
   },
   "HIM+US": {
     "defaultMessage": "Base TVL"
+  },
+  "HQcrRS": {
+    "defaultMessage": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
@@ -175,6 +184,9 @@
   },
   "IU4zTP": {
     "defaultMessage": "Proof of Yield"
+  },
+  "Ieni8Z": {
+    "defaultMessage": "x {value} multiplier"
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
@@ -215,11 +227,11 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
+  "NbAPMb": {
+    "defaultMessage": "Dripper"
+  },
   "O+rqDl": {
     "defaultMessage": "Amount of {symbol} that gives up yield"
-  },
-  "P7PLVj": {
-    "defaultMessage": "Date"
   },
   "Q+8Ac/": {
     "defaultMessage": "OGN Performance"
@@ -245,11 +257,17 @@
   "S45aoc": {
     "defaultMessage": "First"
   },
+  "S5HnX5": {
+    "defaultMessage": "View dripper details"
+  },
   "SGXihn": {
     "defaultMessage": "OETH"
   },
   "SKB/G9": {
     "defaultMessage": "TVL"
+  },
+  "TEZFSL": {
+    "defaultMessage": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -298,6 +316,9 @@
   },
   "YqE/OA": {
     "defaultMessage": "{currency}{rate}"
+  },
+  "a/W9Oe": {
+    "defaultMessage": "Protocol revenue"
   },
   "aD585J": {
     "defaultMessage": "Staking Max vAPY"
@@ -374,6 +395,9 @@
   "hKDOtL": {
     "defaultMessage": "Wrapped supply"
   },
+  "hWBcQv": {
+    "defaultMessage": "Block / Time"
+  },
   "hZS2DW": {
     "defaultMessage": "5 days"
   },
@@ -401,9 +425,6 @@
   "j9Y9nu": {
     "defaultMessage": "Hours"
   },
-  "jJVBJS": {
-    "defaultMessage": "30-day Average"
-  },
   "lARTMh": {
     "defaultMessage": "Trading Volume"
   },
@@ -413,14 +434,8 @@
   "lb8m6m": {
     "defaultMessage": "Mins"
   },
-  "ldRS9x": {
-    "defaultMessage": "Protocol revenue for {symbol}"
-  },
   "lwrkXS": {
     "defaultMessage": "Total assets minus liabilities"
-  },
-  "mPncEL": {
-    "defaultMessage": "x {value} Boost"
   },
   "n+21Rg": {
     "defaultMessage": "2M"
@@ -445,9 +460,6 @@
   },
   "p556q3": {
     "defaultMessage": "Copied"
-  },
-  "pSzqnH": {
-    "defaultMessage": "Daily Yield"
   },
   "qGZxc4": {
     "defaultMessage": "Connect your wallet to<br></br>select the network"
@@ -514,6 +526,9 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
+  },
+  "wwwQgP": {
+    "defaultMessage": "OETH wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
   },
   "xN53iS": {
     "defaultMessage": "Yield Bonus"
