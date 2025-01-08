@@ -1,4 +1,4 @@
-import { Box, SvgIcon } from '@mui/material';
+import { Box, SvgIcon, useTheme } from '@mui/material';
 import { hasKey, isNilOrEmpty } from '@origin/shared/utils';
 
 import mainnetMulti from './components/mainnet_multi.svg?react';
@@ -25,8 +25,10 @@ export const NetworkIcon = ({
   size = 24,
   ...rest
 }: NetworkIconProps) => {
-  const props = hasKey(supportedIcons, chainId)
-    ? supportedIcons[chainId]
+  const theme = useTheme();
+  const supported = supportedIcons(theme);
+  const props = hasKey(supported, chainId)
+    ? supported[chainId]
     : {
         icon: mainnetMulti,
         sizeRatio: 0.75,
