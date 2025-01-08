@@ -167,6 +167,7 @@ const emptyChartResult = (
   timestamp,
   date,
   token: omit(['abi'], token),
+  apy: 0,
   apy7: 0,
   apy14: 0,
   apy30: 0,
