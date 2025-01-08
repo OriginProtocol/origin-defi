@@ -2,6 +2,7 @@ import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { arbitrum, base, mainnet } from 'viem/chains';
 
+import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
@@ -24,6 +25,8 @@ export type OTokenConfig = {
   defaultApyTrailing?: 'apy7DayAvg' | 'apy14DayAvg' | 'apy30DayAvg';
   // token color for charts
   lineChartColor?: string;
+  // default currency for chart display
+  currency: Currency;
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -35,11 +38,13 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dripperToken: tokens.mainnet.WETH,
     showCirculatingSplit: true,
     lineChartColor: '#586CF8',
+    currency: 'ETH',
   },
   [tokens.arbitrum.wOETH.id]: {
     from: '2024-02-07T00:00:00.000000Z',
     availableNetworks: [arbitrum],
     dripperToken: tokens.arbitrum.WETH,
+    currency: 'ETH',
   },
   [tokens.mainnet.OUSD.id]: {
     from: '2023-06-01T00:00:00.000000Z',
@@ -48,6 +53,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dappHref: `${ORIGIN_DAPP_URL}/#/ousd`,
     dripperToken: tokens.mainnet.USDT,
     lineChartColor: '#14C4BA',
+    currency: 'USD',
   },
   [tokens.base.superOETHb.id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -59,6 +65,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     protocolRevenueCardDefaultLimit: 30,
     defaultApyTrailing: 'apy7DayAvg',
     lineChartColor: '#7A26F3',
+    currency: 'ETH',
   },
   [tokens.mainnet['ARM-WETH-stETH'].id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -68,5 +75,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     protocolRevenueCardDefaultLimit: 30,
     defaultApyTrailing: 'apy30DayAvg',
     lineChartColor: '#E85BFF',
+    currency: 'ETH',
   },
 };

@@ -1,6 +1,5 @@
-import { movingAverages, ZERO_ADDRESS } from '@origin/shared/utils';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { pluck } from 'ramda';
 
 import { useOTokenStatsQuery } from '../queries';
 import { dailyStatMapper } from '../utils';
@@ -48,8 +47,6 @@ export type ChartResult = {
   pctCirculatingSupply: number;
   feesETH: number;
   feesUSD: number;
-  feesMovingAvg7Days: number;
-  feesMovingAvg30Days: number;
   rateETH: number;
   rateUSD: number;
 };
@@ -89,16 +86,9 @@ const fetcher: (
       }),
     });
 
-    const mapped = res?.oTokenDailyStats
+    return res?.oTokenDailyStats
       ?.toReversed()
       .map((d) => dailyStatMapper(d, token, { isChartFormat: true }));
-    const feesAverages = movingAverages(pluck('feesETH', mapped), [7, 30]);
-
-    return mapped.map((m, i) => ({
-      ...m,
-      feesMovingAvg7Days: feesAverages[0][i],
-      feesMovingAvg30Days: feesAverages[1][i],
-    }));
   };
 
 export const useTokenChartStats = <TResult = ChartResult[]>(

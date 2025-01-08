@@ -184,8 +184,6 @@ const emptyChartResult = (
   pctCirculatingSupply: 0,
   feesETH: 0,
   feesUSD: 0,
-  feesMovingAvg7Days: 0,
-  feesMovingAvg30Days: 0,
   rateETH: 0,
   rateUSD: 0,
   tvlUSD: 0,
