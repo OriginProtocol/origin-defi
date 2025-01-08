@@ -12,12 +12,15 @@ import { useLayout } from '@origin/analytics/shared';
 import {
   CurrencyLabel,
   ExternalLink,
+  LoadingLabel,
   PieChart,
   Spinner,
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
 import { useMeasure } from '@react-hookz/web';
+import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { useSuperCollaterals } from '../hooks';
@@ -30,8 +33,13 @@ export const CollateralsView = () => {
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const [{ isDrawerOpen }] = useLayout();
   const { data, isLoading } = useSuperCollaterals();
+  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
+    getTokenPriceKey(tokens.base.superOETHb),
+  );
 
   const width = measures?.width ?? 0;
+  const totalETH = data?.[0].total ?? 0;
+  const totalUSD = mul(from(totalETH), price ?? 0);
 
   return (
     <Stack>
@@ -95,12 +103,23 @@ export const CollateralsView = () => {
                         flexGrow: 1,
                       }}
                     >
-                      <Typography
-                        variant="featured1"
-                        sx={{ fontWeight: 'bold' }}
-                      >
-                        {intl.formatNumber(data[0].total)}
-                      </Typography>
+                      <Stack>
+                        <Typography
+                          variant="featured1"
+                          sx={{ fontWeight: 'bold' }}
+                        >
+                          {intl.formatNumber(totalETH)}
+                        </Typography>
+                        <LoadingLabel
+                          color="text.secondary"
+                          variant="caption1"
+                          isLoading={isPriceLoading}
+                        >
+                          <CurrencyLabel currency="USD" />
+                          {format(totalUSD, 2)}
+                        </LoadingLabel>
+                      </Stack>
+
                       <Typography variant="body2" color="text.secondary">
                         100.00%
                       </Typography>
@@ -150,8 +169,12 @@ const CollateralCard = ({
   ...rest
 }: CollateralCardProps) => {
   const intl = useIntl();
+  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
+    getTokenPriceKey(token),
+  );
 
   const percentage = value / total;
+  const amountUSD = mul(value, price ?? 0);
 
   return (
     <Stack
@@ -208,6 +231,14 @@ const CollateralCard = ({
             })}
           </Typography>
         </Stack>
+        <LoadingLabel
+          color="text.secondary"
+          variant="caption1"
+          isLoading={isPriceLoading}
+        >
+          <CurrencyLabel currency="USD" />
+          {format(amountUSD, 2)}
+        </LoadingLabel>
       </Stack>
     </Stack>
   );

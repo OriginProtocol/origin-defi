@@ -2,7 +2,7 @@ import * as arm from '@origin/analytics/arm';
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
 import {
-  CollateralsPage,
+  CollateralsView,
   OverviewView,
   PoYView,
 } from '@origin/analytics/shared';
@@ -139,7 +139,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: 'collateral',
-            element: <CollateralsPage token={tokens.mainnet.OUSD} />,
+            element: <CollateralsView token={tokens.mainnet.OUSD} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Collateral' }),
               icon: FaCoinsRegular,

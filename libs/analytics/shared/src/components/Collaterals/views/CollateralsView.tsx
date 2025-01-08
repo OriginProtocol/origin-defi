@@ -1,22 +1,22 @@
 import { Stack } from '@mui/material';
 
+import { CollateralsCard } from '../components/CollateralsCard';
+import { StrategyAllocationsCard } from '../components/StrategyAllocationsCard';
 import { useCollaterals, useStrategyAllocations } from '../hooks';
-import { CollateralsCard } from './CollateralsCard';
-import { StrategyAllocationsCard } from './StrategyAllocationsCard';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-export type CollateralsPageProps = {
+export type CollateralsViewProps = {
   token: Token;
   currency?: 'ETH' | 'USD';
 } & StackProps;
 
-export const CollateralsPage = ({
+export const CollateralsView = ({
   token,
   currency,
   ...rest
-}: CollateralsPageProps) => {
+}: CollateralsViewProps) => {
   const { data: collaterals, isLoading: isLoadingCollaterals } =
     useCollaterals(token);
   const { data: strategies, isLoading: isLoadingStrategies } =

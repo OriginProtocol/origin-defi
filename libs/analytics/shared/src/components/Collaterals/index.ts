@@ -1,2 +1,1 @@
-export * from './components/CollateralsPage';
-export * from './components/CollateralRow';
+export * from './views/CollateralsView';
