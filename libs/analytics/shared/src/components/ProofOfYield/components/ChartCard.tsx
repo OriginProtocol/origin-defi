@@ -13,6 +13,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
+import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 
 import { usePoY } from '../hooks';
@@ -47,20 +48,32 @@ export const ChartCard = ({ height, ...rest }: ChartCardProps) => {
         }
       />
       <Divider />
-      <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
-          <LoadingLabel
-            variant="featured2"
-            sx={{ fontWeight: 'medium' }}
-            isLoading={isLoading || !hoveredItem}
-            sWidth={70}
-          >
-            {intl.formatNumber(hoveredItem?.[yKey] as number, {
-              maximumFractionDigits: 3,
-              minimumFractionDigits: 3,
-            })}
-          </LoadingLabel>
-          <Typography>{token.symbol}</Typography>
+      <CardContent
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        }}
+      >
+        <Stack>
+          <Typography color="text.secondary">
+            {dayjs.utc(hoveredItem?.timestamp).format('DD MMM YYYY')}
+          </Typography>
+          <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
+            <LoadingLabel
+              variant="featured2"
+              sx={{ fontWeight: 'medium' }}
+              isLoading={isLoading || !hoveredItem}
+              sWidth={70}
+            >
+              {intl.formatNumber(hoveredItem?.apy as number, {
+                style: 'percent',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </LoadingLabel>
+            <Typography>APY</Typography>
+          </Stack>
         </Stack>
         <LimitControls limit={limit} setLimit={handleLimitChange} />
       </CardContent>
