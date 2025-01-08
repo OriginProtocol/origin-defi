@@ -1,16 +1,18 @@
 import { useState } from 'react';
 
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   Divider,
   Stack,
+  Typography,
   useTheme,
 } from '@mui/material';
 import {
+  BarChart,
   LimitControls,
-  LineChart,
   LoadingLabel,
   Spinner,
   TrailingControls,
@@ -65,7 +67,6 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
     <Card {...rest} ref={ref}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
       <Divider />
-
       <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
@@ -85,6 +86,34 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
             >
               {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
             </LoadingLabel>
+            <Stack direction="row" spacing={0.75}>
+              <Box
+                sx={{
+                  width: 15,
+                  height: 15,
+                  borderRadius: '50%',
+                  background: `linear-gradient(90deg, ${theme.palette.chart5}, ${theme.palette.chart2});`,
+                }}
+              />
+              <Typography
+                variant="caption1"
+                color="text.secondary"
+                sx={{ fontWeight: 'medimum' }}
+              >
+                {intl.formatMessage(
+                  {
+                    defaultMessage: 'Average',
+                  },
+                  { trailing },
+                )}
+              </Typography>
+              <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
+                {intl.formatNumber((activeItem?.[trailing] as number) ?? 0, {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                })}
+              </Typography>
+            </Stack>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
@@ -96,23 +125,26 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
       {isLoading ? (
         <Spinner sx={{ height }} />
       ) : (
-        <LineChart
+        <BarChart
           width={width}
           height={height}
-          series={[
-            {
-              label: 'APY',
-              data: data ?? [],
-              xKey: 'timestamp',
-              yKey: trailing,
-              color: [theme.palette.chart1, theme.palette.chart2],
-            },
-          ]}
+          barData={data ?? []}
+          xKey="timestamp"
+          yKey="apy"
+          lineData={{
+            data: data ?? [],
+            xKey: 'timestamp',
+            yKey: trailing,
+            color: [theme.palette.chart5, theme.palette.chart2],
+            strokeWidth: 3,
+          }}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
+          barColor={theme.palette.chart7}
+          activeBarColor={theme.palette.chart3}
         />
       )}
     </Card>

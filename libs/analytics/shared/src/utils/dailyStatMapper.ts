@@ -43,6 +43,8 @@ export const dailyStatMapper = (
   const circulating = sub(totalSupply, protocolOwned);
   const circulatingETH = mul(circulating, rateETH);
   const circulatingUSD = mul(circulating, rateUSD);
+  const protocolOwnedETH = mul(protocolOwned, rateETH);
+  const protocolOwnedUSD = mul(protocolOwned, rateUSD);
   const pctWrapped = gt(circulating, 0)
     ? mul(div(wrapped, circulating), factor)
     : ([0n, token.decimals] as Dnum);
@@ -112,6 +114,14 @@ export const dailyStatMapper = (
       digits: 2,
     }),
     protocolOwnedSupply: toNumber(protocolOwned, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 2,
+    }),
+    protocolOwnedSupplyETH: toNumber(protocolOwnedETH, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 2,
+    }),
+    protocolOwnedSupplyUSD: toNumber(protocolOwnedUSD, {
       decimalsRounding: 'ROUND_DOWN',
       digits: 2,
     }),

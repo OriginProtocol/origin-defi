@@ -14,6 +14,7 @@ import {
 import { ChartTooltip } from '@origin/analytics/shared';
 import {
   AreaChart,
+  CurrencyControls,
   CurrencyLabel,
   LimitControls,
   LoadingLabel,
@@ -28,7 +29,7 @@ import { useIntl } from 'react-intl';
 import { useOethDistribution } from '../hooks';
 
 import type { CardProps } from '@mui/material';
-import type { YKey } from '@origin/shared/components';
+import type { Currency, YKey } from '@origin/shared/components';
 
 import type { TvlCombined } from '../hooks';
 
@@ -44,6 +45,7 @@ export const OethDistributionCard = ({
 }: OethDistributionCardProps) => {
   const intl = useIntl();
   const theme = useTheme();
+  const [currency, setCurrency] = useState<Currency>('ETH');
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
@@ -51,19 +53,19 @@ export const OethDistributionCard = ({
 
   const series = [
     {
-      key: 'arbitrum',
+      key: currency === 'ETH' ? 'arbitrumETH' : 'arbitrumUSD',
       label: intl.formatMessage({ defaultMessage: 'Arbitrum' }),
       lineColor: theme.palette.chart5,
       fillColor: alpha(theme.palette.chart5, 0.4),
     },
     {
-      key: 'base',
+      key: currency === 'ETH' ? 'baseETH' : 'baseUSD',
       label: intl.formatMessage({ defaultMessage: 'Base' }),
       lineColor: theme.palette.chart3,
       fillColor: alpha(theme.palette.chart3, 0.4),
     },
     {
-      key: 'mainnet',
+      key: currency === 'ETH' ? 'mainnetETH' : 'mainnetUSD',
       label: intl.formatMessage({ defaultMessage: 'Ethereum' }),
       lineColor: [theme.palette.chart1, theme.palette.chart2],
       fillColor: [
@@ -74,6 +76,10 @@ export const OethDistributionCard = ({
   ] as YKey<TvlCombined>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
+  const activeTotal =
+    currency === 'ETH'
+      ? (activeItem?.totalETH ?? 0)
+      : (activeItem?.totalUSD ?? 0);
 
   return (
     <Card {...rest} ref={ref}>
@@ -98,11 +104,14 @@ export const OethDistributionCard = ({
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.total ?? 0)}%
+              <CurrencyLabel currency={currency} />
+              {intl.formatNumber(activeTotal)}
             </LoadingLabel>
           </Stack>
-          <LimitControls limit={limit} setLimit={setLimit} />
+          <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
+            <LimitControls limit={limit} setLimit={setLimit} />
+            <CurrencyControls currency={currency} setCurrency={setCurrency} />
+          </Stack>
         </Stack>
         <Stack
           direction="row"
@@ -148,10 +157,9 @@ export const OethDistributionCard = ({
               </Typography>
               <LoadingLabel isLoading={isLoading} variant="caption1">
                 {intl.formatNumber(
-                  activeItem?.total === 0
+                  activeTotal === 0
                     ? 0
-                    : (activeItem?.[s.key] as number) /
-                        (activeItem?.total as number),
+                    : (activeItem?.[s.key] as number) / (activeTotal as number),
                   { style: 'percent', maximumFractionDigits: 2 },
                 )}
               </LoadingLabel>

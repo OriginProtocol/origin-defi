@@ -33,7 +33,7 @@ export const OverviewView = ({
           <ApyCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
-          <TotalSupplyCard token={token} height={300} />
+          <TotalSupplyCard token={token} height={300} currency={currency} />
         </Grid2>
         {children}
         <Grid2 size={12}>

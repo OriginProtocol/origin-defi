@@ -10,9 +10,9 @@ import {
 } from '@mui/material';
 import { ChartTooltip, useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
+  BarChart,
   InfoTooltip,
   LimitControls,
-  LineChart,
   LoadingLabel,
   Spinner,
   TrailingControls,
@@ -112,24 +112,26 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
       {isLoading ? (
         <Spinner sx={{ height }} />
       ) : (
-        <LineChart
+        <BarChart
           width={width}
           height={height}
-          series={[
-            {
-              label: 'APY',
-              data: data ?? [],
-              xKey: 'timestamp',
-              yKey: trailing,
-              color: [theme.palette.chart1, theme.palette.chart2],
-              curveType: 'base',
-            },
-          ]}
+          barData={data ?? []}
+          xKey="timestamp"
+          yKey="apy"
+          lineData={{
+            data: data ?? [],
+            xKey: 'timestamp',
+            yKey: trailing,
+            color: [theme.palette.chart5, theme.palette.chart2],
+            strokeWidth: 3,
+          }}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
+          barColor={theme.palette.chart7}
+          activeBarColor={theme.palette.chart3}
         />
       )}
     </Card>

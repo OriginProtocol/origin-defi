@@ -29,6 +29,7 @@ export type ChartResult = {
   timestamp: number;
   date: string;
   token: Omit<Token, 'abi'>;
+  apy: number;
   apy7: number;
   apy14: number;
   apy30: number;

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import {
   AreaChart,
+  CurrencyControls,
   CurrencyLabel,
   LimitControls,
   LoadingLabel,
@@ -30,7 +31,7 @@ import { ChartTooltip } from '../../Tooltips';
 import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
-import type { YKey } from '@origin/shared/components';
+import type { Currency, YKey } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 import type { ChartResult } from '../../../hooks';
@@ -39,7 +40,7 @@ export type TotalSupplyCardProps = {
   token: Token;
   height: number;
   from?: string;
-  currency?: 'ETH' | 'USD';
+  currency?: Currency;
 } & CardProps;
 
 export const TotalSupplyCard = ({
@@ -55,6 +56,7 @@ export const TotalSupplyCard = ({
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [curr, setCurr] = useState<Currency>(currency ?? 'ETH');
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
     token,
@@ -65,7 +67,7 @@ export const TotalSupplyCard = ({
 
   const series = [
     {
-      key: 'circulatingSupply',
+      key: curr === 'ETH' ? 'circulatingSupplyETH' : 'circulatingSupplyUSD',
       label: intl.formatMessage({ defaultMessage: 'TVL' }),
       fillColor: [
         alpha(theme.palette.chart1, 0.4),
@@ -76,7 +78,10 @@ export const TotalSupplyCard = ({
     ...(config?.showCirculatingSplit
       ? [
           {
-            key: 'protocolOwnedSupply',
+            key:
+              curr === 'ETH'
+                ? 'protocolOwnedSupplyETH'
+                : 'protocolOwnedSupplyUSD',
             label: intl.formatMessage({
               defaultMessage: 'Protocol owned liquidity',
             }),
@@ -88,6 +93,7 @@ export const TotalSupplyCard = ({
   ] as YKey<ChartResult>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
+  const totalSupply = curr === 'ETH' ? activeItem?.tvlETH : activeItem?.tvlUSD;
 
   return (
     <Card {...rest} ref={ref}>
@@ -112,11 +118,14 @@ export const TotalSupplyCard = ({
               )}
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              <CurrencyLabel currency={currency} />
-              {intl.formatNumber(activeItem?.totalSupply ?? 0)}
+              <CurrencyLabel currency={curr} />
+              {intl.formatNumber(totalSupply ?? 0)}
             </LoadingLabel>
           </Stack>
-          <LimitControls limit={limit} setLimit={setLimit} />
+          <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
+            <LimitControls limit={limit} setLimit={setLimit} />
+            <CurrencyControls currency={curr} setCurrency={setCurr} />
+          </Stack>
         </Stack>
         {config?.showCirculatingSplit && (
           <Stack
@@ -158,10 +167,10 @@ export const TotalSupplyCard = ({
                 </Typography>
                 <Typography variant="caption1">
                   {intl.formatNumber(
-                    activeItem?.totalSupply === 0
+                    !totalSupply || totalSupply === 0
                       ? 0
                       : (activeItem?.[s.key] as number) /
-                          (activeItem?.totalSupply as number),
+                          (totalSupply as number),
                     { style: 'percent', maximumFractionDigits: 2 },
                   )}
                 </Typography>
