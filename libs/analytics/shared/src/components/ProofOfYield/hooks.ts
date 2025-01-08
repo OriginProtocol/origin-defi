@@ -10,6 +10,8 @@ export const usePoY = () => {
   const selectedIdx =
     state.data?.findIndex((s) => s.id === state.selectedId) ?? -1;
   const selectedItem = selectedIdx > -1 ? state?.data?.[selectedIdx] : null;
+  const hoveredItem =
+    state.hoveredIdx > -1 ? state?.chartData?.[state.hoveredIdx] : selectedItem;
   const hasNext = selectedIdx < (state?.data?.length ?? 0) - 1;
   const hasPrev = selectedIdx > 0;
 
@@ -69,15 +71,28 @@ export const usePoY = () => {
     [setState],
   );
 
+  const handleItemHover = useCallback(
+    (idx: number | null) => {
+      setState(
+        produce((draft) => {
+          draft.hoveredIdx = idx ?? -1;
+        }),
+      );
+    },
+    [setState],
+  );
+
   return {
     ...state,
     setState,
     selectedItem,
+    hoveredItem,
     hasNext,
     hasPrev,
     handleNext,
     handlePrev,
     handleSelect,
     handleLimitChange,
+    handleItemHover,
   };
 };

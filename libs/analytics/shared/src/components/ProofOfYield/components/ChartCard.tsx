@@ -1,7 +1,15 @@
-import { Card, CardContent, CardHeader, Divider } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/material';
 import {
   InfoTooltipLabel,
   LimitControls,
+  LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
@@ -19,7 +27,8 @@ export type ChartCardProps = {
 export const ChartCard = ({ height, ...rest }: ChartCardProps) => {
   const intl = useIntl();
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { token, isLoading, limit, handleLimitChange } = usePoY();
+  const { token, isLoading, limit, handleLimitChange, hoveredItem, yKey } =
+    usePoY();
 
   const width = measures?.width ?? 0;
 
@@ -33,15 +42,26 @@ export const ChartCard = ({ height, ...rest }: ChartCardProps) => {
                 'This chart shows the level of daily yield distribution',
             })}
           >
-            {intl.formatMessage(
-              { defaultMessage: '{symbol} Proof of Yield' },
-              { symbol: token.symbol },
-            )}
+            {intl.formatMessage({ defaultMessage: 'Proof of Yield' })}
           </InfoTooltipLabel>
         }
       />
       <Divider />
-      <CardContent sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
+          <LoadingLabel
+            variant="featured2"
+            sx={{ fontWeight: 'medium' }}
+            isLoading={isLoading || !hoveredItem}
+            sWidth={70}
+          >
+            {intl.formatNumber(hoveredItem?.[yKey] as number, {
+              maximumFractionDigits: 3,
+              minimumFractionDigits: 3,
+            })}
+          </LoadingLabel>
+          <Typography>{token.symbol}</Typography>
+        </Stack>
         <LimitControls limit={limit} setLimit={handleLimitChange} />
       </CardContent>
       {isLoading || !width ? (

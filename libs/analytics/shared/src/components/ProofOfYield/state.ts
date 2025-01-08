@@ -18,12 +18,14 @@ import type { DailyStatMapped } from './types';
 type PoYState = {
   token: Token;
   selectedId: string | null;
+  hoveredIdx: number;
   data: DailyStatMapped[] | null;
   chartData: DailyStatMapped[] | null;
   isLoading: boolean;
   config: OTokenConfig;
   xKey: keyof DailyStatMapped;
   yKey: keyof DailyStatMapped;
+  lineKey: keyof DailyStatMapped;
   limit: number | undefined;
 };
 
@@ -32,12 +34,14 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
     const [state, setState] = useState<PoYState>({
       token,
       selectedId: null,
+      hoveredIdx: -1,
       data: [],
       chartData: [],
       isLoading: false,
       config: oTokenConfig[token.id as keyof typeof oTokenConfig],
       xKey: 'timestamp',
       yKey: 'yieldETH',
+      lineKey: 'avg30',
       limit: 7,
     });
 

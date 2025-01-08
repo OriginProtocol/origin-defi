@@ -1,30 +1,18 @@
-import { useId, useMemo, useState } from 'react';
+import { useId, useMemo } from 'react';
 
 import { alpha, Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
 import { curveCatmullRom } from '@visx/curve';
-import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar, BarRounded, LinePath } from '@visx/shape';
-import {
-  defaultStyles,
-  TooltipWithBounds,
-  useTooltip,
-  useTooltipInPortal,
-} from '@visx/tooltip';
 import dayjs from 'dayjs';
-import { useIntl } from 'react-intl';
 
-import { ChartTooltip } from '../../Tooltips';
 import { usePoY } from '../hooks';
 
 import type { BoxProps } from '@mui/material';
-import type { Serie } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
-
-import type { DailyStatMapped } from '../types';
 
 export type ChartControllerProps = {
   width: number;
@@ -36,25 +24,18 @@ export const ChartController = ({
   height,
   ...rest
 }: ChartControllerProps) => {
-  const intl = useIntl();
   const theme = useTheme();
   const chartId = useId();
-  const { chartData: data, xKey, yKey, selectedId, handleSelect } = usePoY();
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const { containerRef } = useTooltipInPortal({
-    scroll: true,
-    detectBounds: true,
-  });
   const {
-    showTooltip,
-    tooltipOpen,
-    tooltipLeft = 0,
-    tooltipTop = 0,
-  } = useTooltip<string>({
-    tooltipOpen: true,
-    tooltipLeft: width / 3,
-    tooltipTop: height / 3,
-  });
+    chartData: data,
+    xKey,
+    yKey,
+    lineKey,
+    selectedId,
+    hoveredIdx,
+    handleSelect,
+    handleItemHover,
+  } = usePoY();
   const xScale = useMemo(
     () =>
       scaleBand({
@@ -92,38 +73,13 @@ export const ChartController = ({
   const tickYFormat = (value: NumberLike) => `${value as number}`;
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
-  const hoverItem = hoverIdx === null ? null : data?.[hoverIdx];
-  const hoverSeries =
-    hoverIdx === null
-      ? null
-      : [
-          {
-            data: [hoverItem],
-            xKey,
-            yKey,
-            color: theme.palette.primary.main,
-            label: intl.formatMessage({
-              defaultMessage: 'Daily Yield',
-            }),
-          } as Serie<DailyStatMapped>,
-          {
-            data: [hoverItem],
-            xKey,
-            yKey: 'avg30',
-            color: theme.palette.primary.main,
-            label: intl.formatMessage({
-              defaultMessage: '30-day Average',
-            }),
-          } as Serie<DailyStatMapped>,
-        ];
 
   return (
     <Box
       {...rest}
       key={chartId}
-      ref={containerRef}
       onMouseLeave={() => {
-        setHoverIdx(null);
+        handleItemHover(-1);
       }}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
@@ -177,7 +133,7 @@ export const ChartController = ({
           const barColor =
             selectedId === d.id
               ? theme.palette.chart3
-              : alpha(theme.palette.chart7, hoverIdx === idx ? 1 : 0.5);
+              : alpha(theme.palette.chart7, hoveredIdx === idx ? 1 : 0.5);
 
           return (
             <BarRounded
@@ -195,7 +151,7 @@ export const ChartController = ({
           data={data ?? []}
           curve={curveCatmullRom}
           x={(d) => (xScale(d[xKey] as number) ?? 0) + xScale.bandwidth() / 2}
-          y={(d) => yScale(d.avg30 as number) ?? 0}
+          y={(d) => yScale(d[lineKey] as number) ?? 0}
           stroke={`url(#gradient-line-${chartId})`}
           strokeWidth={2}
         />
@@ -215,32 +171,13 @@ export const ChartController = ({
               onMouseDown={() => {
                 handleSelect(d.id);
               }}
-              onMouseMove={(event) => {
-                const eventSvgCoords = localPoint(event);
-                setHoverIdx(idx);
-                showTooltip({
-                  tooltipLeft: barX,
-                  tooltipTop: eventSvgCoords?.y,
-                });
+              onMouseMove={() => {
+                handleItemHover(idx);
               }}
             />
           );
         })}
       </svg>
-      {tooltipOpen && hoverItem !== null ? (
-        <TooltipWithBounds
-          left={tooltipLeft}
-          top={tooltipTop}
-          style={{
-            ...defaultStyles,
-            background: 'transparent',
-            border: 'none',
-            boxShadow: 'none',
-          }}
-        >
-          <ChartTooltip series={hoverSeries} />
-        </TooltipWithBounds>
-      ) : null}
     </Box>
   );
 };
