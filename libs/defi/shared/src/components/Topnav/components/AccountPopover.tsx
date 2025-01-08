@@ -10,7 +10,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { ActivityTile, useActivityState } from '@origin/defi/shared';
 import {
   BadgeIcon,
   ClickAwayPopover,
@@ -49,13 +48,15 @@ import { useIntl } from 'react-intl';
 import { mainnet } from 'viem/chains';
 import { useAccount, useConfig, useDisconnect, useWalletClient } from 'wagmi';
 
+import { ActivityTile, useActivityState } from '../../Activities';
 import { balanceTokens } from '../constants';
 
 import type { StackProps } from '@mui/material';
-import type { Activity } from '@origin/defi/shared';
 import type { ClickAwayPopoverProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
+
+import type { Activity } from '../../Activities';
 
 export const AccountPopover = (
   props: Omit<ClickAwayPopoverProps, 'children'>,

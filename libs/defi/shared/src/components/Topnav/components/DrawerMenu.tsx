@@ -25,7 +25,6 @@ import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatch, useNavigate } from 'react-router';
 
-import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
 import type { MenuItemProps, StackProps } from '@mui/material';
@@ -33,9 +32,12 @@ import type { RouteObject } from 'react-router';
 
 import type { NavItem } from '../types';
 
-export type DrawerMenuProps = { onClose: () => void } & StackProps;
+export type DrawerMenuProps = {
+  routes: RouteObject[];
+  onClose: () => void;
+} & StackProps;
 
-export const DrawerMenu = ({ onClose, ...rest }: DrawerMenuProps) => {
+export const DrawerMenu = ({ routes, onClose, ...rest }: DrawerMenuProps) => {
   const intl = useIntl();
 
   const visibleRoutes = routes?.[0]?.children?.filter(

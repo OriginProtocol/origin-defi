@@ -19,7 +19,6 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link, useMatch, useNavigate } from 'react-router';
 
-import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
 import type { ButtonProps, MenuItemProps } from '@mui/material';
@@ -28,7 +27,11 @@ import type { RouteObject } from 'react-router';
 
 import type { NavItem } from '../types';
 
-export const HoverMenu = () => {
+export type HoverMenuProps = {
+  routes: RouteObject[];
+};
+
+export const HoverMenu = ({ routes }: HoverMenuProps) => {
   const visibleRoutes = routes?.[0]?.children?.filter(
     (r) => !isNilOrEmpty(r?.handle?.title),
   );

@@ -1,10 +1,15 @@
 import { Stack } from '@mui/material';
-import { trackEvent, trackPage, trackSentryError } from '@origin/defi/shared';
+import {
+  Topnav,
+  trackEvent,
+  trackPage,
+  trackSentryError,
+} from '@origin/defi/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router';
 
-import { Topnav } from './components/Topnav';
+import { routes } from './routes';
 
 export const App = () => {
   return (
@@ -23,7 +28,7 @@ export const App = () => {
             minWidth: 370,
           }}
         >
-          <Topnav />
+          <Topnav routes={routes} />
           <Outlet />
         </Stack>
       </TrackingProvider>

@@ -12,7 +12,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { trackEvent, useActivitiesStatus } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
   FaBarsRegular,
@@ -29,12 +28,18 @@ import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { useAccount } from 'wagmi';
 
+import { trackEvent } from '../../../clients';
+import { useActivitiesStatus } from '../../Activities';
 import { AccountPopover } from './AccountPopover';
 import { AlertPopover } from './AlertPopover';
 import { DrawerMenu } from './DrawerMenu';
 import { HoverMenu } from './HoverMenu';
 
-export const Topnav = () => {
+import type { RouteObject } from 'react-router';
+
+export type TopnavProps = { routes: RouteObject[] };
+
+export const Topnav = ({ routes }: TopnavProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const theme = useTheme();
@@ -134,7 +139,7 @@ export const Topnav = () => {
               md: 0.5,
             }}
           >
-            {!isSm && <HoverMenu />}
+            {!isSm && <HoverMenu routes={routes} />}
           </Grid2>
           <Grid2
             sx={{
@@ -281,6 +286,7 @@ export const Topnav = () => {
         PaperProps={{ sx: { minWidth: 250 } }}
       >
         <DrawerMenu
+          routes={routes}
           onClose={() => {
             setDrawerOpen(false);
           }}

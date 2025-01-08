@@ -1,10 +1,11 @@
 import { Divider, IconButton, Stack, Typography } from '@mui/material';
-import { useTxButton } from '@origin/defi/shared';
 import { ClickAwayPopover, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+
+import { useTxButton } from '../../TxButton';
 
 import type { StackProps } from '@mui/material';
 import type { ClickAwayPopoverProps } from '@origin/shared/components';
