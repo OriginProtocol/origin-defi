@@ -1,11 +1,12 @@
 import { from } from 'dnum';
-import { arbitrum, base, mainnet, optimism } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
 
 export const supportedChains = {
   [mainnet.id.toString()]: mainnet,
   [arbitrum.id.toString()]: arbitrum,
   [optimism.id.toString()]: optimism,
   [base.id.toString()]: base,
+  [sonic.id.toString()]: sonic,
 } as const;
 
 export const supportedChainNames = {
@@ -25,6 +26,10 @@ export const supportedChainNames = {
     short: 'Base',
     long: 'Base',
   },
+  [sonic.id.toString()]: {
+    short: 'Sonic',
+    long: 'Sonic',
+  },
 } as const;
 
 // minimum amount of native token to leave on the user
@@ -34,4 +39,5 @@ export const nativeMinimumForGas = {
   [arbitrum.id.toString()]: from(0.0015, arbitrum.nativeCurrency.decimals),
   [optimism.id.toString()]: from(0.0015, optimism.nativeCurrency.decimals),
   [base.id.toString()]: from(0.0015, base.nativeCurrency.decimals),
+  [sonic.id.toString()]: from(0.0015, base.nativeCurrency.decimals),
 };

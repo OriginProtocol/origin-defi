@@ -7,6 +7,7 @@ import {
   mainnet,
   optimism,
   polygon,
+  sonic,
 } from 'viem/chains';
 
 import arbitrumMulti from './components/arbitrum_multi.svg?react';
@@ -17,6 +18,7 @@ import gnosisCc from './components/gnosis_cc.svg?react';
 import mainnetMulti from './components/mainnet_multi.svg?react';
 import optimismCc from './components/optimism_cc.svg?react';
 import polygonCc from './components/polygon_cc.svg?react';
+import sonicCc from './components/sonic_cc.svg?react';
 
 export const supportedIcons = {
   [arbitrum.id]: {
@@ -64,5 +66,11 @@ export const supportedIcons = {
     sizeRatio: 0.7,
     iconColor: '#FFFFFF',
     backgroundColor: '#8247E5',
+  },
+  [sonic.id]: {
+    icon: sonicCc,
+    sizeRatio: 0.9,
+    iconColor: '#000',
+    backgroundColor: '#fff',
   },
 } as const;
