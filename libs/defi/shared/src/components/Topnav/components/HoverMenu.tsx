@@ -11,10 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  FaArrowUpRightRegular,
-  FaChevronDownRegular,
-} from '@origin/shared/icons';
+import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link, useMatch, useNavigate } from 'react-router';
@@ -146,7 +143,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         }}
       >
         {intl.formatMessage(route.handle.title)}
-        <FaChevronDownRegular />
       </Button>
       <Popper
         transition
