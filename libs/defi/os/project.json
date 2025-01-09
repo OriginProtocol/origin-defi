@@ -1,7 +1,7 @@
 {
-  "name": "defi-sonic",
+  "name": "defi-os",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/defi/sonic/src",
+  "sourceRoot": "libs/defi/os/src",
   "projectType": "library",
   "tags": [],
   "targets": {

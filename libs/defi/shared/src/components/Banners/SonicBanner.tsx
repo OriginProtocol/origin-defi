@@ -139,7 +139,7 @@ export const SonicBanner = (props: StackProps) => {
           <Button
             fullWidth
             component={RouterLink}
-            to="/super"
+            to="os"
             color="secondary"
             size="large"
             sx={{ whiteSpace: 'nowrap' }}

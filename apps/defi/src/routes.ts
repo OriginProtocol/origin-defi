@@ -4,8 +4,8 @@ import { HomeView } from '@origin/defi/home';
 import * as oeth from '@origin/defi/oeth';
 import * as ogn from '@origin/defi/ogn';
 import * as ogv from '@origin/defi/ogv';
+import * as os from '@origin/defi/os';
 import * as ousd from '@origin/defi/ousd';
-import * as sonic from '@origin/defi/sonic';
 import * as superOeth from '@origin/defi/super';
 import { NotFoundPage } from '@origin/shared/components';
 import {
@@ -127,7 +127,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            Component: sonic.SwapView,
+            Component: os.SwapView,
             handle: {
               title: defineMessage({ defaultMessage: 'Swap' }),
               icon: FaArrowRightArrowLeftRegular,
