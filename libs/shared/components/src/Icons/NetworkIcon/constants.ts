@@ -18,62 +18,58 @@ import gnosisCc from './components/gnosis_cc.svg?react';
 import mainnetMulti from './components/mainnet_multi.svg?react';
 import optimismCc from './components/optimism_cc.svg?react';
 import polygonCc from './components/polygon_cc.svg?react';
-import sonicBlack from './components/sonic_black.svg?react';
 import sonicWhite from './components/sonic_white.svg?react';
 
-import type { Theme } from '@mui/material';
-
-export const supportedIcons = (theme: Theme) =>
-  ({
-    [arbitrum.id]: {
-      icon: arbitrumMulti,
-      backgroundColor: '#213147',
-      sizeRatio: 0.75,
-    },
-    [avalanche.id]: {
-      icon: avalancheCc,
-      sizeRatio: 0.65,
-      iconColor: '#FFFFFF',
-      backgroundColor: '#E84142',
-    },
-    [base.id]: {
-      icon: baseCc,
-      sizeRatio: 0.65,
-      iconColor: '#FFFFFF',
-      backgroundColor: '#0052FF',
-    },
-    [bsc.id]: {
-      icon: bscCc,
-      sizeRatio: 0.75,
-      iconColor: '#F8D12F',
-      backgroundColor: '#0B0E11',
-    },
-    [gnosis.id]: {
-      icon: gnosisCc,
-      sizeRatio: 0.75,
-      iconColor: '#EFEFEF',
-      backgroundColor: '#04795B',
-    },
-    [mainnet.id]: {
-      icon: mainnetMulti,
-      sizeRatio: 0.75,
-      backgroundColor: '#D9EAFF',
-    },
-    [optimism.id]: {
-      icon: optimismCc,
-      sizeRatio: 0.8,
-      iconColor: '#FFFFFF',
-      backgroundColor: '#FF0420',
-    },
-    [polygon.id]: {
-      icon: polygonCc,
-      sizeRatio: 0.7,
-      iconColor: '#FFFFFF',
-      backgroundColor: '#8247E5',
-    },
-    [sonic.id]: {
-      icon: theme.palette.mode === 'light' ? sonicBlack : sonicWhite,
-      sizeRatio: 1.1,
-      backgroundColor: 'transparent',
-    },
-  }) as const;
+export const supportedIcons = {
+  [arbitrum.id]: {
+    icon: arbitrumMulti,
+    backgroundColor: '#213147',
+    sizeRatio: 0.75,
+  },
+  [avalanche.id]: {
+    icon: avalancheCc,
+    sizeRatio: 0.65,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#E84142',
+  },
+  [base.id]: {
+    icon: baseCc,
+    sizeRatio: 0.65,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#0052FF',
+  },
+  [bsc.id]: {
+    icon: bscCc,
+    sizeRatio: 0.75,
+    iconColor: '#F8D12F',
+    backgroundColor: '#0B0E11',
+  },
+  [gnosis.id]: {
+    icon: gnosisCc,
+    sizeRatio: 0.75,
+    iconColor: '#EFEFEF',
+    backgroundColor: '#04795B',
+  },
+  [mainnet.id]: {
+    icon: mainnetMulti,
+    sizeRatio: 0.75,
+    backgroundColor: '#D9EAFF',
+  },
+  [optimism.id]: {
+    icon: optimismCc,
+    sizeRatio: 0.8,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#FF0420',
+  },
+  [polygon.id]: {
+    icon: polygonCc,
+    sizeRatio: 0.7,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#8247E5',
+  },
+  [sonic.id]: {
+    icon: sonicWhite,
+    sizeRatio: 0.8,
+    backgroundColor: '#213147',
+  },
+} as const;

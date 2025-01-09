@@ -1,7 +1,7 @@
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, base, mainnet, optimism } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
 
 import { ARMstETHWETHPoolABI } from './abis/ARMstETHWETHPool';
 import { DAIABI } from './abis/DAI';
@@ -339,6 +339,35 @@ export const tokens = {
       symbol: 'wsuperOETHo',
     },
   },
+  sonic: {
+    OS: {
+      id: '146:OS',
+      address: ZERO_ADDRESS,
+      chainId: sonic.id,
+      abi: OETHABI,
+      name: 'Origin Sonic',
+      decimals: 18,
+      symbol: 'OS',
+    },
+    S: {
+      id: '146:S',
+      address: undefined,
+      chainId: sonic.id,
+      abi: erc20Abi,
+      name: 'Sonic',
+      decimals: 18,
+      symbol: 'S',
+    },
+    WETH: {
+      id: '146:WETH',
+      address: '0x50c42dEAcD8Fc9773493ED674b675bE577f2634b',
+      chainId: sonic.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether on Sonic',
+      decimals: 18,
+      symbol: 'WETH',
+    },
+  },
 } as const;
 
 export const tokenList = [
@@ -346,6 +375,7 @@ export const tokenList = [
   ...Object.values(tokens.arbitrum),
   ...Object.values(tokens.base),
   ...Object.values(tokens.optimism),
+  ...Object.values(tokens.sonic),
 ];
 
 export const tokenIdMap = indexBy(prop('id'), tokenList);
