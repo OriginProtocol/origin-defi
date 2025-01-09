@@ -42,7 +42,7 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
       xKey: 'timestamp',
       yKey: 'yieldETH',
       lineKey: 'avg30',
-      limit: 7,
+      limit: 30,
     });
 
     const { data, isLoading } = useOTokenStatsQuery(
