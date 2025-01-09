@@ -14,6 +14,7 @@ import OSSvg from './OS.svg?react';
 import OUSDSvg from './OUSD.svg?react';
 import primeETHSvg from './primeETH.svg?react';
 import rETHSvg from './rETH.svg?react';
+import sSvg from './S.svg?react';
 import sfrxETHSvg from './sfrxETH.svg?react';
 import stETHSvg from './stETH.svg?react';
 import superOETHSvg from './superOETH.svg?react';
@@ -77,6 +78,9 @@ export const OUSD = (props: SvgIconProps) => (
 );
 export const rETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={rETHSvg} viewBox="0 0 600 600" />
+);
+export const S = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={sSvg} inheritViewBox />
 );
 export const sfrxETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={sfrxETHSvg} viewBox="0 0 24 24" />
