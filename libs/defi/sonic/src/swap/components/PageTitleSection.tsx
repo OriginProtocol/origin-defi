@@ -31,7 +31,7 @@ export const PageTitleSection = (props: StackProps) => {
       ]}
     >
       <ColorChip spacing={0.5} minHeight={40}>
-        <TokenIcon token={tokens.base.superOETHb} sx={{ fontSize: 24 }} />
+        <TokenIcon token={tokens.sonic.OS} sx={{ fontSize: 24 }} />
         <LoadingLabel
           isLoading={isInfoLoading}
           sWidth={90}

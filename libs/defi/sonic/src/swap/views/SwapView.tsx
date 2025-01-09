@@ -1,6 +1,5 @@
 import { Grid2, Stack } from '@mui/material';
 import {
-  AnalyticsCard,
   DailyStatCard,
   Page,
   PageSection,
@@ -8,7 +7,6 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
-import { SUPEROETHB_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { OS } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -57,13 +55,8 @@ export const SwapView = () => {
           >
             <Stack spacing={4}>
               <DailyStatCard
-                token={tokens.base.superOETHb}
+                token={tokens.sonic.OS}
                 stats={['supply_distribution', 'price']}
-              />
-              <AnalyticsCard
-                token={tokens.base.superOETHb}
-                title="superOETH"
-                href={SUPEROETHB_ANALYTICS_URL}
               />
             </Stack>
           </Grid2>
