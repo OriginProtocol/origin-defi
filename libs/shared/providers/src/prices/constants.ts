@@ -50,6 +50,8 @@ export const chainlinkOraclesArbitrum = {
 
 export const chainlinkOraclesBase = {
   ETH_USD: '0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70',
+  AERO_USD: '0x4EC5970fC728C5f65ba413992CD5fF6FD70fcfF0',
+  OGN_USD: '0x91D7AEd72bF772A0DA30199B925aCB866ACD3D9e',
 } as const;
 
 export const chainlinkOraclesOptimism = {
@@ -429,11 +431,33 @@ export const priceOptions = {
     type: 'derived',
     dependsOn: ['42161:ETH_USD'],
   },
+  '8453:AERO_USD': {
+    id: '8453:AERO_USD',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesBase.AERO_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: base.id,
+    },
+    mapResult: chainLinkUsdMapper,
+  },
   '8453:ETH_USD': {
     id: '8453:ETH_USD',
     type: 'wagmi',
     config: {
       address: chainlinkOraclesBase.ETH_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: base.id,
+    },
+    mapResult: chainLinkUsdMapper,
+  },
+  '8453:OGN_USD': {
+    id: '8453:OGN_USD',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesBase.OGN_USD,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: base.id,
