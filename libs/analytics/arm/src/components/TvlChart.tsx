@@ -8,7 +8,7 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip, useArmDailyStatsQuery } from '@origin/analytics/shared';
+import { useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
   CurrencyControls,
   CurrencyLabel,
@@ -20,6 +20,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -116,10 +117,10 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         <LineChart
           width={width}
           height={height}
+          data={data ?? []}
           series={[
             {
               label: 'TVL',
-              data: data ?? [],
               xKey: 'timestamp',
               yKey: currency === 'ETH' ? 'totalSupplyETH' : 'totalSupplyUSD',
               color: [theme.palette.chart1, theme.palette.chart2],
@@ -129,12 +130,27 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+            },
+            {
+              label: intl.formatMessage({
+                defaultMessage: 'TVL',
+              }),
+              value: (d) =>
+                intl.formatNumber(
+                  d[currency === 'ETH' ? 'totalSupplyETH' : 'totalSupplyUSD'],
+                ),
+              color: [theme.palette.chart1, theme.palette.chart2],
+              currency,
+            },
+          ]}
         />
       )}
     </Card>

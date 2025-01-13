@@ -8,7 +8,6 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip } from '@origin/analytics/shared';
 import {
   CurrencyControls,
   CurrencyLabel,
@@ -19,6 +18,7 @@ import {
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -90,15 +90,22 @@ export const TradingVolumeChart = ({
       {isLoading ? (
         <Spinner sx={{ height }} />
       ) : (
-        <LineChart
+        <LineChart<{
+          timestamp: number;
+          day: string;
+          tradingVolumeETH: number;
+          tradingVolumeUSD: number;
+          swapVolumeETH: number;
+          swapVolumeUSD: number;
+        }>
           width={width}
           height={height}
+          data={data ?? []}
           series={[
             {
               label: intl.formatMessage({
                 defaultMessage: 'Trading Volume',
               }),
-              data: data ?? [],
               xKey: 'timestamp',
               yKey:
                 currency === 'ETH' ? 'tradingVolumeETH' : 'tradingVolumeUSD',
@@ -109,12 +116,30 @@ export const TradingVolumeChart = ({
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+            },
+            {
+              label: intl.formatMessage({ defaultMessage: 'Trading Volume' }),
+              value: (d) =>
+                intl.formatNumber(
+                  (currency === 'ETH'
+                    ? d.tradingVolumeETH
+                    : d.tradingVolumeUSD) ?? 0,
+                  {
+                    notation: 'compact',
+                  },
+                ),
+              color: [theme.palette.chart1, theme.palette.chart2],
+              currency,
+            },
+          ]}
         />
       )}
     </Card>

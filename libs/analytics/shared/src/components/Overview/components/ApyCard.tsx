@@ -1,13 +1,11 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
   Divider,
   Stack,
-  Typography,
   useTheme,
 } from '@mui/material';
 import {
@@ -20,12 +18,12 @@ import {
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../../constants';
 import { useTokenChartStats } from '../../../hooks';
-import { ChartTooltip } from '../../Tooltips';
 import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
@@ -86,34 +84,6 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
             >
               {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
             </LoadingLabel>
-            <Stack direction="row" spacing={0.75}>
-              <Box
-                sx={{
-                  width: 15,
-                  height: 15,
-                  borderRadius: '50%',
-                  background: `linear-gradient(90deg, ${theme.palette.chart5}, ${theme.palette.chart2});`,
-                }}
-              />
-              <Typography
-                variant="caption1"
-                color="text.secondary"
-                sx={{ fontWeight: 'medimum' }}
-              >
-                {intl.formatMessage(
-                  {
-                    defaultMessage: 'Average',
-                  },
-                  { trailing },
-                )}
-              </Typography>
-              <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
-                {intl.formatNumber((activeItem?.[trailing] as number) ?? 0, {
-                  notation: 'compact',
-                  minimumFractionDigits: 2,
-                })}
-              </Typography>
-            </Stack>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
@@ -128,11 +98,10 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
         <BarChart
           width={width}
           height={height}
-          barData={data ?? []}
+          data={data ?? []}
           xKey="timestamp"
           yKey="apy"
           lineData={{
-            data: data ?? [],
             xKey: 'timestamp',
             yKey: trailing,
             color: [theme.palette.chart5, theme.palette.chart2],
@@ -141,10 +110,40 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+            },
+            {
+              label: 'APY',
+              value: (d) =>
+                intl.formatNumber(d.apy / 100, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                }),
+              color: theme.palette.chart3,
+            },
+            {
+              label: `${
+                {
+                  apy30: '30d',
+                  apy14: '14d',
+                  apy7: '7d',
+                }[trailing]
+              } avg`,
+              value: (d) =>
+                intl.formatNumber(d[trailing] / 100, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                }),
+              color: [theme.palette.chart5, theme.palette.chart2],
+            },
+          ]}
         />
       )}
     </Card>

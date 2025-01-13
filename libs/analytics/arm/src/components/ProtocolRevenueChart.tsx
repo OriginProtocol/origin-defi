@@ -11,7 +11,6 @@ import {
 import { useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
   BarChart,
-  ChartTooltip,
   CurrencyControls,
   CurrencyLabel,
   LimitControls,
@@ -22,6 +21,7 @@ import { LoadingLabel } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
 import { last, pluck, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -156,14 +156,13 @@ export const ProtocolRevenueChart = ({
         <BarChart
           width={width}
           height={height}
-          barData={data ?? []}
+          data={data ?? []}
           xKey="timestamp"
           yKey={currency === 'ETH' ? 'feesETH' : 'feesUSD'}
           lineData={{
             label: intl.formatMessage({
               defaultMessage: 'Moving Average',
             }),
-            data: data ?? [],
             xKey: 'timestamp',
             yKey: `${ma}${currency}`,
             color: [theme.palette.chart5, theme.palette.chart2],
@@ -184,7 +183,35 @@ export const ProtocolRevenueChart = ({
           }
           barColor={theme.palette.chart3}
           activeBarColor={theme.palette.chart8}
-          Tooltip={ChartTooltip}
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+            },
+            {
+              label: 'Fees',
+              value: (d) =>
+                intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
+                  notation: 'compact',
+                }),
+              currency,
+              color: theme.palette.chart3,
+            },
+            {
+              label: `${
+                {
+                  feesMovingAvg30Days: '30d',
+                  feesMovingAvg7Days: '7d',
+                }[ma]
+              } avg`,
+              value: (d) =>
+                intl.formatNumber(d[`${ma}${currency}`] / 100, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                }),
+              color: [theme.palette.chart5, theme.palette.chart2],
+            },
+          ]}
         />
       )}
     </Card>

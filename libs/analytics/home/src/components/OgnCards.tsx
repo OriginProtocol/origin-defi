@@ -10,11 +10,7 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import {
-  ChartTooltip,
-  useOgnInfo,
-  useXOgnStakingApy,
-} from '@origin/analytics/shared';
+import { useOgnInfo, useXOgnStakingApy } from '@origin/analytics/shared';
 import {
   LimitControls,
   LineChart,
@@ -245,17 +241,16 @@ export const OgnPerformanceCard = (props: CardProps) => {
         <LineChart
           width={width}
           height={400}
+          data={dailyStats ?? []}
           series={[
             {
               label: metric === 'price' ? 'Price' : 'Market Cap',
-              data: dailyStats ?? [],
               xKey: 'timestamp',
               yKey: metric,
               color: [theme.palette.chart1, theme.palette.chart2],
               strokeWidth: 2,
             },
           ]}
-          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) =>
             metric === 'price'
               ? `$${value}`
@@ -264,6 +259,21 @@ export const OgnPerformanceCard = (props: CardProps) => {
                   maximumFractionDigits: 2,
                 })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+            },
+            {
+              label: metric === 'price' ? 'Price' : 'MC',
+              value: (d) =>
+                intl.formatNumber(d[metric], {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                }),
+              color: [theme.palette.chart1, theme.palette.chart2],
+              currency: 'USD',
+            },
+          ]}
         />
       )}
     </Card>

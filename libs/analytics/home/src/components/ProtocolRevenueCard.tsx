@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 
 import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import {
-  ChartTooltip,
   oTokenConfig,
   useArmDailyStatsQuery,
   useTokensChartStats,
@@ -16,6 +15,7 @@ import {
 import { useMeasure } from '@react-hookz/web';
 import { format, isDate } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -23,6 +23,7 @@ import { useIntl } from 'react-intl';
 import { useHomeView } from '../hooks';
 
 import type { CardProps } from '@mui/material';
+import type { YKeyStackedBar } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
 import type { Dnum } from 'dnum';
 
@@ -106,6 +107,29 @@ export const ProtocolRevenueCard = ({
     return serie;
   }, [arms, currency, tokens]);
 
+  const series: YKeyStackedBar<Item>[] = [
+    {
+      key: 'oeth',
+      label: 'Origin Ether',
+      fillColor: oTokenConfig['1:OETH'].lineChartColor,
+    },
+    {
+      key: 'ousd',
+      label: 'Origin Dollar',
+      fillColor: oTokenConfig['1:OUSD'].lineChartColor,
+    },
+    {
+      key: 'superOeth',
+      label: 'Super OETH',
+      fillColor: oTokenConfig['8453:superOETHb'].lineChartColor,
+    },
+    {
+      key: 'arm',
+      label: 'ARM',
+      fillColor: oTokenConfig['1:ARM-WETH-stETH'].lineChartColor,
+    },
+  ];
+
   const margins = { top: 5, left: 25, right: 60, bottom: 50 };
   const activeItem = hoverIdx === null ? last(serie ?? []) : serie?.[hoverIdx];
   const isLoading = isTokensLoading || isArmLoading;
@@ -153,30 +177,9 @@ export const ProtocolRevenueCard = ({
         <StackedBarChart
           height={height}
           width={width}
-          barData={serie}
+          data={serie}
           xKey="timestamp"
-          yKeys={[
-            {
-              key: 'oeth',
-              label: 'Origin Ether',
-              fillColor: oTokenConfig['1:OETH'].lineChartColor,
-            },
-            {
-              key: 'ousd',
-              label: 'Origin Dollar',
-              fillColor: oTokenConfig['1:OUSD'].lineChartColor,
-            },
-            {
-              key: 'superOeth',
-              label: 'Super OETH',
-              fillColor: oTokenConfig['8453:superOETHb'].lineChartColor,
-            },
-            {
-              key: 'arm',
-              label: 'ARM',
-              fillColor: oTokenConfig['1:ARM-WETH-stETH'].lineChartColor,
-            },
-          ]}
+          yKeys={series}
           tickYFormat={(value: NumberLike) =>
             currency === 'USD'
               ? `$${intl.formatNumber(Number(value), {
@@ -194,7 +197,16 @@ export const ProtocolRevenueCard = ({
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
+          tooltipLabels={[
+            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+            ...series.map((s) => ({
+              label: s.label,
+              value: (d: Item) =>
+                intl.formatNumber(d[s.key] ?? 0, { notation: 'compact' }),
+              color: s.fillColor,
+              currency,
+            })),
+          ]}
         />
       )}
     </Card>

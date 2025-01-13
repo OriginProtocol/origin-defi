@@ -11,7 +11,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip } from '@origin/analytics/shared';
 import {
   AreaChart,
   CurrencyControls,
@@ -23,6 +22,7 @@ import {
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -173,20 +173,34 @@ export const OethDistributionCard = ({
         <AreaChart
           width={width}
           height={height}
-          serie={data ?? []}
+          data={data ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           xKey="timestamp"
           yKeys={series}
           curveType="base"
-          Tooltip={ChartTooltip}
           showGrid
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+            },
+            ...series.map((s) => ({
+              label: s.label,
+              value: (d: TvlCombined) =>
+                intl.formatNumber(d?.[s.key] ?? 0, {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                }),
+              color: s.lineColor,
+              currency,
+            })),
+          ]}
         />
       )}
     </Card>

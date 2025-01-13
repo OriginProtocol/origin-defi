@@ -17,12 +17,12 @@ import {
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../../constants';
 import { useTokenChartStats } from '../../../hooks';
-import { ChartTooltip } from '../../Tooltips';
 import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
@@ -98,10 +98,10 @@ export const PercentWrappedCard = ({
         <LineChart
           width={width}
           height={height}
+          data={data ?? []}
           series={[
             {
               label: '% wrapped',
-              data: data ?? [],
               xKey: 'timestamp',
               yKey: 'pctWrappedSupply',
               color: [theme.palette.chart1, theme.palette.chart2],
@@ -111,8 +111,14 @@ export const PercentWrappedCard = ({
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
+          tooltipLabels={[
+            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+            {
+              label: intl.formatMessage({ defaultMessage: 'Wrapped' }),
+              value: (d) => `${intl.formatNumber(d.pctWrappedSupply)}%`,
+            },
+          ]}
         />
       )}
     </Card>

@@ -8,7 +8,7 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip, useArmDailyStatsQuery } from '@origin/analytics/shared';
+import { useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
   BarChart,
   InfoTooltip,
@@ -20,6 +20,7 @@ import {
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -115,11 +116,10 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         <BarChart
           width={width}
           height={height}
-          barData={data ?? []}
+          data={data ?? []}
           xKey="timestamp"
           yKey="apy"
           lineData={{
-            data: data ?? [],
             xKey: 'timestamp',
             yKey: trailing,
             color: [theme.palette.chart5, theme.palette.chart2],
@@ -128,10 +128,40 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+            },
+            {
+              label: `APY`,
+              value: (d) =>
+                intl.formatNumber(d.apy / 100, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                }),
+              color: theme.palette.chart3,
+            },
+            {
+              label: `${
+                {
+                  apy30: '30d',
+                  apy14: '14d',
+                  apy7: '7d',
+                }[trailing]
+              } avg APY`,
+              value: (d) =>
+                intl.formatNumber(d[trailing] / 100, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                }),
+              color: [theme.palette.chart5, theme.palette.chart2],
+            },
+          ]}
         />
       )}
     </Card>

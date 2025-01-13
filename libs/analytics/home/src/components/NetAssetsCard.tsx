@@ -8,7 +8,6 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip } from '@origin/analytics/shared';
 import {
   BarChart,
   CurrencyLabel,
@@ -19,6 +18,7 @@ import { Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -93,7 +93,7 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
         <BarChart
           width={width}
           height={height}
-          barData={data ?? []}
+          data={data ?? []}
           xKey="timestamp"
           yKey={currency === 'ETH' ? 'totalETH' : 'totalUSD'}
           onHover={(idx) => {
@@ -110,7 +110,23 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
           }
           barColor={theme.palette.chart3}
           activeBarColor={theme.palette.chart8}
-          Tooltip={ChartTooltip}
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+            },
+            {
+              label: 'NAV',
+              value: (d) =>
+                intl.formatNumber(
+                  currency === 'ETH' ? d.totalETH : d.totalUSD,
+                  {
+                    notation: 'compact',
+                  },
+                ),
+              currency,
+              color: theme.palette.chart3,
+            },
+          ]}
         />
       )}
     </Card>

@@ -23,12 +23,12 @@ import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last, pluck } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../../constants';
 import { useTokenChartStats } from '../../../hooks';
-import { ChartTooltip } from '../../Tooltips';
 import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
@@ -150,7 +150,7 @@ export const ProtocolRevenueCard = ({
               color="text.secondary"
               sx={{ fontWeight: 'medimum' }}
             >
-              {intl.formatMessage({ defaultMessage: 'Moving avergage' })}
+              {intl.formatMessage({ defaultMessage: 'Moving average' })}
             </Typography>
             <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
               <CurrencyLabel currency={currency} />
@@ -168,11 +168,10 @@ export const ProtocolRevenueCard = ({
         <BarChart
           width={width}
           height={height}
-          barData={feesData ?? []}
+          data={feesData ?? []}
           xKey="timestamp"
           yKey={currency === 'ETH' ? 'feesETH' : 'feesUSD'}
           lineData={{
-            data: feesData ?? [],
             xKey: 'timestamp',
             yKey: ma,
             color: [theme.palette.chart5, theme.palette.chart2],
@@ -186,7 +185,32 @@ export const ProtocolRevenueCard = ({
           }
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}
-          Tooltip={ChartTooltip}
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+            },
+            {
+              label: 'Protocol revenue',
+              value: (d) =>
+                intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
+                  notation: 'compact',
+                }),
+              currency,
+            },
+            {
+              label: `${
+                {
+                  feesMovingAvg7Days: '7-day',
+                  feesMovingAvg30Days: '30-day',
+                }[ma]
+              } avg`,
+              value: (d) =>
+                intl.formatNumber(Number(d?.[ma] ?? 0), {
+                  notation: 'compact',
+                }),
+              currency,
+            },
+          ]}
         />
       )}
     </Card>
