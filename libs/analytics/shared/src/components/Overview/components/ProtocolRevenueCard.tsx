@@ -195,6 +195,7 @@ export const ProtocolRevenueCard = ({
                 intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
                   notation: 'compact',
                 }),
+              color: theme.palette.chart3,
               currency,
             },
             {
@@ -209,6 +210,7 @@ export const ProtocolRevenueCard = ({
                   notation: 'compact',
                 }),
               currency,
+              color: [theme.palette.chart5, theme.palette.chart2],
             },
           ]}
         />

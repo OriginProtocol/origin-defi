@@ -144,6 +144,7 @@ export const PriceCard = ({
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 }),
+              color: [theme.palette.chart1, theme.palette.chart2],
               currency,
             },
           ]}

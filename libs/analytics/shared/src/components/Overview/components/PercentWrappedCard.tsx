@@ -117,6 +117,7 @@ export const PercentWrappedCard = ({
             {
               label: intl.formatMessage({ defaultMessage: 'Wrapped' }),
               value: (d) => `${intl.formatNumber(d.pctWrappedSupply)}%`,
+              color: [theme.palette.chart1, theme.palette.chart2],
             },
           ]}
         />

@@ -208,6 +208,7 @@ export const TradingProfitCard = ({
                 intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
                   notation: 'compact',
                 }),
+              color: theme.palette.chart3,
               currency,
             },
             {
@@ -221,6 +222,7 @@ export const TradingProfitCard = ({
                 intl.formatNumber(Number(d?.[ma] ?? 0), {
                   notation: 'compact',
                 }),
+              color: [theme.palette.chart5, theme.palette.chart2],
               currency,
             },
           ]}
