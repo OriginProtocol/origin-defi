@@ -1,8 +1,8 @@
 import { SvgIcon } from '@mui/material';
 
 import AaveFullSvg from './aave-full.svg?react';
-import AerodromeSvg from './aerodrome.svg?react';
-import AerodromeFullSvg from './aerodrome-full.svg?react';
+import AerodromeWebp from './aerodrome.webp';
+import AerodromeFullWebp from './aerodrome-full.webp';
 import ArmSvg from './arm.svg?react';
 import AuraFullWebp from './aura-full.webp';
 import BalancerFullSvg from './balancer-full.svg?react';
@@ -31,10 +31,14 @@ export const AaveFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={AaveFullSvg} inheritViewBox />
 );
 export const Aerodrome = (props: SvgIconProps) => (
-  <SvgIcon {...props} component={AerodromeSvg} inheritViewBox />
+  <SvgIcon {...props} viewBox="0 0 326 400">
+    <image href={AerodromeWebp} height="400" width="326" />
+  </SvgIcon>
 );
 export const AerodromeFull = (props: SvgIconProps) => (
-  <SvgIcon {...props} component={AerodromeFullSvg} inheritViewBox />
+  <SvgIcon {...props} viewBox="0 0 400 56">
+    <image href={AerodromeFullWebp} height="400" width="56" />
+  </SvgIcon>
 );
 export const ARM = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ArmSvg} inheritViewBox />
