@@ -1,6 +1,6 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
-import { ColorLabel, CurrencyLabel } from '../Labels';
+import { CurrencyLabel } from '../Labels';
 
 import type { StackProps } from '@mui/material';
 
@@ -49,26 +49,33 @@ export const ChartTooltip = <Datum,>({
             spacing={1}
             sx={{ alignItems: 'center', justifyContent: 'space-between' }}
           >
-            {color && typeof label === 'string' ? (
-              <ColorLabel
-                color={color}
-                label={label}
-                labelProps={{
-                  color: 'text.secondary',
-                  fontSize: 12,
-                  minWidth: 50,
-                }}
-              />
-            ) : typeof label === 'string' ? (
-              <Typography
-                sx={{
-                  color: 'text.secondary',
-                  fontSize: 12,
-                  minWidth: 50,
-                }}
+            {typeof label === 'string' ? (
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: 'center', justifyContent: 'space-between' }}
               >
-                {label}
-              </Typography>
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    borderRadius: '50%',
+                    background:
+                      Array.isArray(color) && color.length === 2
+                        ? `linear-gradient(90deg, ${color?.[0]}, ${color[1]});`
+                        : color,
+                  }}
+                />
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    fontSize: 12,
+                    minWidth: 50,
+                  }}
+                >
+                  {label}
+                </Typography>
+              </Stack>
             ) : (
               label
             )}
