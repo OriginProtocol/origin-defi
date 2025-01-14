@@ -14,7 +14,6 @@ import {
 import { useArmDailyStatsQuery } from '@origin/defi/shared';
 import {
   AreaChart,
-  ChartTooltip,
   InfoTooltip,
   InfoTooltipLabel,
   LimitControls,
@@ -27,6 +26,7 @@ import { tokens } from '@origin/shared/contracts';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -114,10 +114,10 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         <LineChart
           width={width}
           height={height}
+          data={data ?? []}
           series={[
             {
               label: 'APY',
-              data: data ?? [],
               xKey: 'timestamp',
               yKey: trailing,
               color: theme.palette.primary.main,
@@ -127,8 +127,15 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
+          tooltipLabels={[
+            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+            {
+              label: 'APY',
+              value: (d) =>
+                `${intl.formatNumber(d.apy, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
+            },
+          ]}
         />
       )}
     </Card>
@@ -199,12 +206,12 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         <Spinner sx={{ height }} />
       ) : (
         <LineChart
+          data={data ?? []}
           width={width}
           height={height}
           series={[
             {
               label: 'TVL',
-              data: data ?? [],
               xKey: 'timestamp',
               yKey: 'totalSupply',
               color: theme.palette.primary.main,
@@ -214,12 +221,25 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.unix(d?.timestamp).format('DD MMM'),
+            },
+            {
+              label: 'TVL',
+              value: (d) =>
+                intl.formatNumber(Number(d.totalSupply), {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                }),
+              color: theme.palette.primary.main,
+            },
+          ]}
         />
       )}
     </Card>
@@ -396,19 +416,33 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
         <AreaChart
           width={width}
           height={height}
-          serie={data ?? []}
+          data={data ?? []}
           xKey="timestamp"
           yKeys={series}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           curveType="step"
-          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               maximumFractionDigits: 2,
             })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.unix(d?.timestamp).format('DD MMM'),
+            },
+            ...series.map((s) => ({
+              label: s.label,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              value: (d: any) =>
+                intl.formatNumber(Number(d?.[s.key] ?? 0), {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                }),
+              color: s.lineColor,
+            })),
+          ]}
         />
       )}
     </Card>

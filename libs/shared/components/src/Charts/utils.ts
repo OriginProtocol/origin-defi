@@ -1,8 +1,7 @@
-import { isNilOrEmpty } from '@origin/shared/utils';
-
 import type { Serie } from './types';
 
 export const getScaleDomains = <Datum>(
+  data: Datum[],
   series: Serie<Datum>[],
   xCoeff = [1, 1],
   yCoeff = [0.9, 1.1],
@@ -12,14 +11,14 @@ export const getScaleDomains = <Datum>(
   let minY = Infinity;
   let maxY = -Infinity;
 
-  for (const serie of series) {
-    if (isNilOrEmpty(serie.data)) {
-      continue;
-    }
+  if (!data.length || !series.length) {
+    return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
+  }
 
-    for (let i = 0; i < serie.data.length; i++) {
-      const x = serie.data[i]?.[serie.xKey] as number;
-      const y = serie.data[i]?.[serie.yKey] as number;
+  for (let i = 0; i < data.length; i++) {
+    for (const serie of series) {
+      const x = data[i]?.[serie.xKey] as number;
+      const y = data[i]?.[serie.yKey] as number;
 
       minX = Math.min(minX, x);
       maxX = Math.max(maxX, x);
@@ -60,3 +59,22 @@ export const getStackedScaleDomains = <Datum>(
 
 export const getBarChartBottomTicks = (width: number) =>
   width < 400 ? 4 : width < 600 ? 8 : 10;
+
+export type DataKey<Datum> = keyof Datum | ((d: Datum) => number);
+
+export const getDataEdges = <Datum = object>(
+  data: Datum[],
+  keys: DataKey<Datum>[],
+) => {
+  return data.reduce(
+    (acc, curr) => {
+      keys.forEach((k, i) => {
+        const prev = acc[i] ?? [];
+        const cu = typeof k === 'function' ? k(curr) : (curr[k] as number);
+        acc[i] = [Math.min(...prev, cu), Math.max(...prev, cu)];
+      });
+      return acc;
+    },
+    [] as [number, number][],
+  );
+};

@@ -15,20 +15,20 @@ import {
 } from '@visx/tooltip';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 
+import { ChartTooltip } from './ChartTooltip';
 import { chartMargins, curveTypes } from './constants';
 import { getBarChartBottomTicks } from './utils';
 
-import type { BoxProps, StackProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import type { TickLabelProps } from '@visx/axis';
 import type { NumberLike } from '@visx/scale';
-import type { ComponentType } from 'react';
 
-import type { ChartColor, ChartData, Serie } from './types';
+import type { ChartColor, ChartData, ChartTooltipLabel, Serie } from './types';
 
 export type BarChartProps<Datum = ChartData> = {
   width: number;
   height: number;
-  barData: Datum[];
+  data: Datum[];
   xKey: keyof Datum;
   yKey: keyof Datum;
   barColor?: ChartColor;
@@ -40,14 +40,14 @@ export type BarChartProps<Datum = ChartData> = {
   tickXLabelProps?: TickLabelProps<NumberLike>;
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
-  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
+  tooltipLabels?: ChartTooltipLabel<Datum>[];
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const BarChart = <Datum,>({
   width,
   height,
-  barData,
+  data,
   xKey,
   yKey,
   barColor,
@@ -59,8 +59,8 @@ export const BarChart = <Datum,>({
   tickXLabelProps,
   tickYLabelProps,
   yScaleDomain,
-  Tooltip,
   margins = chartMargins,
+  tooltipLabels,
   ...rest
 }: BarChartProps<Datum>) => {
   const theme = useTheme();
@@ -86,9 +86,9 @@ export const BarChart = <Datum,>({
       scaleBand({
         range: [margins.left, width - margins.right],
         padding: 0.25,
-        domain: barData.map((d) => d[xKey] as number),
+        domain: data.map((d) => d[xKey] as number),
       }),
-    [margins.left, width, margins.right, barData, xKey],
+    [margins.left, width, margins.right, data, xKey],
   );
 
   const yScale = useMemo(
@@ -97,10 +97,10 @@ export const BarChart = <Datum,>({
         range: [height - margins.bottom, margins.top],
         domain: yScaleDomain ?? [
           0,
-          Math.max(...barData.map((d) => d[yKey] as number)),
+          Math.max(...data.map((d) => d[yKey] as number)),
         ],
       }),
-    [height, margins.bottom, margins.top, yScaleDomain, barData, yKey],
+    [height, margins.bottom, margins.top, yScaleDomain, data, yKey],
   );
 
   if (!width || !height) return null;
@@ -129,30 +129,7 @@ export const BarChart = <Datum,>({
 
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
-  const activeItem = activeIdx === null ? null : barData[activeIdx];
-  const activeLineData =
-    lineData && activeIdx !== null
-      ? {
-          data: [lineData.data[activeIdx]],
-          xKey: lineData.xKey,
-          yKey: lineData.yKey,
-          color: lineData.color,
-          label: lineData.label,
-        }
-      : null;
-  const activeSeries =
-    activeIdx === null
-      ? null
-      : [
-          {
-            data: [activeItem],
-            xKey,
-            yKey,
-            color: barColor,
-            label: yKey,
-          } as Serie<Datum>,
-          ...(activeLineData ? [activeLineData] : []),
-        ];
+  const activeItem = activeIdx === null ? null : data[activeIdx];
   const curveLine =
     curveTypes[
       lineData?.curveType
@@ -246,7 +223,7 @@ export const BarChart = <Datum,>({
           numTicks={height / 80}
         />
 
-        {barData.map((d, idx) => {
+        {data.map((d, idx) => {
           const barHeight = yScale(d[yKey] as number) ?? 0;
           const barX = xScale(d[xKey] as number) ?? 0;
           const barWidth = xScale.bandwidth();
@@ -287,7 +264,7 @@ export const BarChart = <Datum,>({
         })}
         {lineData && (
           <LinePath
-            data={lineData.data}
+            data={data}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             curve={curveLine as any}
             x={(d) =>
@@ -302,7 +279,7 @@ export const BarChart = <Datum,>({
             strokeWidth={lineData.strokeWidth}
           />
         )}
-        {barData.map((d, idx) => {
+        {data.map((d, idx) => {
           const barX = xScale(d[xKey] as number) ?? 0;
           const barWidth = xScale.bandwidth();
 
@@ -327,7 +304,7 @@ export const BarChart = <Datum,>({
           );
         })}
       </svg>
-      {Tooltip && tooltipOpen && activeIdx !== null ? (
+      {tooltipLabels?.length && tooltipOpen && activeIdx !== null ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
@@ -338,7 +315,10 @@ export const BarChart = <Datum,>({
             boxShadow: 'none',
           }}
         >
-          <Tooltip series={activeSeries} />
+          <ChartTooltip<Datum>
+            item={activeItem}
+            tooltipLabels={tooltipLabels}
+          />
         </TooltipWithBounds>
       ) : null}
     </Box>

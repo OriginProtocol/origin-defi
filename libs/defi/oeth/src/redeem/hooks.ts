@@ -88,6 +88,7 @@ const fetcher: (
         !r.claimed &&
         wethBalance + BigInt(queueData?.[1] ?? 0) - BigInt(r?.queued ?? 0) >
           0n &&
+        wethBalance >= BigInt(r.amount) &&
         isAfter(
           new Date(),
           addMinutes(new Date(r.timestamp), WITHDRAW_DELAY + 1),

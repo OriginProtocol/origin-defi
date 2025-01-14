@@ -18,12 +18,12 @@ import {
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../../constants';
 import { useTokenChartStats } from '../../../hooks';
-import { ChartTooltip } from '../../Tooltips';
 import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
@@ -115,10 +115,10 @@ export const PriceCard = ({
         <LineChart
           width={width}
           height={height}
+          data={data ?? []}
           series={[
             {
               label: 'Exchange rate',
-              data: data ?? [],
               xKey: 'timestamp',
               yKey: currency === 'ETH' ? 'rateETH' : 'rateUSD',
               color: [theme.palette.chart1, theme.palette.chart2],
@@ -128,7 +128,6 @@ export const PriceCard = ({
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               minimumFractionDigits: 2,
@@ -136,6 +135,19 @@ export const PriceCard = ({
             })
           }
           yScaleDomain={[0.95, 1.05]}
+          tooltipLabels={[
+            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+            {
+              label: intl.formatMessage({ defaultMessage: 'Exchange rate' }),
+              value: (d) =>
+                intl.formatNumber(currency === 'ETH' ? d.rateETH : d.rateUSD, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }),
+              color: [theme.palette.chart1, theme.palette.chart2],
+              currency,
+            },
+          ]}
         />
       )}
     </Card>

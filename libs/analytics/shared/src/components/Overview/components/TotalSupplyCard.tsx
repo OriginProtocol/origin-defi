@@ -22,12 +22,12 @@ import {
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../../constants';
 import { useTokenChartStats } from '../../../hooks';
-import { ChartTooltip } from '../../Tooltips';
 import { CHART_HEADER_HEIGHT } from '../constants';
 
 import type { CardProps } from '@mui/material';
@@ -83,7 +83,7 @@ export const TotalSupplyCard = ({
                 ? 'protocolOwnedSupplyETH'
                 : 'protocolOwnedSupplyUSD',
             label: intl.formatMessage({
-              defaultMessage: 'Protocol owned liquidity',
+              defaultMessage: 'POL',
             }),
             fillColor: alpha(theme.palette.chart5, 0.4),
             lineColor: theme.palette.chart5,
@@ -121,63 +121,64 @@ export const TotalSupplyCard = ({
               <CurrencyLabel currency={curr} />
               {intl.formatNumber(totalSupply ?? 0)}
             </LoadingLabel>
+            {config?.showCirculatingSplit && (
+              <Stack
+                direction="row"
+                sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 2, pt: 1 }}
+                useFlexGap
+              >
+                {series.map((s) => (
+                  <Stack key={s.key} direction="row" spacing={0.75}>
+                    <Box
+                      sx={{
+                        width: 15,
+                        height: 15,
+                        borderRadius: '50%',
+                        background: Array.isArray(s.lineColor)
+                          ? `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`
+                          : s.lineColor,
+                      }}
+                    />
+                    <Typography
+                      variant="caption1"
+                      color="text.secondary"
+                      sx={{ fontWeight: 'medimum' }}
+                    >
+                      {s?.label ?? 'Serie'}
+                    </Typography>
+                    <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
+                      <CurrencyLabel currency={curr} />
+                      {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
+                        notation: 'compact',
+                        minimumFractionDigits: 2,
+                      })}
+                    </Typography>
+                    <Typography
+                      variant="caption1"
+                      color="text.secondary"
+                      sx={{ fontWeight: 'medimum' }}
+                    >
+                      •
+                    </Typography>
+                    <Typography variant="caption1">
+                      {intl.formatNumber(
+                        !totalSupply || totalSupply === 0
+                          ? 0
+                          : (activeItem?.[s.key] as number) /
+                              (totalSupply as number),
+                        { style: 'percent', maximumFractionDigits: 2 },
+                      )}
+                    </Typography>
+                  </Stack>
+                ))}
+              </Stack>
+            )}
           </Stack>
           <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
             <LimitControls limit={limit} setLimit={setLimit} />
             <CurrencyControls currency={curr} setCurrency={setCurr} />
           </Stack>
         </Stack>
-        {config?.showCirculatingSplit && (
-          <Stack
-            direction="row"
-            sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 2, pt: 1 }}
-            useFlexGap
-          >
-            {series.map((s) => (
-              <Stack key={s.key} direction="row" spacing={0.75}>
-                <Box
-                  sx={{
-                    width: 15,
-                    height: 15,
-                    borderRadius: '50%',
-                    background: Array.isArray(s.lineColor)
-                      ? `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`
-                      : s.lineColor,
-                  }}
-                />
-                <Typography
-                  variant="caption1"
-                  color="text.secondary"
-                  sx={{ fontWeight: 'medimum' }}
-                >
-                  {s?.label ?? 'Serie'}
-                </Typography>
-                <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
-                  {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
-                    notation: 'compact',
-                    minimumFractionDigits: 2,
-                  })}
-                </Typography>
-                <Typography
-                  variant="caption1"
-                  color="text.secondary"
-                  sx={{ fontWeight: 'medimum' }}
-                >
-                  •
-                </Typography>
-                <Typography variant="caption1">
-                  {intl.formatNumber(
-                    !totalSupply || totalSupply === 0
-                      ? 0
-                      : (activeItem?.[s.key] as number) /
-                          (totalSupply as number),
-                    { style: 'percent', maximumFractionDigits: 2 },
-                  )}
-                </Typography>
-              </Stack>
-            ))}
-          </Stack>
-        )}
       </CardContent>
       {isLoading ? (
         <Spinner sx={{ width, height }} />
@@ -185,19 +186,33 @@ export const TotalSupplyCard = ({
         <AreaChart
           width={width}
           height={height}
-          serie={data ?? []}
+          data={data ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           xKey="timestamp"
           yKeys={series}
           curveType="base"
-          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
+          tooltipLabels={[
+            {
+              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+            },
+            ...series.map((s) => ({
+              label: s.label,
+              value: (d: ChartResult) =>
+                intl.formatNumber(Number(d?.[s.key] ?? 0), {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                }),
+              color: s.lineColor,
+              currency: curr,
+            })),
+          ]}
         />
       )}
     </Card>

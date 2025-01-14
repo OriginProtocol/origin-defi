@@ -7,28 +7,26 @@ import {
   Divider,
   emphasize,
   Stack,
+  useTheme,
 } from '@mui/material';
-import {
-  ChartTooltip,
-  oTokenConfig,
-  useTokensChartStats,
-} from '@origin/analytics/shared';
+import { oTokenConfig, useTokensChartStats } from '@origin/analytics/shared';
 import {
   CurrencyLabel,
   LineChart,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { format, isDate } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useHomeView } from '../hooks';
 
 import type { CardProps } from '@mui/material';
-import type { ChartResult } from '@origin/analytics/shared';
 import type { Serie } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
 
@@ -36,14 +34,21 @@ export type TokenSupplyCardProps = {
   height: number;
 } & CardProps;
 
-type ChartData = {
+type Item = {
   timestamp: number;
-  tvlETH: number;
-  tvlUSD: number;
+  oethETH?: number;
+  oethUSD?: number;
+  ousdETH?: number;
+  ousdUSD?: number;
+  superOethETH?: number;
+  superOethUSD?: number;
+  totalETH?: number;
+  totalUSD?: number;
 };
 
 export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
   const intl = useIntl();
+  const theme = useTheme();
   const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
@@ -53,37 +58,74 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
     !!from && isDate(from) ? from.toISOString() : undefined,
     !!to && isDate(to) ? to.toISOString() : undefined,
   );
+  const serie = useMemo(() => {
+    const serie: Item[] = [];
+    for (let i = 0; i < (data?.totals?.length ?? 0); i++) {
+      const oeth = data?.['1:OETH'][i];
+      const ousd = data?.['1:OUSD'][i];
+      const superOeth = data?.['8453:superOETHb'][i];
+      const total = data?.totals[i];
 
-  const series = useMemo(() => {
-    return Object.entries(data ?? {}).reduce<Serie<ChartData>[]>(
-      (acc, [key, value]) => {
-        if (!(value[0] as ChartResult)?.token) {
-          return acc;
-        }
+      serie.push({
+        timestamp: oeth?.timestamp ?? 0,
+        oethETH: oeth?.tvlETH,
+        oethUSD: oeth?.tvlUSD,
+        ousdETH: ousd?.tvlETH,
+        ousdUSD: ousd?.tvlUSD,
+        superOethETH: superOeth?.tvlETH,
+        superOethUSD: superOeth?.tvlUSD,
+        totalETH: total?.tvlETH,
+        totalUSD: total?.tvlUSD,
+      });
+    }
+    return serie;
+  }, [data]);
 
-        return [
-          ...acc,
-          {
-            label: (value[0] as ChartResult).token.name,
-            data: value as ChartData[],
-            xKey: 'timestamp',
-            yKey: currency === 'ETH' ? 'tvlETH' : 'tvlUSD',
-            color: [
-              oTokenConfig[key].lineChartColor ?? '#fff',
-              emphasize(oTokenConfig[key].lineChartColor ?? '#fff', 0.5),
-            ],
-            strokeWidth: 2,
-          },
-        ];
-      },
-      [],
-    );
-  }, [data, currency]);
-
+  const series: Serie<Item>[] = [
+    {
+      label: tokens.mainnet.OETH.name,
+      xKey: 'timestamp',
+      yKey: currency === 'USD' ? 'oethUSD' : 'oethETH',
+      color: [
+        oTokenConfig[tokens.mainnet.OETH.id].lineChartColor ?? '#fff',
+        emphasize(
+          oTokenConfig[tokens.mainnet.OETH.id].lineChartColor ?? '#fff',
+          0.5,
+        ),
+      ],
+      strokeWidth: 2,
+    },
+    {
+      label: tokens.mainnet.OUSD.name,
+      xKey: 'timestamp',
+      yKey: currency === 'USD' ? 'ousdUSD' : 'ousdETH',
+      color: [
+        oTokenConfig[tokens.mainnet.OUSD.id].lineChartColor ?? '#fff',
+        emphasize(
+          oTokenConfig[tokens.mainnet.OUSD.id].lineChartColor ?? '#fff',
+          0.5,
+        ),
+      ],
+      strokeWidth: 2,
+    },
+    {
+      label: tokens.base.superOETHb.name,
+      xKey: 'timestamp',
+      yKey: currency === 'USD' ? 'superOethUSD' : 'superOethETH',
+      color: [
+        oTokenConfig[tokens.base.superOETHb.id].lineChartColor ?? '#fff',
+        emphasize(
+          oTokenConfig[tokens.base.superOETHb.id].lineChartColor ?? '#fff',
+          0.5,
+        ),
+      ],
+      strokeWidth: 2,
+    },
+  ];
   const width = measures?.width ?? 0;
-  const activeItem =
-    hoverIdx === null ? last(data?.totals ?? []) : data?.totals?.[hoverIdx];
-  const totalTvl = currency === 'ETH' ? activeItem?.tvlETH : activeItem?.tvlUSD;
+  const activeItem = hoverIdx === null ? last(serie ?? []) : serie?.[hoverIdx];
+  const totalTvl =
+    currency === 'ETH' ? activeItem?.totalETH : activeItem?.totalUSD;
 
   return (
     <Card {...rest} ref={ref}>
@@ -124,14 +166,14 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
         <Spinner sx={{ width, height }} />
       ) : (
         <LineChart
-          series={series}
+          data={serie ?? []}
+          series={series as Serie<Item>[]}
           width={width}
           height={height}
           margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) =>
             `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
               Number(value),
@@ -140,6 +182,30 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
               },
             )}`
           }
+          tooltipLabels={[
+            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+            ...series.map((s) => ({
+              label: s.label,
+              value: (d: Item) =>
+                intl.formatNumber(d[s.yKey as keyof Item] ?? 0, {
+                  notation: 'compact',
+                }),
+              color: s.color,
+              currency,
+            })),
+            {
+              label: 'Total',
+              value: (d: Item) =>
+                intl.formatNumber(
+                  currency === 'USD' ? (d.totalUSD ?? 0) : (d.totalETH ?? 0),
+                  {
+                    notation: 'compact',
+                  },
+                ),
+              color: theme.palette.chart3,
+              currency,
+            },
+          ]}
         />
       )}
     </Card>

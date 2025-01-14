@@ -16,15 +16,15 @@ import {
 } from '@visx/tooltip';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 
+import { ChartTooltip } from './ChartTooltip';
 import { chartMargins, curveTypes } from './constants';
 import { getBarChartBottomTicks } from './utils';
 
-import type { BoxProps, StackProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import type { TickFormatter, TickLabelProps } from '@visx/axis';
 import type { NumberLike } from '@visx/scale';
-import type { ComponentType } from 'react';
 
-import type { ChartData, Serie } from './types';
+import type { ChartData, ChartTooltipLabel, Serie } from './types';
 
 export type YKeyStackedBar<Datum = ChartData> = {
   key: keyof Datum;
@@ -36,7 +36,7 @@ export type YKeyStackedBar<Datum = ChartData> = {
 export type StackedBarChartProps<Datum = ChartData> = {
   width: number;
   height: number;
-  barData: Datum[];
+  data: Datum[];
   xKey: keyof Datum;
   yKeys: YKeyStackedBar<Datum>[];
   onHover?: (idx: number | null) => void;
@@ -46,16 +46,16 @@ export type StackedBarChartProps<Datum = ChartData> = {
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
   lineData?: Serie<Datum>;
-  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
   barPadding?: number;
   showGrid?: boolean;
+  tooltipLabels?: ChartTooltipLabel<Datum>[];
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const StackedBarChart = <Datum,>({
   height,
   width,
-  barData,
+  data,
   xKey,
   yKeys,
   onHover,
@@ -65,10 +65,10 @@ export const StackedBarChart = <Datum,>({
   tickYLabelProps,
   yScaleDomain,
   lineData,
-  Tooltip,
   margins = chartMargins,
   barPadding = 0.25,
   showGrid = false,
+  tooltipLabels,
   ...rest
 }: StackedBarChartProps<Datum>) => {
   const theme = useTheme();
@@ -94,9 +94,9 @@ export const StackedBarChart = <Datum,>({
       scaleBand({
         range: [margins.left, width - margins.right],
         padding: barPadding,
-        domain: barData.map((d) => d[xKey] as string),
+        domain: data.map((d) => d[xKey] as string),
       }),
-    [margins.left, width, margins.right, barData, xKey, barPadding],
+    [margins.left, width, margins.right, data, xKey, barPadding],
   );
   const yScale = useMemo(
     () =>
@@ -105,7 +105,7 @@ export const StackedBarChart = <Datum,>({
         domain: yScaleDomain ?? [
           0,
           Math.max(
-            ...barData.reduce((acc, curr) => {
+            ...data.reduce((acc, curr) => {
               return [
                 ...acc,
                 yKeys.reduce((a, c) => a + Number(curr[c.key]), 0),
@@ -114,7 +114,7 @@ export const StackedBarChart = <Datum,>({
           ),
         ],
       }),
-    [height, margins.bottom, margins.top, yScaleDomain, barData, yKeys],
+    [height, margins.bottom, margins.top, yScaleDomain, data, yKeys],
   );
   const colorScale = useMemo(
     () =>
@@ -152,7 +152,7 @@ export const StackedBarChart = <Datum,>({
 
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
-  const activeItem = activeIdx === null ? null : barData[activeIdx];
+  const activeItem = activeIdx === null ? null : data[activeIdx];
   const activeSeries =
     activeIdx === null
       ? null
@@ -236,7 +236,7 @@ export const StackedBarChart = <Datum,>({
           />
         )}
         <BarStack<Datum>
-          data={barData}
+          data={data}
           keys={yKeys.map((y) => y.key as string)}
           x={(d) => d[xKey] as string}
           xScale={xScale}
@@ -276,7 +276,7 @@ export const StackedBarChart = <Datum,>({
         </BarStack>
         {lineData && (
           <LinePath
-            data={lineData.data}
+            data={data}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             curve={curveLine as any}
             x={(d) =>
@@ -291,7 +291,7 @@ export const StackedBarChart = <Datum,>({
             strokeWidth={lineData.strokeWidth}
           />
         )}
-        {barData.map((d, idx) => {
+        {data.map((d, idx) => {
           const barX = xScale(d[xKey] as string) as number;
           const barWidth = xScale.bandwidth();
 
@@ -315,7 +315,7 @@ export const StackedBarChart = <Datum,>({
           );
         })}
       </svg>
-      {Tooltip && tooltipOpen && activeIdx !== null ? (
+      {tooltipOpen && activeIdx !== null && tooltipLabels?.length ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
@@ -326,7 +326,10 @@ export const StackedBarChart = <Datum,>({
             boxShadow: 'none',
           }}
         >
-          <Tooltip series={activeSeries} />
+          <ChartTooltip<Datum>
+            item={activeItem}
+            tooltipLabels={tooltipLabels}
+          />
         </TooltipWithBounds>
       ) : null}
     </Box>

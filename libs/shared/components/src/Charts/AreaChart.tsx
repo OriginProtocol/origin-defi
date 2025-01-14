@@ -15,17 +15,17 @@ import {
 } from '@visx/tooltip';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 
+import { ChartTooltip } from './ChartTooltip';
 import { chartMargins, curveTypes } from './constants';
 import { getStackedScaleDomains } from './utils';
 
-import type { BoxProps, StackProps } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import type { TickLabelProps } from '@visx/axis';
 import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
 import type { StackKey } from '@visx/shape/lib/types';
-import type { ComponentType } from 'react';
 
-import type { ChartColor, ChartData, Serie } from './types';
+import type { ChartColor, ChartData, ChartTooltipLabel, Serie } from './types';
 
 export type YKey<Datum = ChartData> = {
   key: keyof Datum;
@@ -37,7 +37,7 @@ export type YKey<Datum = ChartData> = {
 export type AreaChartProps<Datum = ChartData> = {
   width: number;
   height: number;
-  serie: Datum[];
+  data: Datum[];
   series?: Serie<Datum>[];
   xKey: keyof Datum;
   yKeys: YKey<Datum>[];
@@ -47,16 +47,16 @@ export type AreaChartProps<Datum = ChartData> = {
   tickXLabelProps?: TickLabelProps<NumberLike>;
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
-  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
   curveType?: keyof typeof curveTypes;
   showGrid?: boolean;
+  tooltipLabels?: ChartTooltipLabel<Datum>[];
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const AreaChart = <Datum,>({
   width,
   height,
-  serie,
+  data,
   series,
   xKey,
   yKeys,
@@ -66,10 +66,10 @@ export const AreaChart = <Datum,>({
   tickXLabelProps,
   tickYLabelProps,
   yScaleDomain,
-  Tooltip,
   margins = chartMargins,
   curveType = 'natural',
   showGrid = true,
+  tooltipLabels,
   ...rest
 }: AreaChartProps<Datum>) => {
   const theme = useTheme();
@@ -91,7 +91,7 @@ export const AreaChart = <Datum,>({
   });
 
   const { minX, maxX, minY, maxY } = getStackedScaleDomains(
-    serie,
+    data,
     yKeys.map((yKey) => yKey.key),
     xKey,
   );
@@ -121,7 +121,7 @@ export const AreaChart = <Datum,>({
       const { x } = localPoint(event) || { x: 0 };
       const x0 = xScale.invert(x).getTime();
 
-      const closestIndex = serie.reduce((prevIndex, curr, currIndex, array) => {
+      const closestIndex = data.reduce((prevIndex, curr, currIndex, array) => {
         const prevDate = array[prevIndex]?.[xKey] as number;
         const currDate = curr?.[xKey] as number;
         return Math.abs(currDate - x0) < Math.abs(prevDate - x0)
@@ -133,21 +133,12 @@ export const AreaChart = <Datum,>({
       onHover?.(closestIndex);
       showTooltip({ tooltipLeft: x, tooltipTop: 0 });
     },
-    [onHover, serie, showTooltip, xKey, xScale],
+    [onHover, data, showTooltip, xKey, xScale],
   );
 
   if (!width || !height) return null;
 
-  const activeSeries =
-    activeIdx === null
-      ? null
-      : yKeys.map((yKey) => ({
-          data: [serie[activeIdx]],
-          label: yKey.label,
-          xKey,
-          yKey: yKey.key,
-          color: yKey?.lineColor ?? yKey?.fillColor,
-        }));
+  const activeItem = activeIdx === null ? null : data[activeIdx];
   const bottomTicks = xScale.ticks(Math.floor(width / 100));
   const rightTicks = yScale.ticks(Math.floor(height / 40));
   const tickXLabel = tickXLabelProps ?? {
@@ -266,7 +257,7 @@ export const AreaChart = <Datum,>({
           />
         )}
         <AreaStack
-          data={serie}
+          data={data}
           keys={yKeys.map((yKey) => yKey.key) as StackKey[]}
           curve={curveTypes[curveType]}
           x={(d) => xScale(d.data?.[xKey] as number)}
@@ -309,7 +300,7 @@ export const AreaChart = <Datum,>({
         {series?.map((s, i) => (
           <LinePath
             key={`serie-${i}`}
-            data={s.data}
+            data={data}
             curve={curveTypes[s.curveType ?? 'natural']}
             x={(d) => xScale(d?.[s.xKey] as number)}
             y={(d) => yScale(d?.[s.yKey] as number)}
@@ -322,10 +313,10 @@ export const AreaChart = <Datum,>({
             strokeLinecap="round"
           />
         ))}
-        {activeIdx !== null ? (
+        {activeItem ? (
           <line
-            x1={xScale(activeSeries?.[0].data[0][xKey] as number)}
-            x2={xScale(activeSeries?.[0].data[0][xKey] as number)}
+            x1={xScale(activeItem[xKey] as number)}
+            x2={xScale(activeItem[xKey] as number)}
             y1={margins.top}
             y2={height - margins.bottom}
             stroke={theme.palette.text.secondary}
@@ -350,7 +341,7 @@ export const AreaChart = <Datum,>({
           />
         )}
       </svg>
-      {tooltipOpen && activeIdx !== null && Tooltip ? (
+      {tooltipOpen && activeIdx !== null && tooltipLabels?.length ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
@@ -361,7 +352,10 @@ export const AreaChart = <Datum,>({
             boxShadow: 'none',
           }}
         >
-          <Tooltip series={activeSeries} />
+          <ChartTooltip<Datum>
+            item={activeItem}
+            tooltipLabels={tooltipLabels}
+          />
         </TooltipWithBounds>
       ) : null}
     </Box>
