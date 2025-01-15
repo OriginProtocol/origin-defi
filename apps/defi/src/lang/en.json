@@ -969,12 +969,6 @@
       "value": "Discussion forum"
     }
   ],
-  "E1WhIq": [
-    {
-      "type": 0,
-      "value": "Add to metamask"
-    }
-  ],
   "E1arCe": [
     {
       "type": 0,
@@ -1581,6 +1575,12 @@
       "value": "No available route"
     }
   ],
+  "OMDGLh": [
+    {
+      "type": 0,
+      "value": "Origin Sonic now available on Sonic!"
+    }
+  ],
   "ORGv1Q": [
     {
       "type": 0,
@@ -1839,6 +1839,12 @@
       "value": "Defeated"
     }
   ],
+  "S2dOJ9": [
+    {
+      "type": 0,
+      "value": "Origin Sonic"
+    }
+  ],
   "S45aoc": [
     {
       "type": 0,
@@ -1925,6 +1931,12 @@
     {
       "type": 0,
       "value": "Claiming Withdrawal"
+    }
+  ],
+  "T62aqu": [
+    {
+      "type": 0,
+      "value": "1:1 WETH redemptions"
     }
   ],
   "TJOfi8": [
@@ -3159,6 +3171,12 @@
       "value": "You will get:"
     }
   ],
+  "o0jcye": [
+    {
+      "type": 0,
+      "value": "OS"
+    }
+  ],
   "oBlHij": [
     {
       "type": 0,
@@ -3169,6 +3187,12 @@
     {
       "type": 0,
       "value": "Unlocking"
+    }
+  ],
+  "oFLXgf": [
+    {
+      "type": 0,
+      "value": "Add to wallet"
     }
   ],
   "ok8VIA": [
@@ -3199,6 +3223,12 @@
     {
       "type": 0,
       "value": "1 month"
+    }
+  ],
+  "p3aWvq": [
+    {
+      "type": 0,
+      "value": "Get OS"
     }
   ],
   "p556q3": [
@@ -3481,6 +3511,12 @@
     {
       "type": 0,
       "value": "Redeem amount"
+    }
+  ],
+  "u6XfeR": [
+    {
+      "type": 0,
+      "value": "Mint OS to maximize your Sonic position. OS combines Sonic liquid staking yield with X rewards."
     }
   ],
   "uEFsHG": [

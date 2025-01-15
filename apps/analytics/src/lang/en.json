@@ -5,12 +5,6 @@
       "value": "1 day"
     }
   ],
-  "+FEAvB": [
-    {
-      "type": 0,
-      "value": "Protocol owned liquidity"
-    }
-  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -351,12 +345,6 @@
     {
       "type": 0,
       "value": "30-Day MA"
-    }
-  ],
-  "FnRTEV": [
-    {
-      "type": 0,
-      "value": "Average"
     }
   ],
   "FtUhr6": [
@@ -717,6 +705,12 @@
       "value": "Non-rebasing"
     }
   ],
+  "YZBSil": [
+    {
+      "type": 0,
+      "value": "Wrapped"
+    }
+  ],
   "YqE/OA": [
     {
       "type": 1,
@@ -755,6 +749,12 @@
     {
       "type": 0,
       "value": "Vault value"
+    }
+  ],
+  "cK+Fyl": [
+    {
+      "type": 0,
+      "value": "POL"
     }
   ],
   "cbwmZu": [
@@ -815,6 +815,12 @@
     {
       "type": 0,
       "value": "is not supported"
+    }
+  ],
+  "dtJo4Y": [
+    {
+      "type": 0,
+      "value": "Exchange rate"
     }
   ],
   "eHguE+": [
@@ -917,12 +923,6 @@
     {
       "type": 0,
       "value": "Token supply"
-    }
-  ],
-  "hKDOtL": [
-    {
-      "type": 0,
-      "value": "Wrapped supply"
     }
   ],
   "hWBcQv": [
@@ -1189,16 +1189,16 @@
       "value": "14-Day"
     }
   ],
+  "vK3WaE": [
+    {
+      "type": 0,
+      "value": "Moving average"
+    }
+  ],
   "w5VeGT": [
     {
       "type": 0,
       "value": "Error while redeeming"
-    }
-  ],
-  "wFgaex": [
-    {
-      "type": 0,
-      "value": "Moving avergage"
     }
   ],
   "wqlXwW": [

@@ -383,7 +383,7 @@ function BalanceRow({
               {includes(tokensToAddToWallet, token.id) && isConnected && (
                 <Tooltip
                   title={intl.formatMessage({
-                    defaultMessage: 'Add to metamask',
+                    defaultMessage: 'Add to wallet',
                   })}
                 >
                   <Button
