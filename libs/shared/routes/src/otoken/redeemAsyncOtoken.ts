@@ -1,6 +1,6 @@
-import { contracts, whales } from '@origin/shared/contracts';
+import { tokens, vaults, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { hasKey, isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { getAccount, getPublicClient, writeContract } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
 
@@ -17,10 +17,19 @@ import type {
 } from '@origin/shared/providers';
 import type { EstimateAmount } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async (
-  config,
-  { tokenIn, amountIn },
-) => {
+const REQUEST_GAS_PRICES = {
+  [tokens.mainnet.OETH.id]: 161_000n,
+  [tokens.base.superOETHb.id]: 1360n,
+  [tokens.sonic.OS.id]: 1360n,
+} as const;
+
+const CLAIM_GAS_PRICES = {
+  [tokens.mainnet.OETH.id]: 113_010n,
+  [tokens.base.superOETHb.id]: 980n,
+  [tokens.sonic.OS.id]: 980n,
+} as const;
+
+const isRouteAvailable: IsRouteAvailable = async () => {
   return true;
 };
 
@@ -28,39 +37,52 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   return amountIn;
 };
 
-const estimateGas: EstimateGas = async ({ config }, { tokenIn, amountIn }) => {
+const estimateGas: EstimateGas = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
+  const vault = hasKey(vaults, tokenIn.id) ? vaults[tokenIn.id] : null;
+
+  if (!vault) {
+    return 0n;
+  }
+
   const publicClient = getPublicClient(config, {
-    chainId: contracts.mainnet.OETHVault.chainId,
+    chainId: vault.chainId,
   });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return 0n;
   }
 
+  const whale = hasKey(whales, tokenIn.id) ? whales[tokenIn.id] : ZERO_ADDRESS;
   let requestGasEstimate = 0n;
   try {
     requestGasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OETHVault.address,
-      abi: contracts.mainnet.OETHVault.abi,
+      address: vault.address,
+      abi: vault.abi,
       functionName: 'requestWithdrawal',
       args: [amountIn],
-      account: whales.mainnet.OETH,
+      account: whale,
     });
   } catch {
-    requestGasEstimate = 161_000n;
+    requestGasEstimate = hasKey(REQUEST_GAS_PRICES, tokenIn.id)
+      ? REQUEST_GAS_PRICES[tokenIn.id]
+      : 0n;
   }
 
-  return requestGasEstimate + 113_010n;
+  const claimGasEstimate = hasKey(CLAIM_GAS_PRICES, tokenIn.id)
+    ? CLAIM_GAS_PRICES[tokenIn.id]
+    : 0n;
+
+  return requestGasEstimate + claimGasEstimate;
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async () => {
   return maxUint256;
 };
 
-const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
-  { tokenIn, amountIn },
-) => {
+const estimateApprovalGas: EstimateApprovalGas = async () => {
   return 0n;
 };
 
@@ -104,30 +126,31 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async () => {
   return null;
 };
 
-const swap: Swap = async ({ config }, { amountIn }) => {
+const swap: Swap = async ({ config }, { amountIn, tokenIn }) => {
   const { address } = getAccount(config);
+  const vault = hasKey(vaults, tokenIn.id) ? vaults[tokenIn.id] : null;
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || isNilOrEmpty(address) || !vault) {
     return null;
   }
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: contracts.mainnet.OETHVault.address,
-    abi: contracts.mainnet.OETHVault.abi,
+    address: vault.address,
+    abi: vault.abi,
     functionName: 'requestWithdrawal',
     args: [amountIn],
-    chainId: contracts.mainnet.OETHVault.chainId,
+    chainId: vault.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export const redeemVaultAsyncOeth = {
+export const redeemAsyncOtoken = {
   ...defaultRoute,
   isRouteAvailable,
   estimateAmount,

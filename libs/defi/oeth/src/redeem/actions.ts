@@ -1,4 +1,4 @@
-import { redeemArmOeth, redeemVaultAsyncOeth } from '@origin/shared/routes';
+import { redeemArmOeth, redeemAsyncOtoken } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
 
 import type { SwapApi } from '@origin/shared/providers';
@@ -12,7 +12,7 @@ export const redeemActions: Record<OethRedeemAction, SwapApi> = {
     buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
   },
   'redeem-vault-async-oeth': {
-    ...redeemVaultAsyncOeth,
+    ...redeemAsyncOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Redeem via OETH Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Request withdrawal' }),
   },

@@ -1,12 +1,11 @@
 import {
-  mintVaultOusd,
+  mintOtoken,
   swapCurveOusd,
   swapFlipperOusd,
   swapSushiswapOusd,
   swapUniswapV2Ousd,
   swapUniswapV3Ousd,
-  unwrapOusdWousd,
-  wrapOusdWousd,
+  wrapOtoken,
 } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
 
@@ -20,7 +19,7 @@ export const ousdSwapActions: Record<OusdSwapAction, SwapApi> = {
     routeLabel: defineMessage({ defaultMessage: 'Swap via Flipper' }),
   },
   'mint-vault-ousd': {
-    ...mintVaultOusd,
+    ...mintOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
@@ -41,12 +40,12 @@ export const ousdSwapActions: Record<OusdSwapAction, SwapApi> = {
     routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V3' }),
   },
   'wrap-ousd-wousd': {
-    ...wrapOusdWousd,
+    ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
   },
   'unwrap-ousd-wousd': {
-    ...unwrapOusdWousd,
+    ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
   },

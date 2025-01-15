@@ -1,6 +1,11 @@
-import { contracts } from '@origin/shared/contracts';
+import { vaults } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
+import {
+  hasKey,
+  isNilOrEmpty,
+  subPercentage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -11,7 +16,6 @@ import {
 } from '@wagmi/core';
 import { mul } from 'dnum';
 import { erc20Abi, formatUnits } from 'viem';
-import { base, mainnet } from 'viem/chains';
 
 import { GAS_BUFFER } from '../constants';
 import { defaultRoute } from '../defaultRoute';
@@ -27,20 +31,24 @@ import type {
 } from '@origin/shared/providers';
 import type { EstimateAmount } from '@origin/shared/providers';
 
-const vaults = {
-  [mainnet.id.toString()]: contracts.mainnet.OETHVault,
-  [base.id.toString()]: contracts.base.superOETHbVault,
-};
+const isRouteAvailable: IsRouteAvailable = async (
+  { config },
+  { tokenIn, tokenOut },
+) => {
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
 
-const isRouteAvailable: IsRouteAvailable = async ({ config }, { tokenIn }) => {
+  if (!vault) {
+    return false;
+  }
+
   try {
     if (tokenIn?.address) {
       await readContract(config, {
-        address: vaults[tokenIn.chainId].address,
-        abi: vaults[tokenIn.chainId].abi,
+        address: vault.address,
+        abi: vault.abi,
         functionName: 'priceUnitMint',
         args: [tokenIn.address],
-        chainId: vaults[tokenIn.chainId].chainId,
+        chainId: vault.chainId,
       });
 
       return true;
@@ -54,16 +62,18 @@ const estimateAmount: EstimateAmount = async (
   { config },
   { tokenIn, tokenOut, amountIn },
 ) => {
-  if (amountIn === 0n || !tokenIn?.address) {
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
+
+  if (!vault || amountIn === 0n || !tokenIn?.address) {
     return 0n;
   }
 
   const priceUnitMint = await readContract(config, {
-    address: vaults[tokenIn.chainId].address,
-    abi: vaults[tokenIn.chainId].abi,
+    address: vault.address,
+    abi: vault.abi,
     functionName: 'priceUnitMint',
     args: [tokenIn.address],
-    chainId: vaults[tokenIn.chainId].chainId,
+    chainId: vault.chainId,
   });
 
   return mul([amountIn, tokenIn.decimals], [BigInt(priceUnitMint ?? 0), 18], {
@@ -80,7 +90,9 @@ const estimateGas: EstimateGas = async (
     chainId: tokenIn.chainId,
   });
 
-  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
+
+  if (amountIn === 0n || !publicClient || !tokenIn?.address || !vault) {
     return gasEstimate;
   }
 
@@ -93,8 +105,8 @@ const estimateGas: EstimateGas = async (
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: vaults[tokenIn.chainId].address,
-      abi: vaults[tokenIn.chainId].abi,
+      address: vault.address,
+      abi: vault.abi,
       functionName: 'mint',
       args: [tokenIn.address, amountIn, minAmountOut[0]],
       account: address,
@@ -105,21 +117,21 @@ const estimateGas: EstimateGas = async (
 
   const [rebaseThreshold, autoAllocateThreshold] = await queryClient.fetchQuery(
     {
-      queryKey: ['vault-info', tokenOut.address],
+      queryKey: ['vault-info', tokenOut.id],
       queryFn: () =>
         readContracts(config, {
           contracts: [
             {
-              address: vaults[tokenIn.chainId].address,
-              abi: vaults[tokenIn.chainId].abi,
+              address: vault.address,
+              abi: vault.abi,
               functionName: 'rebaseThreshold',
-              chainId: tokenIn.chainId,
+              chainId: vault.chainId,
             },
             {
-              address: vaults[tokenIn.chainId].address,
-              abi: vaults[tokenIn.chainId].abi,
+              address: vault.address,
+              abi: vault.abi,
               functionName: 'autoAllocateThreshold',
-              chainId: tokenIn.chainId,
+              chainId: vault.chainId,
             },
           ],
         }),
@@ -137,10 +149,11 @@ const estimateGas: EstimateGas = async (
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ config }, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn, tokenOut }) => {
   const { address } = getAccount(config);
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
 
-  if (!address || !tokenIn?.address) {
+  if (!address || !tokenIn?.address || !vault) {
     return 0n;
   }
 
@@ -148,8 +161,8 @@ const allowance: Allowance = async ({ config }, { tokenIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address, vaults[tokenIn.chainId].address],
-    chainId: tokenIn.chainId,
+    args: [address, vault.address],
+    chainId: vault.chainId,
   });
 
   return allowance;
@@ -157,23 +170,30 @@ const allowance: Allowance = async ({ config }, { tokenIn }) => {
 
 const estimateApprovalGas: EstimateApprovalGas = async (
   { config },
-  { tokenIn, amountIn },
+  { tokenIn, tokenOut, amountIn },
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
+  if (
+    amountIn === 0n ||
+    !address ||
+    !publicClient ||
+    !tokenIn?.address ||
+    !vault
+  ) {
     return approvalEstimate;
   }
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20Abi,
+      abi: tokenIn.abi,
       functionName: 'approve',
-      args: [vaults[tokenIn.chainId].address, amountIn],
-      account: address,
+      args: [vault.address, amountIn],
+      account: address ?? ZERO_ADDRESS,
     });
   } catch {
     approvalEstimate = 200000n;
@@ -222,16 +242,21 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
-  if (!tokenIn?.address) {
+const approve: Approve = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
+
+  if (!tokenIn?.address || !vault) {
     return null;
   }
 
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
-    abi: erc20Abi,
+    abi: tokenIn.abi,
     functionName: 'approve',
-    args: [vaults[tokenIn.chainId].address, amountIn],
+    args: [vault.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -241,21 +266,13 @@ const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
 
 const swap: Swap = async (
   { config, queryClient },
-  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+  { tokenIn, tokenOut, amountIn, slippage, amountOut, estimatedRoute },
 ) => {
+  const vault = hasKey(vaults, tokenOut.id) ? vaults[tokenOut.id] : null;
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || isNilOrEmpty(address) || !vault) {
     return null;
-  }
-
-  const approved = await allowance(
-    { config, queryClient },
-    { tokenIn, tokenOut },
-  );
-
-  if (approved < amountIn) {
-    throw new Error(`Mint vault is not approved`);
   }
 
   const minAmountOut = subPercentage(
@@ -263,32 +280,34 @@ const swap: Swap = async (
     slippage,
   );
 
-  const estimatedGas = await estimateGas(
-    { config, queryClient },
-    {
-      amountIn,
-      slippage,
-      tokenIn,
-      tokenOut,
-      amountOut,
-    },
-  );
+  const estimatedGas =
+    estimatedRoute?.gas ??
+    (await estimateGas(
+      { config, queryClient },
+      {
+        amountIn,
+        slippage,
+        tokenIn,
+        tokenOut,
+        amountOut,
+      },
+    ));
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: vaults[tokenIn.chainId].address,
-    abi: vaults[tokenIn.chainId].abi,
+    address: vault.address,
+    abi: vault.abi,
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut[0]],
     gas,
-    chainId: vaults[tokenIn.chainId].chainId,
+    chainId: vault.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export const mintVaultOeth = {
+export const mintOtoken = {
   ...defaultRoute,
   isRouteAvailable,
   estimateAmount,

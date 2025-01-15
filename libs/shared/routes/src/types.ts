@@ -20,6 +20,12 @@ export type SuperOethbRoute =
   | 'unwrap-oeth-woeth'
   | 'wrap-oeth-oeth';
 
+export type OSTokenRoute =
+  | 'mint-vault-os'
+  | 'redeem-vault-async-os'
+  | 'unwrap-wos-os'
+  | 'wrap-os-wos';
+
 export type OusdRoute =
   | 'mint-vault-ousd'
   | 'swap-flipper-ousd'

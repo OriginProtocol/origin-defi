@@ -32,12 +32,12 @@ export const ClaimHeader = (props: StackProps) => {
   );
   const availableToClaim =
     claimable?.reduce(
-      (acc, curr) => add([curr.amount, tokens.base.WETH.decimals], acc),
+      (acc, curr) => add([curr.amount, tokens.mainnet.WETH.decimals], acc),
       from(0),
     ) ?? from(0);
   const pendingAmount =
     pending?.reduce(
-      (acc, curr) => add([curr.amount, tokens.base.WETH.decimals], acc),
+      (acc, curr) => add([curr.amount, tokens.mainnet.WETH.decimals], acc),
       from(0),
     ) ?? from(0);
 
@@ -84,7 +84,7 @@ export const ClaimHeader = (props: StackProps) => {
               ? '0.0'
               : format(availableToClaim, getFormatPrecision(availableToClaim))}
           </LoadingLabel>
-          <Typography variant="body2">{tokens.base.WETH.symbol}</Typography>
+          <Typography variant="body2">{tokens.mainnet.WETH.symbol}</Typography>
         </Stack>
       </Stack>
       <Divider />
@@ -157,7 +157,9 @@ export const ClaimHeader = (props: StackProps) => {
             >
               {format(pendingAmount, getFormatPrecision(pendingAmount))}
             </LoadingLabel>
-            <Typography variant="body2">{tokens.base.WETH.symbol}</Typography>
+            <Typography variant="body2">
+              {tokens.mainnet.OETH.symbol}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>

@@ -77,9 +77,9 @@ const estimateGas: EstimateGas = async (
         tokenOut.address,
         amountIn,
         minAmountOut[0],
-        address ?? whales.mainnet.OETH,
+        address ?? whales[tokens.mainnet.OETH.id],
       ],
-      account: address ?? whales.mainnet.OETH,
+      account: address ?? whales[tokens.mainnet.OETH.id],
     });
   } catch {
     requestGasEstimate = 161_000n;

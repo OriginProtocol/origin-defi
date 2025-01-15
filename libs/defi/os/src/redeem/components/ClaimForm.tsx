@@ -44,12 +44,12 @@ export const ClaimForm = (props: StackProps) => {
   const args =
     selectedClaimIds.length === 1
       ? {
-          contract: contracts.base.superOETHbVault,
+          contract: contracts.sonic.osVault,
           functionName: 'claimWithdrawal',
           args: [selectedClaimIds[0]],
         }
       : {
-          contract: contracts.base.superOETHbVault,
+          contract: contracts.sonic.osVault,
           functionName: 'claimWithdrawals',
           args: [selectedClaimIds],
         };
@@ -58,7 +58,7 @@ export const ClaimForm = (props: StackProps) => {
       selectedClaimIds.reduce((acc, curr) => {
         const req = requests?.find((r) => r.requestId === curr);
 
-        return add([req?.amount ?? 0n, tokens.base.WETH.decimals], acc);
+        return add([req?.amount ?? 0n, tokens.sonic.WETH.decimals], acc);
       }, from(0)),
     [requests, selectedClaimIds],
   );
@@ -69,7 +69,7 @@ export const ClaimForm = (props: StackProps) => {
       type: 'claim-withdrawal',
       status: 'idle',
       amountIn: selectedAmount[0],
-      tokenIdIn: tokens.base.WETH.id,
+      tokenIdIn: tokens.sonic.WETH.id,
     },
     enableGas: true,
   });
@@ -169,7 +169,7 @@ export const ClaimForm = (props: StackProps) => {
               : ` ${format(selectedAmount, {
                   digits: getFormatPrecision(selectedAmount),
                   decimalsRounding: 'ROUND_DOWN',
-                })} ${tokens.base.WETH.symbol}`,
+                })} ${tokens.sonic.WETH.symbol}`,
           },
         )}
       />
@@ -184,7 +184,7 @@ type ClaimRowProps = {
 } & StackProps;
 
 const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
-  const amt = [request?.amount ?? 0n, tokens.base.WETH.decimals] as Dnum;
+  const amt = [request?.amount ?? 0n, tokens.sonic.WETH.decimals] as Dnum;
   const disabled = !request.claimable;
 
   return (
@@ -225,7 +225,7 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
               })}
             </Typography>
             <Typography variant="caption1">
-              {tokens.base.WETH.symbol}
+              {tokens.sonic.WETH.symbol}
             </Typography>
           </Stack>
         }

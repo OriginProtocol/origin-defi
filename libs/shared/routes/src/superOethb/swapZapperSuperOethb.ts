@@ -33,10 +33,6 @@ const zappers = {
   [base.id.toString()]: contracts.base.superOETHbZapper,
 };
 
-const whale = {
-  [base.id.toString()]: whales.base,
-};
-
 const isRouteAvailable: IsRouteAvailable = async (config, { tokenIn }) => {
   return hasKey(zappers, tokenIn.chainId);
 };
@@ -89,8 +85,9 @@ const estimateGas: EstimateGas = async (
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
   );
-  const account = hasKey(whale[tokenIn.chainId], tokenIn.symbol)
-    ? whale[tokenIn.chainId][tokenIn.symbol]
+
+  const account = hasKey(whales, tokenIn.id)
+    ? whales[tokenIn.id]
     : (address ?? ZERO_ADDRESS);
 
   // ETH -> superOETHb
@@ -185,8 +182,8 @@ const estimateApprovalGas: EstimateApprovalGas = async (
     return approvalEstimate;
   }
 
-  const account = hasKey(whale[tokenIn.chainId], tokenIn.symbol)
-    ? whale[tokenIn.chainId][tokenIn.symbol]
+  const account = hasKey(whales, tokenIn.id)
+    ? whales[tokenIn.id]
     : (address ?? ZERO_ADDRESS);
 
   try {

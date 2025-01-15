@@ -367,6 +367,15 @@ export const tokens = {
       decimals: 18,
       symbol: 'WETH',
     },
+    wOS: {
+      id: '146:wOS',
+      address: ZERO_ADDRESS,
+      chainId: sonic.id,
+      abi: WOETHABI,
+      name: 'Wrapped Origin Sonic',
+      decimals: 18,
+      symbol: 'wOS',
+    },
     wS: {
       id: '146:wS',
       address: '0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38',

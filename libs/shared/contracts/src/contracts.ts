@@ -1,4 +1,4 @@
-import { arbitrum, base, mainnet } from 'viem/chains';
+import { arbitrum, base, mainnet, sonic } from 'viem/chains';
 
 import { AaveStrategyABI } from './abis/AaveStrategy';
 import { AerodromePoolABI } from './abis/AerodromePool';
@@ -470,6 +470,27 @@ export const contracts = {
       chainId: base.id,
       abi: superOETHbZapperABI,
       name: 'superOETHbZapper',
+    },
+  },
+  sonic: {
+    // OS
+    osVault: {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: sonic.id,
+      abi: OETHVaultABI,
+      name: 'osVault',
+    },
+    osDripper: {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: sonic.id,
+      abi: DripperABI,
+      name: 'osDripper',
+    },
+    osZapper: {
+      address: '0x0000000000000000000000000000000000000000',
+      chainId: sonic.id,
+      abi: superOETHbZapperABI,
+      name: 'osZapper',
     },
   },
 } as const;

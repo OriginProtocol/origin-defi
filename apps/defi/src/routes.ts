@@ -133,6 +133,14 @@ export const routes: RouteObject[] = [
               icon: FaArrowRightArrowLeftRegular,
             },
           },
+          {
+            path: 'redeem',
+            Component: os.RedeemView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Redeem' }),
+              icon: FaArrowDownFromArcRegular,
+            },
+          },
         ],
       },
       {
