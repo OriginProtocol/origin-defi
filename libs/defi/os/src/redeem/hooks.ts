@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useOTokenWithdrawalRequestsQuery } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import { addSeconds, isAfter } from 'date-fns';
@@ -49,7 +49,7 @@ const fetcher: (
 ) => QueryFunction<WithdrawalRequest[]> =
   (config, queryClient) =>
   async ({ queryKey: [, address] }) => {
-    const res = await Promise.allSettled([
+    const res = await Promise.all([
       readContract(config, {
         address: contracts.base.superOETHbVault.address,
         abi: contracts.base.superOETHbVault.abi,
@@ -82,12 +82,12 @@ const fetcher: (
         chainId: contracts.base.superOETHbVault.chainId,
       }),
     ]);
-    const queueData = isFulfilled(res[0]) ? res[0].value : null;
-    const requests = isFulfilled(res[1])
-      ? (res[1].value?.oTokenWithdrawalRequests ?? [])
+    const queueData = res[0];
+    const requests = res[1]?.oTokenWithdrawalRequests?.length
+      ? res[1].oTokenWithdrawalRequests
       : [];
-    const wethBalance = isFulfilled(res[2]) ? res[2].value : 0n;
-    const delay = isFulfilled(res[3]) ? res[3].value : 0;
+    const wethBalance = res[2] ?? 0n;
+    const delay = res[3] ?? 0;
 
     return requests.map((r) => {
       const claimable =
