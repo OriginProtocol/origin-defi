@@ -543,4 +543,24 @@ export const priceOptions = {
     type: 'derived',
     dependsOn: ['10:ETH_USD'],
   },
+  '146:S_USD': {
+    id: '146:S_USD',
+    type: 'derived',
+    dependsOn: ['1:ETH_USD'],
+  },
+  '146:wS_USD': {
+    id: '146:wS_USD',
+    type: 'derived',
+    dependsOn: ['1:ETH_USD'],
+  },
+  '146:OS_USD': {
+    id: '146:OS_USD',
+    type: 'derived',
+    dependsOn: ['1:ETH_USD'],
+  },
+  '146:wOS_USD': {
+    id: '146:wOS_USD',
+    type: 'derived',
+    dependsOn: ['1:ETH_USD'],
+  },
 } as const;

@@ -22,6 +22,7 @@ export type SuperOethbRoute =
 
 export type OSTokenRoute =
   | 'mint-vault-os'
+  | 'mint-zapper-os'
   | 'redeem-vault-async-os'
   | 'unwrap-wos-os'
   | 'wrap-os-wos';

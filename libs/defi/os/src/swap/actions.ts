@@ -1,21 +1,26 @@
-import { mintOtoken, wrapOtoken } from '@origin/shared/routes';
+import { mintVaultOs, osZapper, wrapOtoken } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
 
 import type { SwapApi } from '@origin/shared/providers';
-import type { SuperOethbRoute } from '@origin/shared/routes';
+import type { OSTokenRoute } from '@origin/shared/routes';
 
-export const oethSwapActions: Partial<Record<SuperOethbRoute, SwapApi>> = {
-  'mint-vault-oeth': {
-    ...mintOtoken,
+export const osSwapActions: Partial<Record<OSTokenRoute, SwapApi>> = {
+  'mint-vault-os': {
+    ...mintVaultOs,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
-  'wrap-oeth-oeth': {
+  'mint-zapper-os': {
+    ...osZapper,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
+  },
+  'wrap-os-wos': {
     ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
   },
-  'unwrap-oeth-woeth': {
+  'unwrap-wos-os': {
     ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),

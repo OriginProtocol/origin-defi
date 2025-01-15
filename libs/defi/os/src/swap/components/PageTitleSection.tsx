@@ -13,7 +13,7 @@ import type { StackProps } from '@mui/material';
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(
-    tokens.base.superOETHb,
+    tokens.sonic.OS,
   );
 
   return (
@@ -34,10 +34,10 @@ export const PageTitleSection = (props: StackProps) => {
         <TokenIcon token={tokens.sonic.OS} sx={{ fontSize: 24 }} />
         <LoadingLabel
           isLoading={isInfoLoading}
-          sWidth={90}
+          sWidth={30}
           sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
-          {intl.formatNumber(info?.apy7 /* bestApy?.value */ ?? 0, {
+          {intl.formatNumber(info?.bestApy?.value ?? 0, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
             style: 'percent',
@@ -56,7 +56,7 @@ export const PageTitleSection = (props: StackProps) => {
             {
               defaultMessage: '{trailingDays}-day trailing APY',
             },
-            { trailingDays: 7 /* info?.bestApy?.trailingDays */ },
+            { trailingDays: info?.bestApy?.trailingDays ?? 7 },
           )}
           iconColor="primary.main"
         />

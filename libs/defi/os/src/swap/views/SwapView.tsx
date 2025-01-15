@@ -11,9 +11,9 @@ import { tokens } from '@origin/shared/contracts';
 import { OS } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
-import { oethSwapActions } from '../actions';
+import { osSwapActions } from '../actions';
 import { PageTitleSection } from '../components/PageTitleSection';
-import { superOethbSwapRoutes } from '../constants';
+import { osSwapRoutes } from '../constants';
 
 export const SwapView = () => {
   const intl = useIntl();
@@ -41,8 +41,8 @@ export const SwapView = () => {
             }}
           >
             <Swapper
-              swapActions={oethSwapActions}
-              swapRoutes={superOethbSwapRoutes}
+              swapActions={osSwapActions}
+              swapRoutes={osSwapRoutes}
               buttonsProps={{ variant: 'action' }}
               trackEvent={trackEvent}
             />

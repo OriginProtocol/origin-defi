@@ -475,19 +475,19 @@ export const contracts = {
   sonic: {
     // OS
     osVault: {
-      address: '0x0000000000000000000000000000000000000000',
+      address: '0xa3c0eCA00D2B76b4d1F170b0AB3FdeA16C180186',
       chainId: sonic.id,
       abi: OETHVaultABI,
       name: 'osVault',
     },
     osDripper: {
-      address: '0x0000000000000000000000000000000000000000',
+      address: '0x5b72992e9CDe8C07CE7C8217eB014EC7fD281f03',
       chainId: sonic.id,
       abi: DripperABI,
       name: 'osDripper',
     },
     osZapper: {
-      address: '0x0000000000000000000000000000000000000000',
+      address: '0xe25A2B256ffb3AD73678d5e80DE8d2F6022fAb21',
       chainId: sonic.id,
       abi: superOETHbZapperABI,
       name: 'osZapper',

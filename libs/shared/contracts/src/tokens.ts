@@ -342,7 +342,7 @@ export const tokens = {
   sonic: {
     OS: {
       id: '146:OS',
-      address: ZERO_ADDRESS,
+      address: '0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794',
       chainId: sonic.id,
       abi: OETHABI,
       name: 'Origin Sonic',
@@ -369,7 +369,7 @@ export const tokens = {
     },
     wOS: {
       id: '146:wOS',
-      address: ZERO_ADDRESS,
+      address: '0x9F0dF7799f6FDAd409300080cfF680f5A23df4b1',
       chainId: sonic.id,
       abi: WOETHABI,
       name: 'Wrapped Origin Sonic',
