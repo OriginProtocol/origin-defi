@@ -1,4 +1,4 @@
-import { mintVaultOs, osZapper, wrapOtoken } from '@origin/shared/routes';
+import { mintOtoken, osZapper, wrapOtoken } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
 
 import type { SwapApi } from '@origin/shared/providers';
@@ -6,7 +6,7 @@ import type { OSTokenRoute } from '@origin/shared/routes';
 
 export const osSwapActions: Partial<Record<OSTokenRoute, SwapApi>> = {
   'mint-vault-os': {
-    ...mintVaultOs,
+    ...mintOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },

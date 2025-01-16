@@ -58,6 +58,10 @@ export const chainlinkOraclesOptimism = {
   ETH_USD: '0x13e3Ee699D1909E989722E753853AE30b17e08c5',
 } as const;
 
+export const fixedOracleSonic = {
+  OS_wS: '0xE68e0C66950a7e02335fc9f44daa05D115c4E88B',
+};
+
 const chainLinkUsdMapper = (data: any) => [pathOr(0n, [1], data), 8] as Dnum;
 const chainLinkEthMapper = (data: any) => [pathOr(0n, [1], data), 18] as Dnum;
 const diaOracleUsdMapper = (data: any) => [pathOr(0n, [0], data), 8] as Dnum;
@@ -556,11 +560,61 @@ export const priceOptions = {
   '146:OS_USD': {
     id: '146:OS_USD',
     type: 'derived',
-    dependsOn: ['1:ETH_USD'],
+    dependsOn: ['146:OS_146:wS', '146:wS_USD'],
   },
   '146:wOS_USD': {
     id: '146:wOS_USD',
     type: 'derived',
-    dependsOn: ['1:ETH_USD'],
+    dependsOn: ['146:wOS_146:OS', '1:OS_146:wS', '146:wS_USD'],
+  },
+  '146:OS_146:wOS': {
+    type: 'wagmi',
+    id: '146:OS_146:wOS',
+    config: {
+      address: tokens.sonic.wOS.address,
+      abi: tokens.sonic.wOS.abi,
+      functionName: 'previewMint',
+      args: [parseUnits('1', tokens.sonic.OS.decimals)],
+      chainId: tokens.sonic.wOS.chainId,
+    },
+    mapResult: (os_wos: bigint) => {
+      return [os_wos, tokens.sonic.wOS.decimals];
+    },
+  },
+  '146:wOS_146:OS': {
+    type: 'wagmi',
+    id: '146:wOS_146:OS',
+    config: {
+      address: tokens.sonic.wOS.address,
+      abi: tokens.sonic.wOS.abi,
+      functionName: 'previewRedeem',
+      args: [parseUnits('1', tokens.sonic.wOS.decimals)],
+      chainId: tokens.sonic.wOS.chainId,
+    },
+    mapResult: (wos_os: bigint) => {
+      return [wos_os, tokens.sonic.OS.decimals];
+    },
+  },
+  '146:OS_146:wS': {
+    id: '146:OS_146:wS',
+    type: 'wagmi',
+    config: {
+      address: fixedOracleSonic.OS_wS,
+      abi: [
+        {
+          inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+          name: 'price',
+          outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+          stateMutability: 'view',
+          type: 'function',
+        },
+      ],
+      functionName: 'price',
+      args: [tokens.sonic.OS.address],
+      chainId: tokens.sonic.OS.chainId,
+    },
+    mapResult: (os_ws: bigint) => {
+      return [os_ws, tokens.sonic.OS.decimals];
+    },
   },
 } as const;
