@@ -56,6 +56,8 @@ export type SupportedCurrency =
       | '42161:ETH'
       | '8453:superOETHb'
       | '8453:wsuperOETHb'
+      | '146:OS'
+      | '146:wOS'
     >;
 
 export type SupportedTokenPrice = keyof typeof priceOptions;
