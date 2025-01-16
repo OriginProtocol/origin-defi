@@ -77,7 +77,6 @@ const supportedSymbols = [
   'wOETH',
   'wOS',
   'wOUSD',
-  'wS',
   'wsuperOETH',
   'wsuperOETHb',
   'wsuperOETHo',

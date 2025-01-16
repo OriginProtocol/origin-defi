@@ -560,12 +560,12 @@ export const priceOptions = {
   '146:OS_USD': {
     id: '146:OS_USD',
     type: 'derived',
-    dependsOn: ['146:OS_146:wS', '146:wS_USD'],
+    dependsOn: ['1:ETH_USD'],
   },
   '146:wOS_USD': {
     id: '146:wOS_USD',
     type: 'derived',
-    dependsOn: ['146:wOS_146:OS', '1:OS_146:wS', '146:wS_USD'],
+    dependsOn: ['1:ETH_USD'],
   },
   '146:OS_146:wOS': {
     type: 'wagmi',
