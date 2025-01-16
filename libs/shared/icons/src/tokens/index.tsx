@@ -27,6 +27,7 @@ import veOGVSvg from './veOGV.svg?react';
 import veOGVOutlinedSvg from './veOGV_outlined.svg?react';
 import WETHSvg from './WETH.svg?react';
 import wOETHSvg from './wOETH.svg?react';
+import wOSSvg from './wOS.svg?react';
 import wOUSDSvg from './wOUSD.svg?react';
 import wsuperOETHSvg from './wsuperOETH.svg?react';
 import wsuperOETHbSvg from './wsuperOETHb.svg?react';
@@ -117,6 +118,9 @@ export const WETH = (props: SvgIconProps) => (
 );
 export const wOETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wOETHSvg} viewBox="0 0 40 40" />
+);
+export const wOS = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={wOSSvg} inheritViewBox />
 );
 export const wOUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wOUSDSvg} viewBox="0 0 300 300" />
