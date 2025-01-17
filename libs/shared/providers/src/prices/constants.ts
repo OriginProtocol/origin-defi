@@ -30,6 +30,7 @@ export const coingeckoTokenIds = {
   frxETH: 'frax-ether',
   sfrxETH: 'staked-frax-ether',
   FRAX: 'frax',
+  S: 'sonic',
 } as const;
 
 export const chainlinkOraclesMainnet = {
@@ -549,23 +550,23 @@ export const priceOptions = {
   },
   '146:S_USD': {
     id: '146:S_USD',
-    type: 'derived',
-    dependsOn: ['1:ETH_USD'],
+    type: 'coingecko',
+    config: coingeckoTokenIds.S,
   },
   '146:wS_USD': {
     id: '146:wS_USD',
     type: 'derived',
-    dependsOn: ['1:ETH_USD'],
+    dependsOn: ['146:S_USD'],
   },
   '146:OS_USD': {
     id: '146:OS_USD',
     type: 'derived',
-    dependsOn: ['1:ETH_USD'],
+    dependsOn: ['146:S_USD'],
   },
   '146:wOS_USD': {
     id: '146:wOS_USD',
     type: 'derived',
-    dependsOn: ['1:ETH_USD'],
+    dependsOn: ['146:S_USD'],
   },
   '146:OS_146:wOS': {
     type: 'wagmi',
