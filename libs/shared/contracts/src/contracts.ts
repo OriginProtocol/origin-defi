@@ -42,6 +42,7 @@ import { OGNFixedRateRewardSourceABI } from './abis/OGNFixedRateRewardSource';
 import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
 import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
+import { OSVaultABI } from './abis/OSVault';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { OUSDStrategyFluxABI } from './abis/OUSDStrategyFlux';
 import { OUSDStrategyMakerABI } from './abis/OUSDStrategyMaker';
@@ -477,7 +478,7 @@ export const contracts = {
     osVault: {
       address: '0xa3c0eCA00D2B76b4d1F170b0AB3FdeA16C180186',
       chainId: sonic.id,
-      abi: OETHVaultABI,
+      abi: OSVaultABI,
       name: 'osVault',
     },
     osDripper: {

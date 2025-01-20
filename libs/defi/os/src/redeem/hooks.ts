@@ -51,35 +51,35 @@ const fetcher: (
   async ({ queryKey: [, address] }) => {
     const res = await Promise.all([
       readContract(config, {
-        address: contracts.base.superOETHbVault.address,
-        abi: contracts.base.superOETHbVault.abi,
+        address: contracts.sonic.osVault.address,
+        abi: contracts.sonic.osVault.abi,
         functionName: 'withdrawalQueueMetadata',
-        chainId: contracts.base.superOETHbVault.chainId,
+        chainId: contracts.sonic.osVault.chainId,
       }),
       queryClient.fetchQuery({
         queryKey: useOTokenWithdrawalRequestsQuery.getKey({
-          token: tokens.base.superOETHb.address.toLowerCase(),
-          chainId: tokens.base.superOETHb.chainId,
+          token: tokens.sonic.OS.address.toLowerCase(),
+          chainId: tokens.sonic.OS.chainId,
           withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
         queryFn: useOTokenWithdrawalRequestsQuery.fetcher({
-          token: tokens.base.superOETHb.address.toLowerCase(),
-          chainId: tokens.base.superOETHb.chainId,
+          token: tokens.sonic.OS.address.toLowerCase(),
+          chainId: tokens.sonic.OS.chainId,
           withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
       }),
       readContract(config, {
-        address: tokens.base.WETH.address,
-        abi: tokens.base.WETH.abi,
+        address: tokens.sonic.wS.address,
+        abi: tokens.sonic.wS.abi,
         functionName: 'balanceOf',
-        chainId: tokens.base.WETH.chainId,
-        args: [contracts.base.superOETHbVault.address],
+        chainId: tokens.sonic.wS.chainId,
+        args: [contracts.sonic.osVault.address],
       }),
       readContract(config, {
-        address: contracts.base.superOETHbVault.address,
-        abi: contracts.base.superOETHbVault.abi,
+        address: contracts.sonic.osVault.address,
+        abi: contracts.sonic.osVault.abi,
         functionName: 'withdrawalClaimDelay',
-        chainId: contracts.base.superOETHbVault.chainId,
+        chainId: contracts.sonic.osVault.chainId,
       }),
     ]);
     const queueData = res[0];
