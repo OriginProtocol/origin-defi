@@ -15,7 +15,6 @@ import {
 } from '@origin/defi/shared';
 import { dark, light } from '@origin/defi/theme';
 import {
-  GeoFenceProvider,
   IntlProvider,
   logWelcomeMessage,
   ThemeProvider,
@@ -58,14 +57,6 @@ root.render(
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
       [NotificationsProvider],
       [ActivityProvider],
-      [
-        GeoFenceProvider,
-        {
-          name: 'DeFi',
-          fullName: 'Origin Protocol',
-          href: 'https://www.originprotocol.com',
-        },
-      ],
     ],
     <RouterProvider router={router} />,
   ),

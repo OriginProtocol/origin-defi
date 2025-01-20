@@ -13,7 +13,6 @@ import {
 import { theme } from '@origin/governance/theme';
 import {
   ActivityProvider,
-  GeoFenceProvider,
   IntlProvider,
   logWelcomeMessage,
   NotificationsProvider,
@@ -54,14 +53,6 @@ root.render(
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
       [NotificationsProvider],
       [ActivityProvider],
-      [
-        GeoFenceProvider,
-        {
-          name: 'oeth',
-          fullName: 'OGV Staking and Origin Governance',
-          href: 'https://www.ousd.com/ogv-dashboard',
-        },
-      ],
     ],
     <RouterProvider router={router} />,
   ),
