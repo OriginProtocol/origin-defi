@@ -23,7 +23,7 @@ export const SwapView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Origin Sonic' })}
         subtitle={intl.formatMessage({
-          defaultMessage: 'Beyond liquid staking',
+          defaultMessage: 'Hypersonic liquid staking',
         })}
         icon={OS}
       >
