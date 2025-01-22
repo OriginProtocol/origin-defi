@@ -22,7 +22,7 @@ export const osSwapRoutes: SwapRoute<OSTokenRoute>[] = [
   },
   {
     tokenIn: tokens.sonic.wOS,
-    tokenOut: tokens.sonic.wS,
+    tokenOut: tokens.sonic.OS,
     action: 'unwrap-wos-os',
     noSlippage: true,
   },
