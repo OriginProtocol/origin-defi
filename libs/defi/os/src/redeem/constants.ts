@@ -15,7 +15,7 @@ export const redeemRoutes: SwapRoute<OSTokenRedeemAction, Meta>[] = [
     action: 'redeem-vault-async-os',
     meta: {
       icon: OS,
-      waitTime: defineMessage({ defaultMessage: 'a few days' }),
+      waitTime: defineMessage({ defaultMessage: '1-15 days' }),
       waitTimeColor: 'warning.dark',
     },
   },
