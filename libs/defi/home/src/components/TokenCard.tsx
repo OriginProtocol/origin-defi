@@ -80,6 +80,7 @@ export const TokenCard = ({
           tokens.mainnet.OETH.id,
           tokens.mainnet.OUSD.id,
           tokens.base.superOETHb.id,
+          tokens.sonic.OS.id,
         ],
         token.id,
       ),
@@ -119,6 +120,16 @@ export const TokenCard = ({
       <CurrencyLabel currency="ETH" />
       &nbsp;
       {intl.formatNumber(stats?.circulatingSupplyETH ?? 0, {
+        notation: 'compact',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}
+    </>
+  ) : includes([tokens.sonic.OS.id], token.id) ? (
+    <>
+      <CurrencyLabel currency="S" />
+      &nbsp;
+      {intl.formatNumber(stats?.totalSupply ?? 0, {
         notation: 'compact',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,

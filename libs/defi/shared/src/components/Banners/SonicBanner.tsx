@@ -52,28 +52,38 @@ export const SonicBanner = (props: StackProps) => {
             width: 1,
           }}
         >
-          <Stack direction="row" spacing={{ xs: 1, md: 3 }}>
+          <Stack
+            direction="row"
+            spacing={{ xs: 1, md: 3 }}
+            sx={{ alignItems: 'center' }}
+          >
             <NetworkIcon chainId={sonic.id} outlined size={48} />
             <Stack>
               <Typography
                 noWrap
+                variant="featured1"
                 sx={{
                   fontWeight: 'medium',
                 }}
               >
                 {intl.formatMessage({
-                  defaultMessage: 'Origin Sonic now available on Sonic!',
+                  defaultMessage: 'Origin Sonic',
                 })}
               </Typography>
-              <Stack
+              <Typography>
+                {intl.formatMessage({
+                  defaultMessage: 'now available!',
+                })}
+              </Typography>
+              {/* <Stack
                 direction="row"
                 spacing={1}
                 sx={{
                   alignItems: 'center',
                 }}
               >
-                <ComingSoonAPY />
-                {/* <LoadingLabel
+
+                <LoadingLabel
                   isLoading={isInfoLoading}
                   variant="featured2"
                   sx={[
@@ -95,7 +105,7 @@ export const SonicBanner = (props: StackProps) => {
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
                   })}
-                </LoadingLabel> */}
+                </LoadingLabel>
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -103,7 +113,7 @@ export const SonicBanner = (props: StackProps) => {
                   spacing={0.25}
                 >
                   <Typography>APY</Typography>
-                  {/* <InfoTooltip
+                  <InfoTooltip
                     iconColor="inherit"
                     tooltipLabel={intl.formatMessage(
                       {
@@ -111,12 +121,12 @@ export const SonicBanner = (props: StackProps) => {
                       },
                       { trailingDays: info?.bestApy?.trailingDays },
                     )}
-                  /> */}
+                  />
                 </Stack>
-              </Stack>
+              </Stack> */}
             </Stack>
           </Stack>
-          <Typography>
+          <Typography variant="body2" sx={{ pl: { xs: 0, lg: 2 } }}>
             {intl.formatMessage({
               defaultMessage:
                 'Mint OS to maximize your S position. OS combines Sonic liquid staking yield with S points.',
