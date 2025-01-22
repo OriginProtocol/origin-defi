@@ -1,7 +1,7 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 export type CurrencyLabelProps = {
-  currency?: 'ETH' | 'USD';
+  currency?: 'ETH' | 'USD' | 'S';
 };
 
 export const CurrencyLabel = ({ currency }: CurrencyLabelProps) => {
@@ -9,6 +9,8 @@ export const CurrencyLabel = ({ currency }: CurrencyLabelProps) => {
     ''
   ) : currency === 'ETH' ? (
     <span style={{ fontFamily: 'Arial' }}>Ξ</span>
+  ) : currency === 'S' ? (
+    'S'
   ) : (
     '$'
   );

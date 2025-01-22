@@ -78,7 +78,7 @@ export const wagmiConfig = createConfig({
     [sonic.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_SONIC_RPC)
       ? fallback([
           http(
-            `${import.meta.env.VITE_ALCHEMY_SONIC_RPC}${
+            `${import.meta.env.VITE_ALCHEMY_SONIC_MAINNET_RPC}${
               import.meta.env.VITE_ALCHEMY_ID
             }`,
           ),

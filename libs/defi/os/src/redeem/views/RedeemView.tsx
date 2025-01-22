@@ -23,7 +23,7 @@ export const RedeemView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
-          defaultMessage: '1:1 WETH redemptions',
+          defaultMessage: '1:1 wS redemptions',
         })}
         icon={OS}
       />

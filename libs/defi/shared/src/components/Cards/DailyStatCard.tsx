@@ -23,7 +23,6 @@ import { useOTokenStatsQuery } from '../../queries';
 import { dailyStatMapper } from '../../utils';
 
 import type { AccordionProps } from '@mui/material';
-import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 
@@ -33,7 +32,7 @@ export type DailyStatCardProps = {
   token: Token;
   title?: ReactNode;
   stats?: DailyStat[];
-  currency?: Currency;
+  currency?: 'ETH' | 'USD' | 'S';
   borderRadius?: number;
 } & Omit<AccordionProps, 'children'>;
 

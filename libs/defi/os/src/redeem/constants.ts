@@ -11,7 +11,7 @@ export const WITHDRAW_DELAY = 10; // minutes
 export const redeemRoutes: SwapRoute<OSTokenRedeemAction, Meta>[] = [
   {
     tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.WETH,
+    tokenOut: tokens.sonic.wS,
     action: 'redeem-vault-async-os',
     meta: {
       icon: OS,

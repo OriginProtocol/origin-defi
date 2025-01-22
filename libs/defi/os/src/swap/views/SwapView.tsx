@@ -57,6 +57,7 @@ export const SwapView = () => {
               <DailyStatCard
                 token={tokens.sonic.OS}
                 stats={['supply_distribution', 'price']}
+                currency="S"
               />
             </Stack>
           </Grid2>

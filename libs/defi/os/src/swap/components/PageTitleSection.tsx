@@ -1,10 +1,6 @@
 import { Stack, Typography } from '@mui/material';
-import { ColorChip, useTokenInfo } from '@origin/defi/shared';
-import {
-  InfoTooltip,
-  LoadingLabel,
-  TokenIcon,
-} from '@origin/shared/components';
+import { ColorChip } from '@origin/defi/shared';
+import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -12,9 +8,9 @@ import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { data: info, isLoading: isInfoLoading } = useTokenInfo(
-    tokens.sonic.OS,
-  );
+  // const { data: info, isLoading: isInfoLoading } = useTokenInfo(
+  //   tokens.sonic.OS,
+  // );
 
   return (
     <Stack
@@ -32,7 +28,15 @@ export const PageTitleSection = (props: StackProps) => {
     >
       <ColorChip spacing={0.5} minHeight={40}>
         <TokenIcon token={tokens.sonic.OS} sx={{ fontSize: 24 }} />
-        <LoadingLabel
+        <Typography
+          variant="caption1"
+          sx={{
+            color: 'inherit',
+          }}
+        >
+          {intl.formatMessage({ defaultMessage: 'APY coming soon' })}
+        </Typography>
+        {/* <LoadingLabel
           isLoading={isInfoLoading}
           sWidth={30}
           sx={{ color: 'inherit', fontWeight: 'bold' }}
@@ -59,7 +63,7 @@ export const PageTitleSection = (props: StackProps) => {
             { trailingDays: info?.bestApy?.trailingDays ?? 7 },
           )}
           iconColor="primary.main"
-        />
+        /> */}
       </ColorChip>
     </Stack>
   );

@@ -43,7 +43,6 @@ export const NumberSpinner = ({
           },
           '.spinner-number': {
             position: 'absolute',
-            color: 'inherit',
             backfaceVisibility: 'hidden',
           },
           '.spinner-number:nth-of-type(1)': {

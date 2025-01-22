@@ -717,14 +717,7 @@ function ComingSoonAPY(props: StackProps) {
         <NumberSpinner height={32} duration={1.3} typographyProps={textProps} />
         <Typography {...textProps}>%</Typography>
       </Stack>
-      <Typography
-        variant="caption1"
-        sx={(theme) => ({
-          background: theme.palette.background.gradientBlueDark,
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        })}
-      >
+      <Typography variant="caption1" color="primary.main">
         {intl.formatMessage({ defaultMessage: 'coming soon' })}
       </Typography>
     </Stack>
@@ -734,9 +727,5 @@ function ComingSoonAPY(props: StackProps) {
 const textProps: Partial<TypographyProps> = {
   variant: 'featured2',
   fontWeight: 'bold',
-  sx: {
-    background: (theme) => theme.palette.background.gradientBlueDark,
-    backgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-  },
+  sx: { color: 'primary.main' },
 };

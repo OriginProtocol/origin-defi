@@ -58,7 +58,7 @@ export const ClaimForm = (props: StackProps) => {
       selectedClaimIds.reduce((acc, curr) => {
         const req = requests?.find((r) => r.requestId === curr);
 
-        return add([req?.amount ?? 0n, tokens.sonic.WETH.decimals], acc);
+        return add([req?.amount ?? 0n, tokens.sonic.wS.decimals], acc);
       }, from(0)),
     [requests, selectedClaimIds],
   );
@@ -69,7 +69,7 @@ export const ClaimForm = (props: StackProps) => {
       type: 'claim-withdrawal',
       status: 'idle',
       amountIn: selectedAmount[0],
-      tokenIdIn: tokens.sonic.WETH.id,
+      tokenIdIn: tokens.sonic.wS.id,
     },
     enableGas: true,
   });
@@ -169,7 +169,7 @@ export const ClaimForm = (props: StackProps) => {
               : ` ${format(selectedAmount, {
                   digits: getFormatPrecision(selectedAmount),
                   decimalsRounding: 'ROUND_DOWN',
-                })} ${tokens.sonic.WETH.symbol}`,
+                })} ${tokens.sonic.wS.symbol}`,
           },
         )}
       />
@@ -184,7 +184,7 @@ type ClaimRowProps = {
 } & StackProps;
 
 const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
-  const amt = [request?.amount ?? 0n, tokens.sonic.WETH.decimals] as Dnum;
+  const amt = [request?.amount ?? 0n, tokens.sonic.wS.decimals] as Dnum;
   const disabled = !request.claimable;
 
   return (
@@ -224,9 +224,7 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </Typography>
-            <Typography variant="caption1">
-              {tokens.sonic.WETH.symbol}
-            </Typography>
+            <Typography variant="caption1">{tokens.sonic.wS.symbol}</Typography>
           </Stack>
         }
         onChange={onSelect}

@@ -1,23 +1,16 @@
 import { Button, Stack, Typography } from '@mui/material';
-import {
-  InfoTooltip,
-  LoadingLabel,
-  NetworkIcon,
-} from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { NetworkIcon, NumberSpinner } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { sonic } from 'viem/chains';
 
-import { useTokenInfo } from '../../hooks';
-
-import type { StackProps } from '@mui/material';
+import type { StackProps, TypographyProps } from '@mui/material';
 
 export const SonicBanner = (props: StackProps) => {
   const intl = useIntl();
-  const { data: info, isLoading: isInfoLoading } = useTokenInfo(
-    tokens.sonic.OS,
-  );
+  // const { data: info, isLoading: isInfoLoading } = useTokenInfo(
+  //   tokens.sonic.OS,
+  // );
 
   return (
     <Stack
@@ -76,10 +69,11 @@ export const SonicBanner = (props: StackProps) => {
                 direction="row"
                 spacing={1}
                 sx={{
-                  alignItems: 'baseline',
+                  alignItems: 'center',
                 }}
               >
-                <LoadingLabel
+                <ComingSoonAPY />
+                {/* <LoadingLabel
                   isLoading={isInfoLoading}
                   variant="featured2"
                   sx={[
@@ -101,7 +95,7 @@ export const SonicBanner = (props: StackProps) => {
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
                   })}
-                </LoadingLabel>
+                </LoadingLabel> */}
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -109,7 +103,7 @@ export const SonicBanner = (props: StackProps) => {
                   spacing={0.25}
                 >
                   <Typography>APY</Typography>
-                  <InfoTooltip
+                  {/* <InfoTooltip
                     iconColor="inherit"
                     tooltipLabel={intl.formatMessage(
                       {
@@ -117,7 +111,7 @@ export const SonicBanner = (props: StackProps) => {
                       },
                       { trailingDays: info?.bestApy?.trailingDays },
                     )}
-                  />
+                  /> */}
                 </Stack>
               </Stack>
             </Stack>
@@ -162,4 +156,41 @@ export const SonicBanner = (props: StackProps) => {
       </Stack>
     </Stack>
   );
+};
+
+function ComingSoonAPY(props: StackProps) {
+  const intl = useIntl();
+
+  return (
+    <Stack
+      {...props}
+      sx={[
+        {
+          alignItems: 'flex-start',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+        }}
+      >
+        <NumberSpinner height={32} typographyProps={textProps} />
+        <NumberSpinner height={32} duration={1.5} typographyProps={textProps} />
+        <Typography {...textProps}>.</Typography>
+        <NumberSpinner height={32} duration={1.3} typographyProps={textProps} />
+        <Typography {...textProps}>%</Typography>
+      </Stack>
+      <Typography variant="caption1">
+        {intl.formatMessage({ defaultMessage: 'coming soon' })}
+      </Typography>
+    </Stack>
+  );
+}
+
+const textProps: Partial<TypographyProps> = {
+  variant: 'featured2',
+  fontWeight: 'bold',
 };
