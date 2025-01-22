@@ -119,7 +119,7 @@ export const SonicBanner = (props: StackProps) => {
           <Typography>
             {intl.formatMessage({
               defaultMessage:
-                'Mint OS to maximize your Sonic position. OS combines Sonic liquid staking yield with X rewards.',
+                'Mint OS to maximize your S position. OS combines Sonic liquid staking yield with S points.',
             })}
           </Typography>
         </Stack>
