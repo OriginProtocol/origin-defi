@@ -1,3 +1,4 @@
+import { SvgIcon } from '@mui/material';
 import {
   DAI,
   ETH,
@@ -29,12 +30,14 @@ import {
   wOETH,
   wOS,
   wOUSD,
+  wS,
   wsuperOETH,
   wsuperOETHb,
   wsuperOETHo,
   xOGN,
   xOGNOutlined,
 } from '@origin/shared/icons';
+import { getTokenLogoUrl } from '@origin/shared/utils';
 
 import { BadgeIcon } from './BadgeIcon';
 import { NetworkIcon } from './NetworkIcon';
@@ -77,6 +80,7 @@ const supportedSymbols = [
   'wOETH',
   'wOS',
   'wOUSD',
+  'wS',
   'wsuperOETH',
   'wsuperOETHb',
   'wsuperOETHo',
@@ -113,6 +117,7 @@ const regularMap: Record<
   wOETH: wOETH,
   wOS: wOS,
   wOUSD: wOUSD,
+  wS: wS,
   wsuperOETH: wsuperOETH,
   wsuperOETHb: wsuperOETHb,
   wsuperOETHo: wsuperOETHo,
@@ -145,6 +150,22 @@ export const TokenIcon = ({
 }: TokenIconProps) => {
   if (!token?.symbol || !supportedSymbols.includes(token.symbol)) {
     return <FaCircleDollarRegular {...rest} />;
+  }
+
+  if (!supportedSymbols.includes(token.symbol)) {
+    return (
+      <SvgIcon {...rest} viewBox="0 0 128 128">
+        <image
+          href={getTokenLogoUrl(
+            token.address?.toLowerCase(),
+            token.chainId,
+            'png128',
+          )}
+          width="128"
+          height="128"
+        />
+      </SvgIcon>
+    );
   }
 
   const Icon = outlined

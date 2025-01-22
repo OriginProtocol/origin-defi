@@ -8,11 +8,13 @@ export const osSwapRoutes: SwapRoute<OSTokenRoute>[] = [
     tokenIn: tokens.sonic.S,
     tokenOut: tokens.sonic.OS,
     action: 'mint-zapper-os',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.sonic.wS,
     tokenOut: tokens.sonic.OS,
     action: 'mint-vault-os',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.sonic.OS,

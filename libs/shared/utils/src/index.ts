@@ -11,6 +11,7 @@ export * from './formatters';
 export * from './promises';
 export * from './isNilOrEmpty';
 export * from './maths';
+export * from './tokens';
 export * from './types';
 export * from './typescript';
 export * from './url';
