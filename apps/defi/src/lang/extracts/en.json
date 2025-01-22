@@ -407,9 +407,6 @@
   "DzgeN/": {
     "defaultMessage": "Discussion forum"
   },
-  "E1WhIq": {
-    "defaultMessage": "Add to metamask"
-  },
   "E1arCe": {
     "defaultMessage": "9m"
   },
@@ -668,6 +665,9 @@
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
+  "OMDGLh": {
+    "defaultMessage": "Origin Sonic now available on Sonic!"
+  },
   "ORGv1Q": {
     "defaultMessage": "Created"
   },
@@ -761,6 +761,9 @@
   "S+gf+n": {
     "defaultMessage": "Defeated"
   },
+  "S2dOJ9": {
+    "defaultMessage": "Origin Sonic"
+  },
   "S45aoc": {
     "defaultMessage": "First"
   },
@@ -787,6 +790,9 @@
   },
   "T1d+7b": {
     "defaultMessage": "Claiming Withdrawal"
+  },
+  "T62aqu": {
+    "defaultMessage": "1:1 WETH redemptions"
   },
   "TJOfi8": {
     "defaultMessage": "Yield bearing stablecoin"
@@ -1289,11 +1295,17 @@
   "nn6ywf": {
     "defaultMessage": "You will get:"
   },
+  "o0jcye": {
+    "defaultMessage": "OS"
+  },
   "oBlHij": {
     "defaultMessage": "The easiest way to earn more yield on-chain"
   },
   "oESaGy": {
     "defaultMessage": "Unlocking"
+  },
+  "oFLXgf": {
+    "defaultMessage": "Add to wallet"
   },
   "ok8VIA": {
     "defaultMessage": "Shape the future of Origin's products"
@@ -1309,6 +1321,9 @@
   },
   "p1dNds": {
     "defaultMessage": "1 month"
+  },
+  "p3aWvq": {
+    "defaultMessage": "Get OS"
   },
   "p556q3": {
     "defaultMessage": "Copied"
@@ -1435,6 +1450,9 @@
   },
   "u53ROb": {
     "defaultMessage": "Redeem amount"
+  },
+  "u6XfeR": {
+    "defaultMessage": "Mint OS to maximize your Sonic position. OS combines Sonic liquid staking yield with X rewards."
   },
   "uEFsHG": {
     "defaultMessage": "Discord forum"

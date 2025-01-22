@@ -1,4 +1,4 @@
-import { contracts, whales } from '@origin/shared/contracts';
+import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
@@ -51,7 +51,7 @@ const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
       abi: contracts.mainnet.ARMZapperLido.abi,
       functionName: 'deposit',
       value: amountIn,
-      account: address ?? whales.mainnet.ETH,
+      account: address ?? whales[tokens.mainnet.ETH.id],
     });
   } catch {}
 

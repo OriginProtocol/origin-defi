@@ -110,7 +110,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
               />
               <Tooltip
                 title={intl.formatMessage({
-                  defaultMessage: 'Add to metamask',
+                  defaultMessage: 'Add to wallet',
                 })}
               >
                 <Button

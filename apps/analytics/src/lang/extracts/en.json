@@ -2,9 +2,6 @@
   "+7PjfV": {
     "defaultMessage": "1 day"
   },
-  "+FEAvB": {
-    "defaultMessage": "Protocol owned liquidity"
-  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
@@ -157,9 +154,6 @@
   },
   "FPMGr3": {
     "defaultMessage": "30-Day MA"
-  },
-  "FnRTEV": {
-    "defaultMessage": "Average"
   },
   "FtUhr6": {
     "defaultMessage": "Arbitrum TVL"
@@ -314,6 +308,9 @@
   "Y8Jqtj": {
     "defaultMessage": "Non-rebasing"
   },
+  "YZBSil": {
+    "defaultMessage": "Wrapped"
+  },
   "YqE/OA": {
     "defaultMessage": "{currency}{rate}"
   },
@@ -331,6 +328,9 @@
   },
   "cAoIE2": {
     "defaultMessage": "Vault value"
+  },
+  "cK+Fyl": {
+    "defaultMessage": "POL"
   },
   "cbwmZu": {
     "defaultMessage": "Amount of {symbol} that earns yield"
@@ -352,6 +352,9 @@
   },
   "di23JU": {
     "defaultMessage": "Currently selected chain<br></br>is not supported"
+  },
+  "dtJo4Y": {
+    "defaultMessage": "Exchange rate"
   },
   "eHguE+": {
     "defaultMessage": "The amount of Vault-owned assets currently held in WETH, stETH, or Lido's stETH redemption queue."
@@ -391,9 +394,6 @@
   },
   "hCxM9L": {
     "defaultMessage": "Token supply"
-  },
-  "hKDOtL": {
-    "defaultMessage": "Wrapped supply"
   },
   "hWBcQv": {
     "defaultMessage": "Block / Time"
@@ -518,11 +518,11 @@
   "v1Vi1d": {
     "defaultMessage": "14-Day"
   },
+  "vK3WaE": {
+    "defaultMessage": "Moving average"
+  },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
-  },
-  "wFgaex": {
-    "defaultMessage": "Moving avergage"
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"

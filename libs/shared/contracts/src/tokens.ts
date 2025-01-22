@@ -1,7 +1,7 @@
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, base, mainnet, optimism } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
 
 import { ARMstETHWETHPoolABI } from './abis/ARMstETHWETHPool';
 import { DAIABI } from './abis/DAI';
@@ -339,6 +339,53 @@ export const tokens = {
       symbol: 'wsuperOETHo',
     },
   },
+  sonic: {
+    OS: {
+      id: '146:OS',
+      address: '0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794',
+      chainId: sonic.id,
+      abi: OETHABI,
+      name: 'Origin Sonic',
+      decimals: 18,
+      symbol: 'OS',
+    },
+    S: {
+      id: '146:S',
+      address: undefined,
+      chainId: sonic.id,
+      abi: erc20Abi,
+      name: 'Sonic',
+      decimals: 18,
+      symbol: 'S',
+    },
+    WETH: {
+      id: '146:WETH',
+      address: '0x50c42dEAcD8Fc9773493ED674b675bE577f2634b',
+      chainId: sonic.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether on Sonic',
+      decimals: 18,
+      symbol: 'WETH',
+    },
+    wOS: {
+      id: '146:wOS',
+      address: '0x9F0dF7799f6FDAd409300080cfF680f5A23df4b1',
+      chainId: sonic.id,
+      abi: WOETHABI,
+      name: 'Wrapped Origin Sonic',
+      decimals: 18,
+      symbol: 'wOS',
+    },
+    wS: {
+      id: '146:wS',
+      address: '0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38',
+      chainId: sonic.id,
+      abi: erc20Abi,
+      name: 'Wrapped Sonic',
+      decimals: 18,
+      symbol: 'wS',
+    },
+  },
 } as const;
 
 export const tokenList = [
@@ -346,6 +393,7 @@ export const tokenList = [
   ...Object.values(tokens.arbitrum),
   ...Object.values(tokens.base),
   ...Object.values(tokens.optimism),
+  ...Object.values(tokens.sonic),
 ];
 
 export const tokenIdMap = indexBy(prop('id'), tokenList);

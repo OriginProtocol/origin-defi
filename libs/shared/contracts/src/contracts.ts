@@ -1,4 +1,4 @@
-import { arbitrum, base, mainnet } from 'viem/chains';
+import { arbitrum, base, mainnet, sonic } from 'viem/chains';
 
 import { AaveStrategyABI } from './abis/AaveStrategy';
 import { AerodromePoolABI } from './abis/AerodromePool';
@@ -42,6 +42,7 @@ import { OGNFixedRateRewardSourceABI } from './abis/OGNFixedRateRewardSource';
 import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
 import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
+import { OSVaultABI } from './abis/OSVault';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { OUSDStrategyFluxABI } from './abis/OUSDStrategyFlux';
 import { OUSDStrategyMakerABI } from './abis/OUSDStrategyMaker';
@@ -470,6 +471,27 @@ export const contracts = {
       chainId: base.id,
       abi: superOETHbZapperABI,
       name: 'superOETHbZapper',
+    },
+  },
+  sonic: {
+    // OS
+    osVault: {
+      address: '0xa3c0eCA00D2B76b4d1F170b0AB3FdeA16C180186',
+      chainId: sonic.id,
+      abi: OSVaultABI,
+      name: 'osVault',
+    },
+    osDripper: {
+      address: '0x5b72992e9CDe8C07CE7C8217eB014EC7fD281f03',
+      chainId: sonic.id,
+      abi: DripperABI,
+      name: 'osDripper',
+    },
+    osZapper: {
+      address: '0xe25A2B256ffb3AD73678d5e80DE8d2F6022fAb21',
+      chainId: sonic.id,
+      abi: superOETHbZapperABI,
+      name: 'osZapper',
     },
   },
 } as const;

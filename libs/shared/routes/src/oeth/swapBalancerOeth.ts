@@ -1,4 +1,4 @@
-import { contracts, whales } from '@origin/shared/contracts';
+import { contracts, tokens, whales } from '@origin/shared/contracts';
 import {
   isNilOrEmpty,
   subPercentage,
@@ -95,8 +95,8 @@ const estimateGas: EstimateGas = async (
     slippage,
   );
   const user = isNilOrEmpty(tokenIn?.address)
-    ? whales.arbitrum.ETH
-    : whales.arbitrum.wOETH;
+    ? whales[tokens.arbitrum.ETH.id]
+    : whales[tokens.arbitrum.wOETH.id];
 
   try {
     gasEstimate = await publicClient.estimateContractGas({

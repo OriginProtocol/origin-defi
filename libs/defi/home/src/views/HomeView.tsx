@@ -1,5 +1,5 @@
 import { Container, Stack, Typography } from '@mui/material';
-import { Page, SuperOethbBanner } from '@origin/defi/shared';
+import { Page, SonicBanner } from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
 
 import {
@@ -39,7 +39,7 @@ export const HomeView = () => {
           </Typography>
         </Stack>
         <Stack spacing={3}>
-          <SuperOethbBanner />
+          <SonicBanner />
           <LSTCard />
           <ArmVaultCard />
           <StakingCard />

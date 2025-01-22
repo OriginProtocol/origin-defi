@@ -1,4 +1,4 @@
-import { contracts, whales } from '@origin/shared/contracts';
+import { contracts, tokens, whales } from '@origin/shared/contracts';
 import {
   getAccount,
   getPublicClient,
@@ -49,7 +49,7 @@ const estimateGas: EstimateGas = async ({ config }, { tokenIn, amountIn }) => {
       abi: contracts.mainnet.ARMstETHWETHPool.abi,
       functionName: 'deposit',
       args: [amountIn],
-      account: address ?? whales.mainnet.WETH,
+      account: address ?? whales[tokens.mainnet.WETH.id],
     });
   } catch {
     requestGasEstimate = 161_000n;

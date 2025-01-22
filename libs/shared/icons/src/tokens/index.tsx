@@ -10,9 +10,11 @@ import OETHSvg from './OETH.svg?react';
 import OGNSvg from './OGN.svg?react';
 import OGVSvg from './OGV.svg?react';
 import OGVOutlinedSvg from './OGV_outlined.svg?react';
+import OSSvg from './OS.svg?react';
 import OUSDSvg from './OUSD.svg?react';
 import primeETHSvg from './primeETH.svg?react';
 import rETHSvg from './rETH.svg?react';
+import sSvg from './S.svg?react';
 import sfrxETHSvg from './sfrxETH.svg?react';
 import stETHSvg from './stETH.svg?react';
 import superOETHSvg from './superOETH.svg?react';
@@ -25,6 +27,7 @@ import veOGVSvg from './veOGV.svg?react';
 import veOGVOutlinedSvg from './veOGV_outlined.svg?react';
 import WETHSvg from './WETH.svg?react';
 import wOETHSvg from './wOETH.svg?react';
+import wOSSvg from './wOS.svg?react';
 import wOUSDSvg from './wOUSD.svg?react';
 import wsuperOETHSvg from './wsuperOETH.svg?react';
 import wsuperOETHbSvg from './wsuperOETHb.svg?react';
@@ -68,11 +71,17 @@ export const OGV = (props: SvgIconProps) => (
 export const OGVOutlined = (props: SvgIconProps) => (
   <SvgIcon {...props} component={OGVOutlinedSvg} inheritViewBox />
 );
+export const OS = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={OSSvg} inheritViewBox />
+);
 export const OUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={OUSDSvg} viewBox="0 0 300 300" />
 );
 export const rETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={rETHSvg} viewBox="0 0 600 600" />
+);
+export const S = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={sSvg} inheritViewBox />
 );
 export const sfrxETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={sfrxETHSvg} viewBox="0 0 24 24" />
@@ -109,6 +118,9 @@ export const WETH = (props: SvgIconProps) => (
 );
 export const wOETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wOETHSvg} viewBox="0 0 40 40" />
+);
+export const wOS = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={wOSSvg} inheritViewBox />
 );
 export const wOUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wOUSDSvg} viewBox="0 0 300 300" />

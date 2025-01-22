@@ -1,5 +1,5 @@
 import {
-  mintVaultOeth,
+  mintOtoken,
   redeemArmOeth,
   swapBalancerOeth,
   SwapCurveOeth,
@@ -7,8 +7,7 @@ import {
   swapCurveOethSfrxeth,
   swapZapperOethEth,
   swapZapperOethSfrxeth,
-  unwrapOethWoeth,
-  wrapOethWoeth,
+  wrapOtoken,
 } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
 
@@ -53,17 +52,17 @@ export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
   'mint-vault-oeth': {
-    ...mintVaultOeth,
+    ...mintOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
   'wrap-oeth-oeth': {
-    ...wrapOethWoeth,
+    ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
   },
   'unwrap-oeth-woeth': {
-    ...unwrapOethWoeth,
+    ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
   },
