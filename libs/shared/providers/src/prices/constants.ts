@@ -30,7 +30,7 @@ export const coingeckoTokenIds = {
   frxETH: 'frax-ether',
   sfrxETH: 'staked-frax-ether',
   FRAX: 'frax',
-  S: 'sonic',
+  S: 'sonic-3',
 } as const;
 
 export const chainlinkOraclesMainnet = {
