@@ -80,7 +80,9 @@ export const DailyStatCard = ({
               {format(
                 currency === 'ETH'
                   ? (data?.tvlETH ?? from(0))
-                  : (data?.tvlUSD ?? from(0)),
+                  : currency === 'USD'
+                    ? (data?.tvlUSD ?? from(0))
+                    : (data?.totalSupply ?? from(0)),
                 2,
               )}
             </Typography>
