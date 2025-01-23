@@ -152,6 +152,7 @@ export const DailyStatCard = ({
     data?.circulatingSupplyETH,
     data?.circulatingSupplyUSD,
     data?.rateUSD,
+    data?.totalSupply,
     data?.tvlETH,
     data?.tvlUSD,
     intl,
