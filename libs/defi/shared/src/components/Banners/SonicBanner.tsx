@@ -1,10 +1,11 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { NetworkIcon, NumberSpinner } from '@origin/shared/components';
+import { NetworkIcon } from '@origin/shared/components';
+import { ORIGIN_DOCS_URL } from '@origin/shared/constants';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { sonic } from 'viem/chains';
 
-import type { StackProps, TypographyProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 
 export const SonicBanner = (props: StackProps) => {
   const intl = useIntl();
@@ -152,7 +153,7 @@ export const SonicBanner = (props: StackProps) => {
           </Button>
           <Button
             fullWidth
-            href="https://www.originprotocol.com/super-oeth-live-on-base"
+            href={`${ORIGIN_DOCS_URL}/protocol/os`}
             target="_blank"
             rel="noopener noreferrer nofollow"
             variant="outlined"
@@ -166,41 +167,4 @@ export const SonicBanner = (props: StackProps) => {
       </Stack>
     </Stack>
   );
-};
-
-function ComingSoonAPY(props: StackProps) {
-  const intl = useIntl();
-
-  return (
-    <Stack
-      {...props}
-      sx={[
-        {
-          alignItems: 'flex-start',
-        },
-        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
-      ]}
-    >
-      <Stack
-        direction="row"
-        sx={{
-          alignItems: 'center',
-        }}
-      >
-        <NumberSpinner height={32} typographyProps={textProps} />
-        <NumberSpinner height={32} duration={1.5} typographyProps={textProps} />
-        <Typography {...textProps}>.</Typography>
-        <NumberSpinner height={32} duration={1.3} typographyProps={textProps} />
-        <Typography {...textProps}>%</Typography>
-      </Stack>
-      <Typography variant="caption1">
-        {intl.formatMessage({ defaultMessage: 'coming soon' })}
-      </Typography>
-    </Stack>
-  );
-}
-
-const textProps: Partial<TypographyProps> = {
-  variant: 'featured2',
-  fontWeight: 'bold',
 };
