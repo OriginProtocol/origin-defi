@@ -1,7 +1,7 @@
 query armDailyStats(
   $limit: Int = 5000
   $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC]
-  $offset: Int
+  $offset: Int = 1
 ) {
   armDailyStats(
     limit: $limit

@@ -14,7 +14,7 @@ import { readContract } from '@wagmi/core';
 import { from, mul } from 'dnum';
 import { useAccount, useConfig } from 'wagmi';
 
-import { useOTokenAddressQuery, useOTokenApyQuery } from '../queries';
+import { useOTokenAddressQuery, useOTokenStatsQuery } from '../queries';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
@@ -26,7 +26,7 @@ import type {
 import type { Dnum } from 'dnum';
 import type { Config } from 'wagmi';
 
-import type { OTokenApyQuery } from '../queries';
+import type { OTokenStatsQuery } from '../queries';
 
 type Key = ['useTokenInfo', Token, HexAddress | undefined];
 
@@ -37,7 +37,10 @@ const getKey = (token: Token, address: HexAddress | undefined): Key => [
 ];
 
 type TokenInfo = {
-  apies: OTokenApyQuery['oTokenApies'][0];
+  apies: Pick<
+    OTokenStatsQuery['oTokenDailyStats'][0],
+    'apy' | 'apy7' | 'apy14' | 'apy30'
+  >;
   bestApy: {
     value: number;
     trailingDays: number;
@@ -60,11 +63,11 @@ const fetcher: (
   async ({ queryKey: [, token, address] }) => {
     const res = await Promise.allSettled([
       queryClient.fetchQuery({
-        queryKey: useOTokenApyQuery.getKey({
+        queryKey: useOTokenStatsQuery.getKey({
           token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
         }),
-        queryFn: useOTokenApyQuery.fetcher({
+        queryFn: useOTokenStatsQuery.fetcher({
           token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
         }),
@@ -98,9 +101,9 @@ const fetcher: (
     ]);
 
     const apies =
-      isFulfilled(res[0]) && !isNilOrEmpty(res[0].value?.oTokenApies?.[0])
-        ? res[0].value.oTokenApies[0]
-        : { apy7DayAvg: 0, apy14DayAvg: 0, apy30DayAvg: 0, apr: 0, apy: 0 };
+      isFulfilled(res[0]) && !isNilOrEmpty(res[0].value?.oTokenDailyStats?.[0])
+        ? res[0].value.oTokenDailyStats[0]
+        : { apy7: 0, apy14: 0, apy30: 0, apy: 0 };
     const totalSupply = isFulfilled(res[1])
       ? ([res[1].value, token.decimals] as Dnum)
       : from(0);
@@ -116,7 +119,7 @@ const fetcher: (
           ] as Dnum)
         : from(0);
 
-    const apiesTrailing = { apy14DayAvg: 14, apy7DayAvg: 7, apy30DayAvg: 30 };
+    const apiesTrailing = { apy14: 14, apy7: 7, apy30: 30 };
     const bestApy = Object.entries(apies).reduce(
       (acc, [k, v]) => {
         if (
@@ -144,9 +147,9 @@ const fetcher: (
       price,
       balance,
       yieldEarned,
-      apy7: apies.apy7DayAvg,
-      apy14: apies.apy14DayAvg,
-      apy30: apies.apy30DayAvg,
+      apy7: apies.apy7,
+      apy14: apies.apy14,
+      apy30: apies.apy30,
     };
   };
 

@@ -40,10 +40,10 @@ export type ApyCardProps = {
 export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
   const defaultTrailing = {
-    apy30DayAvg: 'apy30' as Trailing,
-    apy14DayAvg: 'apy14' as Trailing,
-    apy7DayAvg: 'apy7' as Trailing,
-  }[config?.defaultApyTrailing ?? 'apy30DayAvg'];
+    apy30: 'apy30' as Trailing,
+    apy14: 'apy14' as Trailing,
+    apy7: 'apy7' as Trailing,
+  }[config?.defaultApyTrailing ?? 'apy30'];
 
   const intl = useIntl();
   const theme = useTheme();

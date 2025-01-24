@@ -5,17 +5,14 @@ import {
   Divider,
   Stack,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
-import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
+import { TokenIcon, ValueLabel } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { useTokenInfo } from '../../hooks';
-import { ColorChip } from '../Chips';
 
 import type { AccordionProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -24,20 +21,15 @@ export type GlobalStatsCardProps = {
   token: Token;
   borderRadius?: number;
   showTokenHeader?: boolean;
-  showAprChip?: boolean;
 } & Omit<AccordionProps, 'children'>;
 
 export const GlobalStatsCard = ({
   token,
   borderRadius = 4,
   showTokenHeader = false,
-  showAprChip = false,
   ...rest
 }: GlobalStatsCardProps) => {
   const intl = useIntl();
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token);
 
   return (
@@ -83,22 +75,6 @@ export const GlobalStatsCard = ({
             >
               {intl.formatMessage({ defaultMessage: 'Global stats' })}
             </Typography>
-          )}
-          {showAprChip && (!isMd || isSm) && (
-            <ColorChip alignItems="baseline" px={0.5}>
-              <LoadingLabel
-                variant="caption1"
-                isLoading={isInfoLoading}
-                sx={{ fontWeight: 'bold' }}
-              >
-                {intl.formatNumber(info?.apies?.apr ?? 0, {
-                  style: 'percent',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </LoadingLabel>
-              <Typography variant="caption2">APR</Typography>
-            </ColorChip>
           )}
         </Stack>
       </AccordionSummary>

@@ -108,24 +108,6 @@ query oTokenRebases(
   }
 }
 
-query oTokenApy(
-  $chainId: Int!
-  $token: String!
-  $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]
-) {
-  oTokenApies(
-    limit: 1
-    orderBy: $orderBy
-    where: { chainId_eq: $chainId, otoken_eq: $token }
-  ) {
-    apy7DayAvg
-    apy14DayAvg
-    apy30DayAvg
-    apr
-    apy
-  }
-}
-
 query oTokenStrategies($chainId: Float!, $token: String!, $timestamp: String) {
   strategies(otoken: $token, chainId: $chainId, timestamp: $timestamp) {
     ...Strategy

@@ -4,19 +4,12 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
 export type DailyStatFragment = { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, date: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string };
 
-export type OTokenApyQueryVariables = Types.Exact<{
-  chainId: Types.Scalars['Int']['input'];
-  token: Types.Scalars['String']['input'];
-}>;
-
-
-export type OTokenApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy14DayAvg: number, apy30DayAvg: number, apr: number, apy: number }> };
-
 export type OTokenAddressQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
   chainId: Types.Scalars['Int']['input'];
   token: Types.Scalars['String']['input'];
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -81,47 +74,11 @@ export const DailyStatFragmentDoc = `
   dripperWETH
 }
     `;
-export const OTokenApyDocument = `
-    query OTokenApy($chainId: Int!, $token: String!) {
-  oTokenApies(
-    limit: 1
-    orderBy: timestamp_DESC
-    where: {chainId_eq: $chainId, otoken_eq: $token}
-  ) {
-    apy7DayAvg
-    apy14DayAvg
-    apy30DayAvg
-    apr
-    apy
-  }
-}
-    `;
-
-export const useOTokenApyQuery = <
-      TData = OTokenApyQuery,
-      TError = unknown
-    >(
-      variables: OTokenApyQueryVariables,
-      options?: Omit<UseQueryOptions<OTokenApyQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenApyQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useQuery<OTokenApyQuery, TError, TData>(
-      {
-    queryKey: ['OTokenApy', variables],
-    queryFn: graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables),
-    ...options
-  }
-    )};
-
-useOTokenApyQuery.getKey = (variables: OTokenApyQueryVariables) => ['OTokenApy', variables];
-
-
-useOTokenApyQuery.fetcher = (variables: OTokenApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables, options);
-
 export const OTokenAddressDocument = `
-    query OTokenAddress($address: String!, $chainId: Int!, $token: String!, $limit: Int = 5000) {
+    query OTokenAddress($address: String!, $chainId: Int!, $token: String!, $limit: Int = 5000, $offset: Int = 1) {
   oTokenAddresses(
     limit: $limit
+    offset: $offset
     where: {address_eq: $address, chainId_eq: $chainId, otoken_eq: $token}
   ) {
     balance
@@ -192,7 +149,7 @@ useOTokenHistoriesQuery.getKey = (variables: OTokenHistoriesQueryVariables) => [
 useOTokenHistoriesQuery.fetcher = (variables: OTokenHistoriesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenHistoriesQuery, OTokenHistoriesQueryVariables>(OTokenHistoriesDocument, variables, options);
 
 export const OTokenStatsDocument = `
-    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
+    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int = 1) {
   oTokenDailyStats(
     limit: $limit
     offset: $offset

@@ -14,7 +14,7 @@ export type ArmDailyStatsQuery = { __typename?: 'Query', armDailyStats: Array<{ 
 
 
 export const ArmDailyStatsDocument = `
-    query armDailyStats($limit: Int = 5000, $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC], $offset: Int) {
+    query armDailyStats($limit: Int = 5000, $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC], $offset: Int = 1) {
   armDailyStats(
     limit: $limit
     orderBy: $orderBy

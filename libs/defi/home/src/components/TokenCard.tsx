@@ -127,13 +127,13 @@ export const TokenCard = ({
     </>
   ) : includes([tokens.sonic.OS.id], token.id) ? (
     <>
-      <CurrencyLabel currency="S" />
-      &nbsp;
       {intl.formatNumber(stats?.totalSupply ?? 0, {
         notation: 'compact',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}
+      &nbsp;
+      <CurrencyLabel currency="S" />
     </>
   ) : (
     '-'

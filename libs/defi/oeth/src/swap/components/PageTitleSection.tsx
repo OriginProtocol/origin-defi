@@ -1,5 +1,9 @@
 import { Stack, Typography } from '@mui/material';
-import { ChainsChip, ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
+import {
+  ChainsChip,
+  ColorChip,
+  useOTokenStatsQuery,
+} from '@origin/defi/shared';
 import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
@@ -9,28 +13,28 @@ import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { data: apies, isLoading: isApiesLoading } = useOTokenApyQuery(
+  const { data: apies, isLoading: isApiesLoading } = useOTokenStatsQuery(
     {
       token: tokens.mainnet.OETH.address.toLowerCase(),
       chainId: tokens.mainnet.OETH.chainId,
     },
     {
       select: (data) => {
-        return data?.oTokenApies[0];
+        return data?.oTokenDailyStats[0];
       },
     },
   );
 
   const { apy, tooltip } =
-    (apies?.apy30DayAvg ?? 0) > (apies?.apy7DayAvg ?? 0)
+    (apies?.apy30 ?? 0) > (apies?.apy7 ?? 0)
       ? {
-          apy: apies?.apy30DayAvg,
+          apy: apies?.apy30,
           tooltip: intl.formatMessage({
             defaultMessage: '30-day trailing APY',
           }),
         }
       : {
-          apy: apies?.apy7DayAvg,
+          apy: apies?.apy7,
           tooltip: intl.formatMessage({
             defaultMessage: '7-day trailing APY',
           }),

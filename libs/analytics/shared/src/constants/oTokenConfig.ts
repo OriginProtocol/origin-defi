@@ -22,7 +22,7 @@ export type OTokenConfig = {
   // default chart limit for protocol revenue card (default 182 days)
   protocolRevenueCardDefaultLimit?: number;
   // default trailing days for apy display
-  defaultApyTrailing?: 'apy7DayAvg' | 'apy14DayAvg' | 'apy30DayAvg';
+  defaultApyTrailing?: 'apy7' | 'apy14' | 'apy30';
   // token color for charts
   lineChartColor?: string;
   // default currency for chart display
@@ -63,7 +63,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dripperToken: tokens.base.WETH,
     showCirculatingSplit: true,
     protocolRevenueCardDefaultLimit: 30,
-    defaultApyTrailing: 'apy7DayAvg',
+    defaultApyTrailing: 'apy7',
     lineChartColor: '#7A26F3',
     currency: 'ETH',
   },
@@ -73,7 +73,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dappHref: `${ORIGIN_DAPP_URL}/#/arm/steth-redemption-vault`,
     dripperToken: tokens.base.WETH,
     protocolRevenueCardDefaultLimit: 30,
-    defaultApyTrailing: 'apy30DayAvg',
+    defaultApyTrailing: 'apy30',
     lineChartColor: '#E85BFF',
     currency: 'ETH',
   },
