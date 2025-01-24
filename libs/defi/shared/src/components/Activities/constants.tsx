@@ -485,7 +485,10 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
     subtitle: (activity, intl) => {
       const { amountIn, tokenIdIn } = activity as RedeemActivity;
       const tokenIn = getTokenById(tokenIdIn);
-      const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], 4);
+      const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], {
+        decimalsRounding: 'ROUND_DOWN',
+        digits: 4,
+      });
 
       return intl.formatMessage(
         { defaultMessage: '{amount} {symbolIn}' },

@@ -76,14 +76,22 @@ export const DailyStatCard = ({
           ),
           value: (
             <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
-              <CurrencyLabel currency={currency} />
+              {['ETH', 'USD'].includes(currency) && (
+                <CurrencyLabel currency={currency} />
+              )}
               {format(
                 currency === 'ETH'
                   ? (data?.tvlETH ?? from(0))
                   : currency === 'USD'
                     ? (data?.tvlUSD ?? from(0))
                     : (data?.totalSupply ?? from(0)),
-                2,
+                0,
+              )}
+              {['S'].includes(currency) && (
+                <>
+                  &nbsp;
+                  <CurrencyLabel currency={currency} />
+                </>
               )}
             </Typography>
           ),
@@ -102,7 +110,7 @@ export const DailyStatCard = ({
               chainName: supportedChainNames[token.chainId].short,
             },
           ),
-          value: `$${data?.rateUSD ? format(data?.rateUSD, 2) : '0.00'}`,
+          value: `$${data?.rateUSD ? format(data?.rateUSD, { digits: 2, trailingZeros: true }) : '0.00'}`,
         });
       }
 
