@@ -20,7 +20,6 @@ import {
 import { LoadingLabel } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
 import { last, pluck, takeLast } from 'ramda';
@@ -119,11 +118,7 @@ export const ProtocolRevenueChart = ({
             }}
           >
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
-                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-                'UTC',
-                'dd MMM yyyy',
-              )}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <LoadingLabel
               variant="body1"

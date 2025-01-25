@@ -19,7 +19,6 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { last, takeLast } from 'ramda';
@@ -54,7 +53,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
                 const totalSupplyUSD = totalSupplyETH * s.rateUSD;
 
                 return {
-                  timestamp: toZonedTime(s.date, 'UTC').getTime(),
+                  timestamp: +dayjs.utc(s.timestamp),
                   totalSupplyETH,
                   totalSupplyUSD,
                 };
@@ -86,11 +85,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
-                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-                'UTC',
-                'dd MMM yyyy',
-              )}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <LoadingLabel
               isLoading={isLoading}

@@ -21,7 +21,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { ascend, last, prop, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -43,9 +43,18 @@ export const VaultAssetsChart = ({
   const [limit, setLimit] = useState<number | undefined>(7);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
+  const dateTo = dayjs
+    .utc()
+    .subtract(1, 'day')
+    .hour(23)
+    .minute(59)
+    .second(59)
+    .millisecond(999)
+    .toISOString();
   const { data, isLoading } = useArmStatesQuery(
     {
       limit: 11000,
+      dateTo,
     },
     {
       select: useCallback(
@@ -53,11 +62,9 @@ export const VaultAssetsChart = ({
           const mapped = Object.values(
             data?.armStates.reduce(
               (acc, curr) => {
-                const dateHour = formatInTimeZone(
-                  toZonedTime(curr.timestamp, 'UTC'),
-                  'UTC',
-                  'yyyy-MM-dd HH',
-                );
+                const dateHour = dayjs
+                  .utc(curr.timestamp)
+                  .format('YYYY-MM-DD HH');
 
                 if (!acc[dateHour]) {
                   const weth = toNumber([
@@ -75,7 +82,7 @@ export const VaultAssetsChart = ({
                   const total = weth + steth + redeemingSteth;
 
                   const mapped = {
-                    timestamp: toZonedTime(curr.timestamp, 'UTC').getTime(),
+                    timestamp: +dayjs.utc(curr.timestamp),
                     weth,
                     steth,
                     redeemingSteth,
@@ -161,11 +168,7 @@ export const VaultAssetsChart = ({
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
-                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-                'UTC',
-                'dd MMM yyyy HH:mm',
-              )}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY HH:mm')}
             </LoadingLabel>
             <Stack
               direction="row"
@@ -249,12 +252,7 @@ export const VaultAssetsChart = ({
           }
           tooltipLabels={[
             {
-              label: (d) =>
-                formatInTimeZone(
-                  toZonedTime(d?.timestamp ?? Date.now(), 'UTC'),
-                  'UTC',
-                  'dd MMM yyyy HH:mm',
-                ),
+              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM YYYY HH:mm'),
             },
             ...series.map((s) => ({
               label: s.label,

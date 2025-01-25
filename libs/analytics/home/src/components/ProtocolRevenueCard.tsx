@@ -13,8 +13,6 @@ import {
   StackedBarChart,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { format, isDate } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
 import { last } from 'ramda';
@@ -51,9 +49,9 @@ export const ProtocolRevenueCard = ({
   const width = measures?.width ?? 0;
   const { data: tokens, isLoading: isTokensLoading } = useTokensChartStats(
     limit,
-    offset,
-    !!from && isDate(from) ? from.toISOString() : undefined,
-    !!to && isDate(to) ? to.toISOString() : undefined,
+    from || to ? 0 : offset,
+    from ? from.toISOString() : undefined,
+    to ? to.toISOString() : undefined,
   );
   const { data: arms, isLoading: isArmLoading } = useArmDailyStatsQuery(
     {
@@ -154,10 +152,7 @@ export const ProtocolRevenueCard = ({
             color="text.secondary"
             sx={{ fontWeight: 'bold' }}
           >
-            {format(
-              toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-              'dd MMM yyyy',
-            )}
+            {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
           </LoadingLabel>
           <LoadingLabel
             variant="body1"

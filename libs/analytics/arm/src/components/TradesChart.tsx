@@ -16,8 +16,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { subDays } from 'date-fns';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 
 import { useArmTrades } from '../hooks';
@@ -39,16 +38,11 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
 
   const width = measures?.width ?? 0;
 
-  const dateStart = formatInTimeZone(
-    toZonedTime(subDays(Date.now(), limit ?? 365), 'UTC'),
-    'UTC',
-    'dd MMM yyyy',
-  );
-  const dateEnd = formatInTimeZone(
-    toZonedTime(Date.now(), 'UTC'),
-    'UTC',
-    'dd MMM yyyy',
-  );
+  const dateStart = dayjs
+    .utc()
+    .subtract(limit ?? 365, 'days')
+    .format('DD MMM YYYY');
+  const dateEnd = dayjs.utc().format('DD MMM YYYY');
 
   return (
     <Card

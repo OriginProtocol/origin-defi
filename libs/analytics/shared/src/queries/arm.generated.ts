@@ -15,6 +15,7 @@ export type ArmStatesQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   orderBy?: Types.InputMaybe<Array<Types.ArmStateOrderByInput> | Types.ArmStateOrderByInput>;
   offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+  dateTo?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
 }>;
 
 
@@ -68,12 +69,12 @@ useArmDailyStatsQuery.getKey = (variables?: ArmDailyStatsQueryVariables) => vari
 useArmDailyStatsQuery.fetcher = (variables?: ArmDailyStatsQueryVariables, options?: RequestInit['headers']) => graphqlClient<ArmDailyStatsQuery, ArmDailyStatsQueryVariables>(ArmDailyStatsDocument, variables, options);
 
 export const ArmStatesDocument = `
-    query armStates($limit: Int = 5000, $orderBy: [ArmStateOrderByInput!] = [timestamp_DESC], $offset: Int) {
+    query armStates($limit: Int = 5000, $orderBy: [ArmStateOrderByInput!] = [timestamp_DESC], $offset: Int, $dateTo: DateTime) {
   armStates(
     limit: $limit
     orderBy: $orderBy
     offset: $offset
-    where: {address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6", chainId_eq: 1}
+    where: {address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6", chainId_eq: 1, timestamp_lt: $dateTo}
   ) {
     id
     timestamp

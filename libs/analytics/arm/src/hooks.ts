@@ -2,9 +2,6 @@ import { useCallback } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { subDays } from 'date-fns';
-import { secondsInDay } from 'date-fns/constants';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { ascend, pathOr, prop } from 'ramda';
 
@@ -19,7 +16,7 @@ export type ArmTradingVolumeData = {
 
 export const useArmTradingVolume = (limit?: number) => {
   return useQuery({
-    staleTime: secondsInDay,
+    staleTime: 60 * 60 * 24,
     queryKey: ['useArmTradingVolume'],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -51,14 +48,20 @@ export const useArmTradingVolume = (limit?: number) => {
           (currentDate: Dayjs) => (data: ArmTradingVolumeData) => {
             return dayjs.utc(data.day).isSame(currentDate, 'day');
           };
-        let currentDate = dayjs.utc().subtract(limit ?? 365, 'day');
+        let currentDate = dayjs
+          .utc()
+          .hour(23)
+          .minute(59)
+          .second(59)
+          .millisecond(999)
+          .subtract(limit ?? 365, 'day');
 
-        while (currentDate.isBefore(endDate)) {
+        while (currentDate.isBefore(endDate, 'day')) {
           const item = rows.find(findByDay(currentDate));
           const ethPrice = item?.eth_price ?? 0;
 
           result.push({
-            timestamp: +currentDate.hour(0).minute(0).second(0).millisecond(0),
+            timestamp: +currentDate,
             day: currentDate.format('YYYY-MM-DD'),
             tradingVolumeETH: item?.cumulative_volume ?? 0,
             tradingVolumeUSD: (item?.cumulative_volume ?? 0) * ethPrice,
@@ -99,18 +102,14 @@ export type ArmTradeData = {
 
 export const useArmTrades = (limit?: number) => {
   return useQuery({
-    staleTime: secondsInDay,
+    staleTime: 60 * 60 * 24,
     queryKey: ['useArmTrades'],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         queryId: '4397678',
         limit: '5000',
         sort_by: 'block_time',
-        filters: `day >= '${formatInTimeZone(
-          toZonedTime(subDays(Date.now(), 7), 'UTC'),
-          'UTC',
-          'yyyy-MM-dd',
-        )}'`,
+        filters: `day >= '${dayjs.utc().subtract(7, 'days').format('YYYY-MM-DD')}'`,
       });
       const res = await axios.get(
         `${import.meta.env.VITE_DEFI_ANALYTICS_URL}/api/v2/dune/?${queryParams.toString()}`,
@@ -121,16 +120,16 @@ export const useArmTrades = (limit?: number) => {
     select: useCallback(
       (data: { result: { rows: ArmTradeData[] } }) => {
         const rows = pathOr<ArmTradeData[]>([], ['result', 'rows'], data);
-        const limitDate = toZonedTime(subDays(Date.now(), limit ?? 7), 'UTC');
+        const limitDate = dayjs.utc().subtract(limit ?? 7, 'days');
 
         return rows
           .map((row) => ({
             ...row,
-            timestamp: toZonedTime(row.block_time, 'UTC').getTime(),
+            timestamp: +dayjs.utc(row.block_time),
             day: row.day.substring(0, 10),
           }))
           .toSorted(ascend(prop('timestamp')))
-          .filter((r) => r.timestamp >= limitDate.getTime());
+          .filter((r) => r.timestamp >= +limitDate);
       },
       [limit],
     ),

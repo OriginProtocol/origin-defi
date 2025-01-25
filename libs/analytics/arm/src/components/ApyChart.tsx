@@ -19,7 +19,6 @@ import {
 } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -49,7 +48,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
           const apy = dailyStats.map((s) => s.apy * 100);
           const apies = movingAverages(apy, [7, 14, 30]);
           const mapped = dailyStats.map((s, idx) => ({
-            timestamp: toZonedTime(s.date, 'UTC').getTime(),
+            timestamp: +dayjs.utc(s.date),
             apy: apy[idx],
             apy7: apies[0][idx],
             apy14: apies[1][idx],
@@ -81,11 +80,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
-                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-                'UTC',
-                'dd MMM yyyy',
-              )}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <LoadingLabel

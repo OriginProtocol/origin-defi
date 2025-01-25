@@ -13,7 +13,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 
 import { ChartTooltip } from './ChartTooltip';
 import { chartMargins, curveTypes } from './constants';
@@ -140,11 +140,7 @@ export const LineChart = <Datum,>({
   const xFormat =
     tickXFormat ??
     ((value: NumberLike) => {
-      return formatInTimeZone(
-        toZonedTime(value as number, 'UTC'),
-        'UTC',
-        'dd MMM',
-      );
+      return dayjs.utc(value as number).format('DD MMM');
     });
 
   return (

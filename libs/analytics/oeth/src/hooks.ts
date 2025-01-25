@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 
 import { useWoethArbitrumByDayQuery } from './queries.generated';
@@ -66,7 +66,7 @@ export const useOethDistribution = (limit?: number) => {
           data[1]?.arbitrum.find(
             (d) =>
               d.day.substring(0, 9) ===
-              toZonedTime(curr.timestamp, 'UTC').toISOString().substring(0, 9),
+              dayjs.utc(curr.timestamp).toISOString().substring(0, 9),
           )?.totalSupply ?? 0;
         const arbitrumETH = toNumber([
           BigInt(arbTotalSupply),
@@ -77,7 +77,7 @@ export const useOethDistribution = (limit?: number) => {
           data[1]?.base.find(
             (d) =>
               d.day.substring(0, 9) ===
-              toZonedTime(curr.timestamp, 'UTC').toISOString().substring(0, 9),
+              dayjs.utc(curr.timestamp).toISOString().substring(0, 9),
           )?.totalSupply ?? 0;
         const baseETH = toNumber([
           BigInt(baseTotalSupply),

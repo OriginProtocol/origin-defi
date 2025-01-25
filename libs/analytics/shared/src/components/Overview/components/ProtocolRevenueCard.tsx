@@ -21,8 +21,6 @@ import {
 } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { last, pluck } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -105,10 +103,7 @@ export const ProtocolRevenueCard = ({
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isFeesLoading} color="text.secondary">
-              {format(
-                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-                'dd MMM yyyy',
-              )}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <LoadingLabel
               isLoading={isFeesLoading}

@@ -18,7 +18,7 @@ import {
   useTooltipInPortal,
 } from '@visx/tooltip';
 import { voronoi } from '@visx/voronoi';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 
 import type { BoxProps, StackProps } from '@mui/material';
@@ -150,11 +150,7 @@ export const BubbleChart = <Datum,>({
   const xFormat =
     tickXFormat ??
     ((value: NumberLike) => {
-      return formatInTimeZone(
-        toZonedTime(value as number, 'UTC'),
-        'UTC',
-        'dd MMM',
-      );
+      return dayjs.utc(value as number).format('DD MMM');
     });
 
   return (
@@ -297,11 +293,7 @@ const ChartTooltip = <ChartData,>({
     >
       {timestamp && (
         <Typography variant="caption1" color="text.secondary" gutterBottom>
-          {formatInTimeZone(
-            toZonedTime(timestamp, 'UTC'),
-            'UTC',
-            'dd MMM yyyy hh:mm',
-          )}
+          {dayjs.utc(timestamp).format('DD MMM YYYY HH:mm')}
         </Typography>
       )}
 

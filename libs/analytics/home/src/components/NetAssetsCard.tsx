@@ -16,8 +16,6 @@ import {
 } from '@origin/shared/components';
 import { Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -70,10 +68,7 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
             color="text.secondary"
             sx={{ fontWeight: 'bold' }}
           >
-            {format(
-              toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-              'dd MMM yyyy',
-            )}
+            {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
           </LoadingLabel>
           <LoadingLabel
             variant="body1"

@@ -47,7 +47,7 @@ export const Controls = (props: StackProps) => {
             value={from ? dayjs.utc(from) : null}
             onChange={(d) => {
               if (d?.isValid()) {
-                handleSetFrom(d?.toDate());
+                handleSetFrom(d);
               }
             }}
             disableFuture
@@ -67,7 +67,7 @@ export const Controls = (props: StackProps) => {
             value={to ? dayjs.utc(to) : null}
             onChange={(d) => {
               if (d?.isValid()) {
-                handleSetTo(d.toDate());
+                handleSetTo(d);
               }
             }}
             disableFuture

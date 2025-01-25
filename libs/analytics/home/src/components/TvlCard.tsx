@@ -22,8 +22,6 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
-import { format, isDate } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { from as dfrom, mul, toNumber } from 'dnum';
 import { last } from 'ramda';
@@ -62,14 +60,14 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokensChartStats(
     limit,
-    offset,
-    !!from && isDate(from) ? from.toISOString() : undefined,
-    !!to && isDate(to) ? to.toISOString() : undefined,
+    from || to ? 0 : offset,
+    from ? from.toISOString() : undefined,
+    to ? to.toISOString() : undefined,
   );
   const { data: arms, isLoading: isArmLoading } = useArmDailyStatsQuery(
     {
       limit,
-      offset,
+      offset: from || to ? 0 : offset,
     },
     { select: (data) => data?.armDailyStats },
   );
@@ -184,10 +182,7 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
             color="text.secondary"
             sx={{ fontWeight: 'bold' }}
           >
-            {format(
-              toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-              'dd MMM yyyy',
-            )}
+            {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
           </LoadingLabel>
           <LoadingLabel
             variant="body1"

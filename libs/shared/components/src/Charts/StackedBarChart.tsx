@@ -14,7 +14,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 
 import { ChartTooltip } from './ChartTooltip';
 import { chartMargins, curveTypes } from './constants';
@@ -143,29 +143,12 @@ export const StackedBarChart = <Datum,>({
   const xFormat =
     tickXFormat ??
     ((value: string) => {
-      return formatInTimeZone(
-        toZonedTime(Number(value), 'UTC'),
-        'UTC',
-        'dd MMM',
-      );
+      return dayjs.utc(value).format('DD MMM');
     });
 
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
   const activeItem = activeIdx === null ? null : data[activeIdx];
-  const activeSeries =
-    activeIdx === null
-      ? null
-      : yKeys.map(
-          (y) =>
-            ({
-              data: [activeItem],
-              xKey,
-              yKey: y.key,
-              color: y.fillColor,
-              label: y.label,
-            }) as Serie<Datum>,
-        );
   const curveLine =
     curveTypes[
       lineData?.curveType

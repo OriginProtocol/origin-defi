@@ -17,7 +17,6 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -62,11 +61,7 @@ export const TradingVolumeChart = ({
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
-                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
-                'UTC',
-                'dd MMM yyyy',
-              )}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <LoadingLabel
               isLoading={isLoading}

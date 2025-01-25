@@ -1,7 +1,7 @@
 import { tokens } from '@origin/shared/contracts';
 import { hasKey } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { omit } from 'ramda';
 
 import { useTokenChartStats } from './useTokenChartStats';
@@ -140,7 +140,7 @@ const fetcher =
 export const useTokensChartStats = (
   limit?: number,
   offset?: number,
-  from = toZonedTime('2023-01-01', 'UTC').toISOString(),
+  from = dayjs.utc('2023-01-01').toISOString(),
   to?: string,
   options?: Omit<
     UseQueryOptions<TokensChartResult, Error, TokensChartResult, Key>,
