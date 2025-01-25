@@ -75,7 +75,7 @@ export const DailyStatFragmentDoc = `
 }
     `;
 export const OTokenAddressDocument = `
-    query OTokenAddress($address: String!, $chainId: Int!, $token: String!, $limit: Int = 5000, $offset: Int = 1) {
+    query OTokenAddress($address: String!, $chainId: Int!, $token: String!, $limit: Int = 5000, $offset: Int) {
   oTokenAddresses(
     limit: $limit
     offset: $offset

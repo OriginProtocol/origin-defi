@@ -24,7 +24,7 @@ query OTokenAddress(
   $chainId: Int!
   $token: String!
   $limit: Int = 5000
-  $offset: Int = 1
+  $offset: Int
 ) {
   oTokenAddresses(
     limit: $limit
