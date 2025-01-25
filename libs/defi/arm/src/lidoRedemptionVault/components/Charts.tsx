@@ -45,7 +45,6 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-
   const { data, isLoading } = useArmDailyStatsQuery(
     { limit, offset: 1 },
     {
@@ -55,7 +54,12 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         const apies = movingAverages(apy, [7, 14, 30]);
 
         return dailyStats.map((s, idx) => ({
-          timestamp: +dayjs.utc(s.timestamp),
+          timestamp: +dayjs
+            .utc(s.timestamp)
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .millisecond(0),
           apy: apy[idx],
           apy7: apies[0][idx],
           apy14: apies[1][idx],
@@ -158,7 +162,12 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         return (
           data?.armDailyStats
             ?.map((s) => ({
-              timestamp: +dayjs.utc(s.timestamp),
+              timestamp: +dayjs
+                .utc(s.timestamp)
+                .hour(0)
+                .minute(0)
+                .second(0)
+                .millisecond(0),
               totalSupply: toNumber([
                 BigInt(s?.totalSupply ?? 0),
                 tokens.mainnet['ARM-WETH-stETH'].decimals,
@@ -276,7 +285,12 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
               const total = weth + steth + redeemingSteth;
 
               return {
-                timestamp: +dayjs.utc(s.timestamp),
+                timestamp: +dayjs
+                  .utc(s.timestamp)
+                  .hour(0)
+                  .minute(0)
+                  .second(0)
+                  .millisecond(0),
                 weth,
                 steth,
                 redeemingSteth,
@@ -341,9 +355,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {activeItem?.timestamp
-                ? dayjs.utc(activeItem.timestamp).format('DD MMM YYYY')
-                : dayjs.utc().format('DD MMM YYYY')}
+              {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <Stack
               direction="row"

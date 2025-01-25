@@ -1,4 +1,5 @@
 import { hasKey } from '@origin/shared/utils';
+import dayjs from 'dayjs';
 import { div, gt, mul, sub, toNumber } from 'dnum';
 
 import type { Token } from '@origin/shared/contracts';
@@ -81,9 +82,7 @@ export const dailyStatMapper = <T extends 'number' | 'dnum' = 'number'>(
   return {
     id: d?.id ?? '',
     blockNumber: d?.blockNumber ?? 0,
-    timestamp: d?.timestamp
-      ? new Date(d.timestamp).getTime()
-      : new Date().getTime(),
+    timestamp: +dayjs.utc(d?.timestamp),
     date: d?.date ?? '',
     apy: d?.apy ?? 0,
     ...apies,
