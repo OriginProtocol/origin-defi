@@ -25,7 +25,6 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { last } from 'ramda';
@@ -56,7 +55,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         const apies = movingAverages(apy, [7, 14, 30]);
 
         return dailyStats.map((s, idx) => ({
-          timestamp: new Date(s.date).getTime(),
+          timestamp: +dayjs.utc(s.timestamp),
           apy: apy[idx],
           apy7: apies[0][idx],
           apy14: apies[1][idx],
@@ -80,10 +79,9 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd MMM yyyy',
-              )}
+              {activeItem?.timestamp
+                ? dayjs.utc(activeItem.timestamp).format('DD MMM YYYY')
+                : dayjs.utc().format('DD MMM YYYY')}
             </LoadingLabel>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
               <LoadingLabel
@@ -134,6 +132,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
               label: 'APY',
               value: (d) =>
                 `${intl.formatNumber(d.apy, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
+              color: theme.palette.primary.main,
             },
           ]}
         />
@@ -159,7 +158,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         return (
           data?.armDailyStats
             ?.map((s) => ({
-              timestamp: new Date(s.date).getTime(),
+              timestamp: +dayjs.utc(s.timestamp),
               totalSupply: toNumber([
                 BigInt(s?.totalSupply ?? 0),
                 tokens.mainnet['ARM-WETH-stETH'].decimals,
@@ -184,10 +183,9 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd MMM yyyy',
-              )}
+              {activeItem?.timestamp
+                ? dayjs.utc(activeItem.timestamp).format('DD MMM YYYY')
+                : dayjs.utc().format('DD MMM YYYY')}
             </LoadingLabel>
             <LoadingLabel
               isLoading={isLoading}
@@ -228,7 +226,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
           }
           tooltipLabels={[
             {
-              label: (d) => dayjs.unix(d?.timestamp).format('DD MMM'),
+              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
             },
             {
               label: 'TVL',
@@ -278,7 +276,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
               const total = weth + steth + redeemingSteth;
 
               return {
-                timestamp: new Date(s.date).getTime(),
+                timestamp: +dayjs.utc(s.timestamp),
                 weth,
                 steth,
                 redeemingSteth,
@@ -343,10 +341,9 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd MMM yyyy',
-              )}
+              {activeItem?.timestamp
+                ? dayjs.utc(activeItem.timestamp).format('DD MMM YYYY')
+                : dayjs.utc().format('DD MMM YYYY')}
             </LoadingLabel>
             <Stack
               direction="row"
@@ -430,7 +427,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
           }
           tooltipLabels={[
             {
-              label: (d) => dayjs.unix(d?.timestamp).format('DD MMM'),
+              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
             },
             ...series.map((s) => ({
               label: s.label,
