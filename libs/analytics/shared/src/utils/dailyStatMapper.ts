@@ -17,8 +17,12 @@ export const dailyStatMapper = (
 ) => {
   const factor = isChartFormat ? 100 : 1;
 
-  const timestamp = d?.timestamp ? +dayjs.utc(d?.timestamp) : +dayjs.utc();
-
+  const timestamp = +dayjs
+    .utc(d?.timestamp)
+    .hour(0)
+    .minute(0)
+    .second(0)
+    .millisecond(0);
   const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
   const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
   const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;

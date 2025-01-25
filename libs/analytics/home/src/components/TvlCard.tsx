@@ -90,7 +90,12 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
       const armTvlUSD = toNumber(mul(armTvlETH, rateUSD));
 
       serie.push({
-        timestamp: oeth?.timestamp ?? 0,
+        timestamp: +dayjs
+          .utc(oeth?.timestamp)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0),
         oethUSD: oeth?.circulatingSupplyUSD,
         oethETH: oeth?.circulatingSupplyETH,
         ousdUSD: ousd?.circulatingSupplyUSD,

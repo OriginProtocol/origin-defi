@@ -65,7 +65,12 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
       const total = data?.totals[i];
 
       serie.push({
-        timestamp: oeth?.timestamp ?? 0,
+        timestamp: +dayjs
+          .utc(oeth?.timestamp)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0),
         oethETH: oeth?.tvlETH,
         oethUSD: oeth?.tvlUSD,
         ousdETH: ousd?.tvlETH,
