@@ -114,10 +114,12 @@ export const ChartController = ({
               y2="10"
               style={{
                 stroke:
-                  selectedIdx === (data ?? []).length - 1 ||
-                  hoveredIdx === (data ?? []).length - 1
+                  selectedIdx === (data ?? []).length - 1
                     ? theme.palette.chart3
-                    : theme.palette.chart7,
+                    : alpha(
+                        theme.palette.chart7,
+                        hoveredIdx === (data ?? []).length - 1 ? 1 : 0.5,
+                      ),
                 strokeWidth: 10,
               }}
             />
