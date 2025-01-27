@@ -152,7 +152,7 @@ export const LSTCard = (props: CardProps) => {
               overflow: 'hidden',
             }}
           >
-            <TokenCard token={tokens.sonic.OS} isComingSoon href="/os" />
+            <TokenCard token={tokens.sonic.OS} href="/os" />
             <TokenCard token={tokens.mainnet.OETH} href="/oeth" />
           </Stack>
         </Stack>

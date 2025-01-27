@@ -1,17 +1,24 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { NetworkIcon } from '@origin/shared/components';
+import {
+  InfoTooltip,
+  LoadingLabel,
+  NetworkIcon,
+} from '@origin/shared/components';
 import { ORIGIN_DOCS_URL } from '@origin/shared/constants';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { sonic } from 'viem/chains';
+
+import { useTokenInfo } from '../../hooks';
 
 import type { StackProps } from '@mui/material';
 
 export const SonicBanner = (props: StackProps) => {
   const intl = useIntl();
-  // const { data: info, isLoading: isInfoLoading } = useTokenInfo(
-  //   tokens.sonic.OS,
-  // );
+  const { data: info, isLoading: isInfoLoading } = useTokenInfo(
+    tokens.sonic.OS,
+  );
 
   return (
     <Stack
@@ -71,19 +78,13 @@ export const SonicBanner = (props: StackProps) => {
                   defaultMessage: 'Origin Sonic',
                 })}
               </Typography>
-              <Typography>
-                {intl.formatMessage({
-                  defaultMessage: 'now available!',
-                })}
-              </Typography>
-              {/* <Stack
+              <Stack
                 direction="row"
                 spacing={1}
                 sx={{
-                  alignItems: 'center',
+                  alignItems: 'baseline',
                 }}
               >
-
                 <LoadingLabel
                   isLoading={isInfoLoading}
                   variant="featured2"
@@ -124,7 +125,7 @@ export const SonicBanner = (props: StackProps) => {
                     )}
                   />
                 </Stack>
-              </Stack> */}
+              </Stack>
             </Stack>
           </Stack>
           <Typography variant="body2" sx={{ pl: { xs: 0, lg: 2 } }}>
