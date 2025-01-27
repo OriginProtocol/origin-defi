@@ -43,17 +43,22 @@ export const useArmTradingVolume = (limit?: number) => {
         );
 
         const result = [];
-        const endDate = dayjs.utc();
+        const endDate = dayjs
+          .utc()
+          .hour(23)
+          .minute(59)
+          .second(59)
+          .millisecond(999);
         const findByDay =
           (currentDate: Dayjs) => (data: ArmTradingVolumeData) => {
             return dayjs.utc(data.day).isSame(currentDate, 'day');
           };
         let currentDate = dayjs
           .utc()
-          .hour(23)
-          .minute(59)
-          .second(59)
-          .millisecond(999)
+          .hour(0)
+          .minute(0)
+          .second(0)
+          .millisecond(0)
           .subtract(limit ?? 365, 'day');
 
         while (currentDate.isBefore(endDate, 'day')) {

@@ -187,7 +187,7 @@ export const useNetAssetValue = () => {
         const totalETH =
           dailyMap[day]?.totalETH ?? result[result.length - 1]?.totalETH ?? 0;
         result.push({
-          timestamp: +currentDate,
+          timestamp: +currentDate.hour(0).minute(0).second(0).millisecond(0),
           day,
           totalUSD,
           totalETH,
