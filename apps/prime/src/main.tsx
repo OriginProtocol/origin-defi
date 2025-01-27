@@ -13,6 +13,7 @@ import {
 import { theme } from '@origin/prime/theme';
 import {
   ActivityProvider,
+  DayjsPluginsProvider,
   IntlProvider,
   NotificationsProvider,
   ThemeProvider,
@@ -45,6 +46,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages }],
       [ThemeProvider, { light: theme }],
+      [DayjsPluginsProvider],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { modalSize: 'compact' }],

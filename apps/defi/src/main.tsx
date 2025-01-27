@@ -8,13 +8,13 @@ import {
   ActivityProvider,
   NotificationsProvider,
   queryClient,
-  registerDayjsPlugins,
   registerGoogleTagManager,
   registerSentry,
   wagmiConfig,
 } from '@origin/defi/shared';
 import { dark, light } from '@origin/defi/theme';
 import {
+  DayjsPluginsProvider,
   IntlProvider,
   logWelcomeMessage,
   ThemeProvider,
@@ -39,8 +39,6 @@ registerGoogleTagManager();
 
 registerSentry();
 
-registerDayjsPlugins();
-
 const router = createHashRouter(routes);
 
 const root = ReactDOM.createRoot(
@@ -52,6 +50,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages }],
       [ThemeProvider, { dark, light }],
+      [DayjsPluginsProvider],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],

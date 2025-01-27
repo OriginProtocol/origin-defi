@@ -2,6 +2,7 @@ export * from './activities';
 export * from './analytics';
 export * from './console';
 export * from './curve';
+export * from './dayjs';
 export * from './fonts';
 export * from './gas';
 export * from './geoFence';

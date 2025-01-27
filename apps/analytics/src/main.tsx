@@ -5,12 +5,12 @@ import * as ReactDOM from 'react-dom/client';
 
 import {
   queryClient,
-  registerDayjsPlugins,
   registerSentry,
   wagmiConfig,
 } from '@origin/analytics/shared';
 import { dark, light } from '@origin/analytics/theme';
 import {
+  DayjsPluginsProvider,
   IntlProvider,
   LocalizationProvider,
   logWelcomeMessage,
@@ -32,8 +32,6 @@ logWelcomeMessage('Analytics');
 
 registerSentry();
 
-registerDayjsPlugins();
-
 const router = createBrowserRouter(routes);
 
 const root = ReactDOM.createRoot(
@@ -45,6 +43,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages }],
       [ThemeProvider, { dark, light }],
+      [DayjsPluginsProvider],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [LocalizationProvider],

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
@@ -6,6 +8,8 @@ import isToday from 'dayjs/plugin/isToday';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 
+import type { Children } from '@origin/shared/utils';
+
 dayjs.extend(utc);
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -13,8 +17,12 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isToday);
 dayjs.extend(timezone);
 
-export const registerDayjsPlugins = () => {
-  if (import.meta.env.DEV) {
-    console.log('dayjs initialized');
-  }
+export const DayjsPluginsProvider = ({ children }: Children) => {
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.log('dayjs initialized');
+    }
+  }, []);
+
+  return children;
 };

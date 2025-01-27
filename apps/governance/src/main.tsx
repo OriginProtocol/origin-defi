@@ -13,6 +13,7 @@ import {
 import { theme } from '@origin/governance/theme';
 import {
   ActivityProvider,
+  DayjsPluginsProvider,
   IntlProvider,
   logWelcomeMessage,
   NotificationsProvider,
@@ -48,6 +49,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages }],
       [ThemeProvider, { dark: theme }],
+      [DayjsPluginsProvider],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
