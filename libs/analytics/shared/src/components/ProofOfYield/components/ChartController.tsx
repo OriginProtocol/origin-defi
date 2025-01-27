@@ -73,6 +73,7 @@ export const ChartController = ({
   const tickYFormat = (value: NumberLike) => `${value as number}`;
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
+  const selectedIdx = data?.findIndex((s) => s.id === selectedId) ?? -1;
 
   return (
     <Box
@@ -99,6 +100,28 @@ export const ChartController = ({
             y1="0%"
             y2="0%"
           />
+          <pattern
+            id="diagonalHatch"
+            width="10"
+            height="10"
+            patternTransform="rotate(45 0 0)"
+            patternUnits="userSpaceOnUse"
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="10"
+              style={{
+                stroke:
+                  selectedIdx === (data ?? []).length - 1 ||
+                  hoveredIdx === (data ?? []).length - 1
+                    ? theme.palette.chart3
+                    : theme.palette.chart7,
+                strokeWidth: 10,
+              }}
+            />
+          </pattern>
         </defs>
         <AxisRight
           scale={yScale}
@@ -131,9 +154,11 @@ export const ChartController = ({
           const barX = xScale(d[xKey] as number) ?? 0;
           const barWidth = xScale.bandwidth();
           const barColor =
-            selectedId === d.id
-              ? theme.palette.chart3
-              : alpha(theme.palette.chart7, hoveredIdx === idx ? 1 : 0.5);
+            idx === data.length - 1
+              ? 'url(#diagonalHatch)'
+              : selectedId === d.id
+                ? theme.palette.chart3
+                : alpha(theme.palette.chart7, hoveredIdx === idx ? 1 : 0.5);
 
           return (
             <BarRounded

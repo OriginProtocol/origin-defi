@@ -72,6 +72,16 @@ export const ChartCard = ({ height, ...rest }: ChartCardProps) => {
               })}
             </LoadingLabel>
             <Typography>APY</Typography>
+            {dayjs.utc().isSame(dayjs.utc(hoveredItem?.timestamp), 'day') && (
+              <InfoTooltipLabel
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage: 'This data is incomplete until midnight UTC',
+                })}
+                labelProps={{ color: 'text.secondary' }}
+              >
+                {intl.formatMessage({ defaultMessage: 'Partial data' })}
+              </InfoTooltipLabel>
+            )}
           </Stack>
         </Stack>
         <LimitControls limit={limit} setLimit={handleLimitChange} />
