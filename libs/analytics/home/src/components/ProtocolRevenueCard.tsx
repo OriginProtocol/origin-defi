@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react';
 
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  useTheme,
+} from '@mui/material';
 import {
   oTokenConfig,
   useArmDailyStatsQuery,
@@ -12,10 +19,11 @@ import {
   Spinner,
   StackedBarChart,
 } from '@origin/shared/components';
+import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
-import { last } from 'ramda';
+import { last, pluck } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useHomeView } from '../hooks';
@@ -35,7 +43,8 @@ type Item = {
   ousd?: number;
   superOeth?: number;
   arm?: number;
-  total?: number;
+  total: number;
+  avg: number;
 };
 
 export const ProtocolRevenueCard = ({
@@ -43,6 +52,7 @@ export const ProtocolRevenueCard = ({
   ...rest
 }: ProtocolRevenueCardProps) => {
   const intl = useIntl();
+  const theme = useTheme();
   const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
@@ -100,9 +110,13 @@ export const ProtocolRevenueCard = ({
         superOeth: currency === 'USD' ? superOeth?.feesUSD : superOeth?.feesETH,
         arm: currency === 'USD' ? arm?.feesUSD : arm?.feesETH,
         total: currency === 'USD' ? totals?.feesUSD : totals?.feesETH,
+        avg: 0,
       });
     }
-    return serie;
+
+    const feesAverages = movingAverages(pluck('total', serie), [7]);
+
+    return serie.map((a, i) => ({ ...a, avg: feesAverages[0][i] }));
   }, [arms, currency, tokens]);
 
   const series: YKeyStackedBar<Item>[] = [
@@ -188,6 +202,16 @@ export const ProtocolRevenueCard = ({
                   maximumFractionDigits: 2,
                 })}`
           }
+          lineData={{
+            label: intl.formatMessage({
+              defaultMessage: 'Moving Average',
+            }),
+            xKey: 'timestamp',
+            yKey: 'avg',
+            color: [theme.palette.chart5, theme.palette.chart2],
+            strokeWidth: 3,
+            curveType: 'linear',
+          }}
           margins={margins}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
@@ -197,10 +221,23 @@ export const ProtocolRevenueCard = ({
             ...series.map((s) => ({
               label: s.label,
               value: (d: Item) =>
-                intl.formatNumber(d[s.key] ?? 0, { notation: 'compact' }),
+                intl.formatNumber(d[s.key] ?? 0, {
+                  notation: 'compact',
+                  maximumFractionDigits: 2,
+                }),
               color: s.fillColor,
               currency,
             })),
+            {
+              label: intl.formatMessage({ defaultMessage: '7-day avg' }),
+              value: (d: Item) =>
+                intl.formatNumber(d.avg, {
+                  notation: 'compact',
+                  maximumFractionDigits: 2,
+                }),
+              color: [theme.palette.chart5, theme.palette.chart2],
+              currency,
+            },
           ]}
         />
       )}
