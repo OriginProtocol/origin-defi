@@ -1,42 +1,33 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { InputBase } from '@mui/material';
-import { formatUnits, parseUnits } from 'viem';
+import { eq, format, from } from 'dnum';
 
 import type { InputBaseProps } from '@mui/material';
+import type { Dnum } from 'dnum';
 import type { ChangeEvent } from 'react';
 
-export type BigintInputProps = {
-  value: bigint;
-  /**
-   * Number of decimals for the underlying value
-   * @default 18
-   */
-  decimals?: number;
+export type DnumInputProps = {
+  value: Dnum;
+  onChange?: (value: Dnum) => void;
+  isError?: boolean;
   /**
    * Number of decimal places to display for controlled updates.
    * This doesn't affect user input precision.
    * @default 8
    */
   precision?: number;
-  onChange?: (value: bigint) => void;
-  isError?: boolean;
 } & Omit<InputBaseProps, 'value' | 'onChange' | 'inputRef'>;
 
 type UpdateSource = 'user' | 'prop' | null;
 
-export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
-  (
-    { value, decimals = 18, precision = 8, isError, onChange, ...rest },
-    ref,
-  ) => {
-    const displayPrecision = precision ?? decimals;
-
+export const DnumInput = forwardRef<HTMLInputElement, DnumInputProps>(
+  ({ value, isError, onChange, precision = 8, ...rest }, ref) => {
     const [displayValue, setDisplayValue] = useState(() =>
-      formatUnits(value, decimals).slice(
-        0,
-        formatUnits(value, decimals).indexOf('.') + displayPrecision + 1,
-      ),
+      format(value, {
+        decimalsRounding: 'ROUND_DOWN',
+        digits: precision,
+      }),
     );
 
     const updateSourceRef = useRef<UpdateSource>(null);
@@ -45,30 +36,28 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
     useEffect(() => {
       if (
         updateSourceRef.current !== 'user' &&
-        value !== prevValueRef.current
+        !eq(value, prevValueRef.current)
       ) {
-        const fullValue = formatUnits(value, decimals);
-        const dotIndex = fullValue.indexOf('.');
-        const formattedValue =
-          dotIndex === -1
-            ? fullValue
-            : fullValue.slice(0, dotIndex + displayPrecision + 1);
+        const formattedValue = format(value, {
+          decimalsRounding: 'ROUND_DOWN',
+          digits: precision,
+        });
         setDisplayValue(formattedValue);
         updateSourceRef.current = 'prop';
       }
       prevValueRef.current = value;
-    }, [value, decimals, displayPrecision]);
+    }, [value, precision]);
 
     const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
       const newValue = evt.target.value;
-      const regex = new RegExp(`^[0-9]*\\.?[0-9]*$`);
+      const regex = new RegExp(`^[0-9]*\\.?[0-9]{0,18}$`);
 
       if (evt.target.validity.valid && regex.test(newValue)) {
         if (newValue === '') {
           setDisplayValue('0');
           updateSourceRef.current = 'user';
           if (onChange) {
-            onChange(0n);
+            onChange([0n, value[1]]);
           }
           return;
         }
@@ -77,7 +66,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
           setDisplayValue('0.');
           updateSourceRef.current = 'user';
           if (onChange) {
-            onChange(0n);
+            onChange([0n, value[1]]);
           }
           return;
         }
@@ -91,8 +80,8 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
         updateSourceRef.current = 'user';
 
         try {
-          const num = parseUnits(cleanValue, decimals);
-          if (onChange && num !== value) {
+          const num = from(cleanValue, value[1]);
+          if (onChange && !eq(num, value)) {
             onChange(num);
           }
         } catch {}
@@ -126,4 +115,4 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
   },
 );
 
-BigIntInput.displayName = 'BigIntInput';
+DnumInput.displayName = 'DnumInput';

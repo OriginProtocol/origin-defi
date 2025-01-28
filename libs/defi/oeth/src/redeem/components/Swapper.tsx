@@ -405,7 +405,7 @@ function SwapperWrapped({
               ]}
             >
               {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
-                digits: 18,
+                digits: 8,
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </LoadingLabel>

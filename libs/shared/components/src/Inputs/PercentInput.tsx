@@ -1,75 +1,106 @@
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { InputBase } from '@mui/material';
-import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { InputBaseProps } from '@mui/material';
 import type { ChangeEvent } from 'react';
 
 export type PercentInputProps = {
   value: number;
+  /**
+   * Number of decimal places to display for controlled updates.
+   * This doesn't affect user input precision.
+   * @default 4
+   */
   precision?: number;
   onChange?: (value: number) => void;
 } & Omit<InputBaseProps, 'value' | 'onChange' | 'inputRef'>;
 
+type UpdateSource = 'user' | 'prop' | null;
+
 export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
   ({ value, precision = 4, onChange, ...rest }, ref) => {
-    const [strVal, setStrVal] = useState(formatPercent(value, precision));
+    const [displayValue, setDisplayValue] = useState(() =>
+      formatPercent(value, precision),
+    );
+
+    const updateSourceRef = useRef<UpdateSource>(null);
+    const prevValueRef = useRef(value);
 
     useEffect(() => {
-      if (value === 0 && (isNilOrEmpty(strVal) || strVal.endsWith('.'))) {
-        return;
-      }
-
-      if (value === 0 && !/0\.0+$/.test(strVal)) {
-        setStrVal('');
-        return;
-      }
-
       if (
-        isNilOrEmpty(strVal) ||
-        formatPercent(value, precision) !== strVal.replace('.', '')
+        updateSourceRef.current !== 'user' &&
+        value !== prevValueRef.current
       ) {
-        setStrVal(formatPercent(value, precision));
+        const formattedValue = formatPercent(value, precision);
+        setDisplayValue(formattedValue);
+        updateSourceRef.current = 'prop';
       }
-    }, [precision, strVal, value]);
+      prevValueRef.current = value;
+    }, [value, precision]);
 
     const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-      if (evt.target.validity.valid) {
-        const val =
-          isNilOrEmpty(evt.target.value) || evt.target.value === '.'
-            ? '0'
-            : evt.target.value.replace(/\.0+$/, '');
+      const newValue = evt.target.value;
+      const regex = new RegExp(`^[0-9]*\\.?[0-9]{0,${precision}}$`);
+
+      if (evt.target.validity.valid && regex.test(newValue)) {
+        if (newValue === '') {
+          setDisplayValue('0');
+          updateSourceRef.current = 'user';
+          if (onChange) {
+            onChange(0);
+          }
+          return;
+        }
+
+        if (newValue === '.') {
+          setDisplayValue('0.');
+          updateSourceRef.current = 'user';
+          if (onChange) {
+            onChange(0);
+          }
+          return;
+        }
+
+        const cleanValue =
+          newValue.startsWith('0') && !newValue.startsWith('0.')
+            ? newValue.replace(/^0+/, '') || '0'
+            : newValue;
+
+        setDisplayValue(cleanValue);
+        updateSourceRef.current = 'user';
 
         try {
-          const num = Number(val) / 100;
-          if (num <= 1) {
-            setStrVal(evt.target.value === '.' ? '0.' : evt.target.value);
-            if (onChange && num !== value) {
-              onChange(num);
-            }
+          const num = Number(cleanValue) / 100;
+          if (num <= 1 && onChange && num !== value) {
+            onChange(num);
           }
         } catch {}
       }
     };
 
+    const handleBlur = () => {
+      updateSourceRef.current = null;
+    };
+
     return (
       <InputBase
+        type="text"
         spellCheck="false"
         autoComplete="off"
         autoCorrect="off"
         endAdornment="%"
-        placeholder="0"
         {...rest}
         inputRef={ref}
-        value={strVal}
-        onChange={handleChange}
         inputMode="decimal"
+        value={displayValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
         inputProps={{
-          pattern: `[0-9]*(.[0-9]{0,${precision}})`,
           minLength: 0,
-          maxLength: precision + 4,
+          maxLength: 30,
           inputMode: 'decimal',
+          ...rest?.inputProps,
         }}
       />
     );
