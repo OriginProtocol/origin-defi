@@ -80,6 +80,9 @@
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
+  "6CmkQp": {
+    "defaultMessage": "Partial data"
+  },
   "6bJGds": {
     "defaultMessage": "1W"
   },
@@ -313,6 +316,9 @@
   },
   "YqE/OA": {
     "defaultMessage": "{currency}{rate}"
+  },
+  "ZOj/Hs": {
+    "defaultMessage": "This data is incomplete until midnight UTC"
   },
   "a/W9Oe": {
     "defaultMessage": "Protocol revenue"

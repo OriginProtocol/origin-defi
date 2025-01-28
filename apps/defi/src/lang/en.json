@@ -769,6 +769,12 @@
       "value": "ARM Vaults"
     }
   ],
+  "AMBM0T": [
+    {
+      "type": 0,
+      "value": "1-15 days"
+    }
+  ],
   "ASNc/h": [
     {
       "type": 0,
@@ -999,6 +1005,12 @@
       "value": "The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn."
     }
   ],
+  "ES46YP": [
+    {
+      "type": 0,
+      "value": "1:1 wS redemptions"
+    }
+  ],
   "EVmlnF": [
     {
       "type": 0,
@@ -1129,6 +1141,12 @@
     {
       "type": 0,
       "value": "Swap via Uniswap V2"
+    }
+  ],
+  "GjCJXM": [
+    {
+      "type": 0,
+      "value": "Mint OS to maximize your S position. OS combines Sonic liquid staking yield with S points."
     }
   ],
   "GtABHs": [
@@ -1387,6 +1405,12 @@
       "value": "Your balance"
     }
   ],
+  "LYosF7": [
+    {
+      "type": 0,
+      "value": "Hypersonic liquid staking"
+    }
+  ],
   "LZqvbG": [
     {
       "type": 0,
@@ -1573,12 +1597,6 @@
     {
       "type": 0,
       "value": "No available route"
-    }
-  ],
-  "OMDGLh": [
-    {
-      "type": 0,
-      "value": "Origin Sonic now available on Sonic!"
     }
   ],
   "ORGv1Q": [
@@ -1931,12 +1949,6 @@
     {
       "type": 0,
       "value": "Claiming Withdrawal"
-    }
-  ],
-  "T62aqu": [
-    {
-      "type": 0,
-      "value": "1:1 WETH redemptions"
     }
   ],
   "TJOfi8": [
@@ -3511,12 +3523,6 @@
     {
       "type": 0,
       "value": "Redeem amount"
-    }
-  ],
-  "u6XfeR": [
-    {
-      "type": 0,
-      "value": "Mint OS to maximize your Sonic position. OS combines Sonic liquid staking yield with X rewards."
     }
   ],
   "uEFsHG": [

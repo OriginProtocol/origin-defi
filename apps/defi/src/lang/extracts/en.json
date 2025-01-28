@@ -323,6 +323,9 @@
   "AFsCmQ": {
     "defaultMessage": "ARM Vaults"
   },
+  "AMBM0T": {
+    "defaultMessage": "1-15 days"
+  },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
   },
@@ -422,6 +425,9 @@
   "EMU/OA": {
     "defaultMessage": "The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn."
   },
+  "ES46YP": {
+    "defaultMessage": "1:1 wS redemptions"
+  },
   "EVmlnF": {
     "defaultMessage": "OGV"
   },
@@ -481,6 +487,9 @@
   },
   "GdHGdR": {
     "defaultMessage": "Swap via Uniswap V2"
+  },
+  "GjCJXM": {
+    "defaultMessage": "Mint OS to maximize your S position. OS combines Sonic liquid staking yield with S points."
   },
   "GtABHs": {
     "defaultMessage": "Waiting for CCIP"
@@ -596,6 +605,9 @@
   "LU9l68": {
     "defaultMessage": "Your balance"
   },
+  "LYosF7": {
+    "defaultMessage": "Hypersonic liquid staking"
+  },
   "LZqvbG": {
     "defaultMessage": "6M"
   },
@@ -664,9 +676,6 @@
   },
   "OBfWz0": {
     "defaultMessage": "No available route"
-  },
-  "OMDGLh": {
-    "defaultMessage": "Origin Sonic now available on Sonic!"
   },
   "ORGv1Q": {
     "defaultMessage": "Created"
@@ -790,9 +799,6 @@
   },
   "T1d+7b": {
     "defaultMessage": "Claiming Withdrawal"
-  },
-  "T62aqu": {
-    "defaultMessage": "1:1 WETH redemptions"
   },
   "TJOfi8": {
     "defaultMessage": "Yield bearing stablecoin"
@@ -1450,9 +1456,6 @@
   },
   "u53ROb": {
     "defaultMessage": "Redeem amount"
-  },
-  "u6XfeR": {
-    "defaultMessage": "Mint OS to maximize your Sonic position. OS combines Sonic liquid staking yield with X rewards."
   },
   "uEFsHG": {
     "defaultMessage": "Discord forum"

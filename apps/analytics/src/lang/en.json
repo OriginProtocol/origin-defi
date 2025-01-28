@@ -185,6 +185,12 @@
       "value": "I agree"
     }
   ],
+  "6CmkQp": [
+    {
+      "type": 0,
+      "value": "Partial data"
+    }
+  ],
   "6bJGds": [
     {
       "type": 0,
@@ -719,6 +725,12 @@
     {
       "type": 1,
       "value": "rate"
+    }
+  ],
+  "ZOj/Hs": [
+    {
+      "type": 0,
+      "value": "This data is incomplete until midnight UTC"
     }
   ],
   "a/W9Oe": [

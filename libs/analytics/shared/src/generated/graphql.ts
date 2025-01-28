@@ -15327,6 +15327,7 @@ export type Erc20Holder = {
   balance: Scalars['BigInt']['output'];
   chainId: Scalars['Int']['output'];
   id: Scalars['String']['output'];
+  since: Scalars['DateTime']['output'];
 };
 
 export type Erc20HolderEdge = {
@@ -15365,7 +15366,13 @@ export enum Erc20HolderOrderByInput {
   IdAscNullsLast = 'id_ASC_NULLS_LAST',
   IdDesc = 'id_DESC',
   IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST'
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  SinceAsc = 'since_ASC',
+  SinceAscNullsFirst = 'since_ASC_NULLS_FIRST',
+  SinceAscNullsLast = 'since_ASC_NULLS_LAST',
+  SinceDesc = 'since_DESC',
+  SinceDescNullsFirst = 'since_DESC_NULLS_FIRST',
+  SinceDescNullsLast = 'since_DESC_NULLS_LAST'
 }
 
 export type Erc20HolderWhereInput = {
@@ -15440,6 +15447,15 @@ export type Erc20HolderWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  since_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  since_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  since_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  since_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  since_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  since_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  since_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  since_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  since_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
 export type Erc20HoldersConnection = {
@@ -23207,6 +23223,7 @@ export type OTokenAddress = {
   lastUpdated: Scalars['DateTime']['output'];
   otoken: Scalars['String']['output'];
   rebasingOption: RebasingOption;
+  since?: Maybe<Scalars['DateTime']['output']>;
 };
 
 
@@ -23295,7 +23312,13 @@ export enum OTokenAddressOrderByInput {
   RebasingOptionAscNullsLast = 'rebasingOption_ASC_NULLS_LAST',
   RebasingOptionDesc = 'rebasingOption_DESC',
   RebasingOptionDescNullsFirst = 'rebasingOption_DESC_NULLS_FIRST',
-  RebasingOptionDescNullsLast = 'rebasingOption_DESC_NULLS_LAST'
+  RebasingOptionDescNullsLast = 'rebasingOption_DESC_NULLS_LAST',
+  SinceAsc = 'since_ASC',
+  SinceAscNullsFirst = 'since_ASC_NULLS_FIRST',
+  SinceAscNullsLast = 'since_ASC_NULLS_LAST',
+  SinceDesc = 'since_DESC',
+  SinceDescNullsFirst = 'since_DESC_NULLS_FIRST',
+  SinceDescNullsLast = 'since_DESC_NULLS_LAST'
 }
 
 export type OTokenAddressWhereInput = {
@@ -23434,6 +23457,15 @@ export type OTokenAddressWhereInput = {
   rebasingOption_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   rebasingOption_not_eq?: InputMaybe<RebasingOption>;
   rebasingOption_not_in?: InputMaybe<Array<RebasingOption>>;
+  since_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  since_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  since_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  since_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  since_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  since_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  since_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  since_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  since_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
 export type OTokenAddressesConnection = {
@@ -24513,6 +24545,12 @@ export enum OTokenHistoryOrderByInput {
   AddressRebasingOptionDesc = 'address_rebasingOption_DESC',
   AddressRebasingOptionDescNullsFirst = 'address_rebasingOption_DESC_NULLS_FIRST',
   AddressRebasingOptionDescNullsLast = 'address_rebasingOption_DESC_NULLS_LAST',
+  AddressSinceAsc = 'address_since_ASC',
+  AddressSinceAscNullsFirst = 'address_since_ASC_NULLS_FIRST',
+  AddressSinceAscNullsLast = 'address_since_ASC_NULLS_LAST',
+  AddressSinceDesc = 'address_since_DESC',
+  AddressSinceDescNullsFirst = 'address_since_DESC_NULLS_FIRST',
+  AddressSinceDescNullsLast = 'address_since_DESC_NULLS_LAST',
   BalanceAsc = 'balance_ASC',
   BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
   BalanceAscNullsLast = 'balance_ASC_NULLS_LAST',
@@ -24858,6 +24896,12 @@ export enum OTokenRebaseOptionOrderByInput {
   AddressRebasingOptionDesc = 'address_rebasingOption_DESC',
   AddressRebasingOptionDescNullsFirst = 'address_rebasingOption_DESC_NULLS_FIRST',
   AddressRebasingOptionDescNullsLast = 'address_rebasingOption_DESC_NULLS_LAST',
+  AddressSinceAsc = 'address_since_ASC',
+  AddressSinceAscNullsFirst = 'address_since_ASC_NULLS_FIRST',
+  AddressSinceAscNullsLast = 'address_since_ASC_NULLS_LAST',
+  AddressSinceDesc = 'address_since_DESC',
+  AddressSinceDescNullsFirst = 'address_since_DESC_NULLS_FIRST',
+  AddressSinceDescNullsLast = 'address_since_DESC_NULLS_LAST',
   BlockNumberAsc = 'blockNumber_ASC',
   BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
   BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
