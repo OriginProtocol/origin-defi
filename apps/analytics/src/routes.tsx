@@ -15,6 +15,7 @@ import {
   FaCoinsRegular,
   FaEyeRegular,
   OETH,
+  OS,
   OUSD,
   superOETH,
 } from '@origin/shared/icons';
@@ -100,6 +101,35 @@ export const routes: RouteObject[] = [
           {
             path: 'poy',
             element: <PoYView token={tokens.mainnet.OETH} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Proof of Yield' }),
+              icon: FaClockRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Proof of Yield' }),
+            },
+          },
+        ],
+      },
+      {
+        index: false,
+        path: 'os',
+        handle: {
+          title: defineMessage({ defaultMessage: 'OS' }),
+          icon: OS,
+          breadcrumb: defineMessage({ defaultMessage: 'OS' }),
+        },
+        children: [
+          {
+            index: true,
+            element: <OverviewView token={tokens.sonic.OS} currency="ETH" />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Overview' }),
+              icon: FaEyeRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Overview' }),
+            },
+          },
+          {
+            path: 'poy',
+            element: <PoYView token={tokens.sonic.OS} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
