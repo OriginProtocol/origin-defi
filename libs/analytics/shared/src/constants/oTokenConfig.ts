@@ -1,6 +1,6 @@
 import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
-import { arbitrum, base, mainnet } from 'viem/chains';
+import { arbitrum, base, mainnet, sonic } from 'viem/chains';
 
 import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
@@ -75,6 +75,17 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     protocolRevenueCardDefaultLimit: 30,
     defaultApyTrailing: 'apy30',
     lineChartColor: '#E85BFF',
+    currency: 'ETH',
+  },
+  [tokens.sonic.OS.id]: {
+    from: '2025-01-20T00:00:00.000000Z',
+    availableNetworks: [sonic],
+    pageHref: 'os',
+    dappHref: `${ORIGIN_DAPP_URL}/#/os`,
+    dripperToken: tokens.sonic.S,
+    protocolRevenueCardDefaultLimit: 30,
+    defaultApyTrailing: 'apy7',
+    lineChartColor: '#7A26F3',
     currency: 'ETH',
   },
 };
