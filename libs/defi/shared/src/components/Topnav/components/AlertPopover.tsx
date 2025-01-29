@@ -65,6 +65,7 @@ export const AlertPopover = (
         <RebaseRow token={tokens.mainnet.OETH} px={3} py={1.5} />
         <RebaseRow token={tokens.mainnet.OUSD} px={3} py={1.5} />
         <RebaseRow token={tokens.base.superOETHb} px={3} py={1.5} />
+        <RebaseRow token={tokens.sonic.OS} px={3} py={1.5} />
       </Stack>
     </ClickAwayPopover>
   );

@@ -55,21 +55,33 @@ export const Topnav = ({ routes }: TopnavProps) => {
   const isNonRebasingOETH = useIsRebaseDisabled(tokens.mainnet.OETH);
   const isNonRebasingOUSD = useIsRebaseDisabled(tokens.mainnet.OUSD);
   const isNonRebasingSuperOETHb = useIsRebaseDisabled(tokens.base.superOETHb);
+  const isNonRebasingOS = useIsRebaseDisabled(tokens.sonic.OS);
   const once = useRef(true);
 
   useEffect(() => {
     if (
       once.current &&
-      (isNonRebasingOETH || isNonRebasingOUSD || isNonRebasingSuperOETHb)
+      (isNonRebasingOETH ||
+        isNonRebasingOUSD ||
+        isNonRebasingSuperOETHb ||
+        isNonRebasingOS)
     ) {
       setAlertMenuOpen(true);
       once.current = false;
     }
-  }, [isNonRebasingOETH, isNonRebasingOUSD, isNonRebasingSuperOETHb]);
+  }, [
+    isNonRebasingOETH,
+    isNonRebasingOS,
+    isNonRebasingOUSD,
+    isNonRebasingSuperOETHb,
+  ]);
 
   const isLoading = status === 'pending' && pendingCount > 0;
   const showRebaseMenu =
-    isNonRebasingOETH || isNonRebasingOUSD || isNonRebasingSuperOETHb;
+    isNonRebasingOETH ||
+    isNonRebasingOUSD ||
+    isNonRebasingSuperOETHb ||
+    isNonRebasingOS;
 
   return (
     <>
