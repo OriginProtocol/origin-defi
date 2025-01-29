@@ -19,10 +19,11 @@ import {
   FaClockRegular,
 } from '@origin/shared/icons';
 import { TxButton, useIdlePollInterval } from '@origin/shared/providers';
-import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import { getFormatPrecision, isNilOrEmpty, txLink } from '@origin/shared/utils';
 import { add, eq, format, from } from 'dnum';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
+import { sonic } from 'viem/chains';
 
 import { useWithdrawalRequests } from '../hooks';
 
@@ -242,7 +243,7 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
         <Button
           variant="outlined"
           color="secondary"
-          href={`https://basescan.org/tx/${request.txHash}`}
+          href={txLink(sonic, request.txHash)}
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
