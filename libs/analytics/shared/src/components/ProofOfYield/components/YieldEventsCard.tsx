@@ -161,10 +161,13 @@ export const YieldEventsCard = (props: CardProps) => {
             })}
           </Typography>
           <Typography color="text.secondary">
-            {intl.formatMessage({
-              defaultMessage:
-                'OETH wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain.',
-            })}
+            {intl.formatMessage(
+              {
+                defaultMessage:
+                  '{symbol} wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain.',
+              },
+              { symbol: token?.name },
+            )}
           </Typography>
         </Stack>
       </CardContent>

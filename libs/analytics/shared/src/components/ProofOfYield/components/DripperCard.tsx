@@ -2,10 +2,13 @@ import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { ORIGIN_DOCS_URL } from '@origin/shared/constants';
 import { useIntl } from 'react-intl';
 
+import { usePoY } from '../hooks';
+
 import type { CardProps } from '@mui/material';
 
 export const DripperCard = (props: CardProps) => {
   const intl = useIntl();
+  const { token } = usePoY();
 
   return (
     <Card {...props}>
@@ -22,9 +25,12 @@ export const DripperCard = (props: CardProps) => {
             })}
           </Typography>
           <Typography color="text.secondary">
-            {intl.formatMessage({
-              defaultMessage: `Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper.`,
-            })}
+            {intl.formatMessage(
+              {
+                defaultMessage: `Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an {symbol} holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper.`,
+              },
+              { symbol: token?.name },
+            )}
           </Typography>
           <Button
             variant="outlined"
