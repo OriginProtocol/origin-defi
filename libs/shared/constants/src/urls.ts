@@ -1,9 +1,6 @@
 // export const ORIGIN_DAPP_URL = 'https://originprotocol.eth.limo';
 export const ORIGIN_DAPP_URL = 'https://app.originprotocol.com';
-export const OETH_ANALYTICS_URL = 'https://analytics.originprotocol.com/oeth/';
-export const OUSD_ANALYTICS_URL = 'https://analytics.originprotocol.com/ousd/';
-export const SUPEROETHB_ANALYTICS_URL =
-  'https://analytics.originprotocol.com/super/';
+export const ORIGIN_ANALYTICS_URL = 'https://analytics.originprotocol.com';
 export const ORIGIN_DOCS_URL = 'https://docs.originprotocol.com';
 export const OUSD_DOCS_URL = 'https://docs.ousd.com';
 export const JOBS_URL = 'https://angel.co/company/originprotocol/jobs';

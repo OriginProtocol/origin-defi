@@ -1,5 +1,6 @@
 import { Grid2, Stack } from '@mui/material';
 import {
+  AnalyticsCard,
   DailyStatCard,
   Page,
   PageSection,
@@ -7,6 +8,7 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
+import { ORIGIN_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { OS } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -58,6 +60,11 @@ export const SwapView = () => {
                 token={tokens.sonic.OS}
                 stats={['tvl', 'price']}
                 currency="S"
+              />
+              <AnalyticsCard
+                token={tokens.sonic.OS}
+                title="OS"
+                href={`${ORIGIN_ANALYTICS_URL}/os`}
               />
             </Stack>
           </Grid2>

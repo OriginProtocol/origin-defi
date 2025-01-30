@@ -9,7 +9,7 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
-import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
+import { ORIGIN_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { arbitrum, mainnet } from 'viem/chains';
@@ -85,7 +85,10 @@ export const SwapView = () => {
                 token={token}
                 stats={['supply_distribution', 'price']}
               />
-              <AnalyticsCard token={token} href={OETH_ANALYTICS_URL} />
+              <AnalyticsCard
+                token={token}
+                href={`${ORIGIN_ANALYTICS_URL}/oeth`}
+              />
             </Stack>
           </Grid2>
         </Grid2>

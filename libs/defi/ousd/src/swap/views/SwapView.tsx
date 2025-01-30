@@ -8,7 +8,7 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
-import { OUSD_ANALYTICS_URL } from '@origin/shared/constants';
+import { ORIGIN_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -50,7 +50,7 @@ export const SwapView = () => {
               <GlobalStatsCard token={tokens.mainnet.OUSD} />
               <AnalyticsCard
                 token={tokens.mainnet.OUSD}
-                href={OUSD_ANALYTICS_URL}
+                href={`${ORIGIN_ANALYTICS_URL}/ousd`}
               />
             </Stack>
           </Grid2>
