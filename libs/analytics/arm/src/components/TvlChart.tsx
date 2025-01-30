@@ -26,6 +26,7 @@ import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
 import type { ArmDailyStatsQuery } from '@origin/analytics/shared';
+import type { Currency } from '@origin/shared/components';
 
 export type TvlChartProps = {
   height: number;
@@ -34,7 +35,7 @@ export type TvlChartProps = {
 export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
-  const [currency, setCurrency] = useState<'ETH' | 'USD'>('ETH');
+  const [currency, setCurrency] = useState<Currency>('ETH');
   const [limit, setLimit] = useState<number | undefined>(30);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();

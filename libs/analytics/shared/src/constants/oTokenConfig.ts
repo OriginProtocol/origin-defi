@@ -25,8 +25,10 @@ export type OTokenConfig = {
   defaultApyTrailing?: 'apy7' | 'apy14' | 'apy30';
   // token color for charts
   lineChartColor?: string;
-  // default currency for chart display
+  // default currency for chart display and mapping
   currency: Currency;
+  // default currency options for chart display
+  currencyOptions?: Currency[];
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -39,12 +41,14 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     showCirculatingSplit: true,
     lineChartColor: '#586CF8',
     currency: 'ETH',
+    currencyOptions: ['ETH', 'USD'],
   },
   [tokens.arbitrum.wOETH.id]: {
     from: '2024-02-07T00:00:00.000000Z',
     availableNetworks: [arbitrum],
     dripperToken: tokens.arbitrum.WETH,
     currency: 'ETH',
+    currencyOptions: ['ETH', 'USD'],
   },
   [tokens.mainnet.OUSD.id]: {
     from: '2023-06-01T00:00:00.000000Z',
@@ -54,6 +58,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dripperToken: tokens.mainnet.USDT,
     lineChartColor: '#14C4BA',
     currency: 'USD',
+    currencyOptions: ['ETH', 'USD'],
   },
   [tokens.base.superOETHb.id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -66,6 +71,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     defaultApyTrailing: 'apy7',
     lineChartColor: '#7A26F3',
     currency: 'ETH',
+    currencyOptions: ['ETH', 'USD'],
   },
   [tokens.mainnet['ARM-WETH-stETH'].id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -76,6 +82,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     defaultApyTrailing: 'apy30',
     lineChartColor: '#E85BFF',
     currency: 'ETH',
+    currencyOptions: ['ETH', 'USD'],
   },
   [tokens.sonic.OS.id]: {
     from: '2025-01-20T00:00:00.000000Z',
@@ -85,7 +92,8 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dripperToken: tokens.sonic.S,
     protocolRevenueCardDefaultLimit: 30,
     defaultApyTrailing: 'apy7',
-    lineChartColor: '#7A26F3',
-    currency: 'ETH',
+    lineChartColor: '#E79156',
+    currency: 'S',
+    currencyOptions: ['S', 'USD'],
   },
 };

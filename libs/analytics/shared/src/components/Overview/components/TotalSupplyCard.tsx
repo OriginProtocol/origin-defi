@@ -38,14 +38,12 @@ export type TotalSupplyCardProps = {
   token: Token;
   height: number;
   from?: string;
-  currency?: Currency;
 } & CardProps;
 
 export const TotalSupplyCard = ({
   token,
   height,
   from,
-  currency,
   ...rest
 }: TotalSupplyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
@@ -54,18 +52,19 @@ export const TotalSupplyCard = ({
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [curr, setCurr] = useState<Currency>(currency ?? 'ETH');
+  const [currency, setCurrency] = useState<Currency>(config?.currency ?? 'ETH');
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
     token,
     limit,
     from: from ?? config?.from,
     offset: 1,
+    currency,
   });
 
   const series = [
     {
-      key: curr === 'ETH' ? 'circulatingSupplyETH' : 'circulatingSupplyUSD',
+      key: currency === 'USD' ? 'circulatingSupplyUSD' : 'circulatingSupplyETH',
       label: intl.formatMessage({ defaultMessage: 'TVL' }),
       fillColor: [
         alpha(theme.palette.chart1, 0.4),
@@ -77,9 +76,9 @@ export const TotalSupplyCard = ({
       ? [
           {
             key:
-              curr === 'ETH'
-                ? 'protocolOwnedSupplyETH'
-                : 'protocolOwnedSupplyUSD',
+              currency === 'USD'
+                ? 'protocolOwnedSupplyUSD'
+                : 'protocolOwnedSupplyETH',
             label: intl.formatMessage({
               defaultMessage: 'POL',
             }),
@@ -91,7 +90,8 @@ export const TotalSupplyCard = ({
   ] as YKey<ChartResult>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
-  const totalSupply = curr === 'ETH' ? activeItem?.tvlETH : activeItem?.tvlUSD;
+  const totalSupply =
+    currency === 'USD' ? activeItem?.tvlUSD : activeItem?.tvlETH;
 
   return (
     <Card {...rest} ref={ref}>
@@ -113,8 +113,9 @@ export const TotalSupplyCard = ({
               {dayjs.utc(activeItem?.timestamp).format('DD MMM YYYY')}
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              <CurrencyLabel currency={curr} />
-              {intl.formatNumber(totalSupply ?? 0)}
+              <CurrencyLabel currency={currency}>
+                {intl.formatNumber(totalSupply ?? 0)}
+              </CurrencyLabel>
             </LoadingLabel>
             {config?.showCirculatingSplit && (
               <Stack
@@ -142,11 +143,15 @@ export const TotalSupplyCard = ({
                       {s?.label ?? 'Serie'}
                     </Typography>
                     <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
-                      <CurrencyLabel currency={curr} />
-                      {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
-                        notation: 'compact',
-                        minimumFractionDigits: 2,
-                      })}
+                      <CurrencyLabel currency={currency}>
+                        {intl.formatNumber(
+                          (activeItem?.[s.key] as number) ?? 0,
+                          {
+                            notation: 'compact',
+                            minimumFractionDigits: 2,
+                          },
+                        )}
+                      </CurrencyLabel>
                     </Typography>
                     <Typography
                       variant="caption1"
@@ -171,7 +176,11 @@ export const TotalSupplyCard = ({
           </Stack>
           <Stack spacing={1} sx={{ alignItems: 'flex-end' }}>
             <LimitControls limit={limit} setLimit={setLimit} />
-            <CurrencyControls currency={curr} setCurrency={setCurr} />
+            <CurrencyControls
+              currency={currency}
+              setCurrency={setCurrency}
+              options={config?.currencyOptions}
+            />
           </Stack>
         </Stack>
       </CardContent>
@@ -205,7 +214,7 @@ export const TotalSupplyCard = ({
                   minimumFractionDigits: 2,
                 }),
               color: s.lineColor,
-              currency: curr,
+              currency: currency,
             })),
           ]}
         />

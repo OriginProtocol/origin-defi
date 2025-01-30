@@ -33,7 +33,7 @@ export const OverviewView = () => {
     });
 
   return (
-    <GenericOverview token={tokens.mainnet.OETH} currency="ETH">
+    <GenericOverview token={tokens.mainnet.OETH}>
       <Grid2 size={12}>
         <Stack
           sx={{

@@ -42,6 +42,8 @@ type Item = {
   timestamp: number;
   oethETH?: number;
   oethUSD?: number;
+  osETH?: number;
+  osUSD?: number;
   ousdETH?: number;
   ousdUSD?: number;
   superOethETH?: number;
@@ -78,6 +80,7 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
       const oeth = data?.['1:OETH'][i];
       const ousd = data?.['1:OUSD'][i];
       const superOeth = data?.['8453:superOETHb'][i];
+      const os = data?.['146:OS'][i];
       const total = data?.totals[i];
       const armItem = arms?.find((a) =>
         dayjs.utc(a.date).isSame(dayjs.utc(oeth?.date), 'day'),
@@ -98,6 +101,8 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
           .millisecond(0),
         oethUSD: oeth?.circulatingSupplyUSD,
         oethETH: oeth?.circulatingSupplyETH,
+        osETH: os?.circulatingSupplyETH,
+        osUSD: os?.circulatingSupplyUSD,
         ousdUSD: ousd?.circulatingSupplyUSD,
         ousdETH: ousd?.circulatingSupplyETH,
         superOethUSD: superOeth?.circulatingSupplyUSD,
@@ -146,6 +151,19 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
         oTokenConfig[tokens.base.superOETHb.id].lineChartColor ?? '#fff',
         emphasize(
           oTokenConfig[tokens.base.superOETHb.id].lineChartColor ?? '#fff',
+          0.5,
+        ),
+      ],
+      strokeWidth: 2,
+    },
+    {
+      label: 'Origin Sonic',
+      xKey: 'timestamp',
+      yKey: currency === 'USD' ? 'osUSD' : 'osETH',
+      color: [
+        oTokenConfig[tokens.sonic.OS.id].lineChartColor ?? '#fff',
+        emphasize(
+          oTokenConfig[tokens.sonic.OS.id].lineChartColor ?? '#fff',
           0.5,
         ),
       ],

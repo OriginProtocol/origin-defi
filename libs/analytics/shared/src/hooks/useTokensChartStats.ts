@@ -19,6 +19,7 @@ const DEFAULT_OTOKENS = [
   tokens.mainnet.OETH,
   tokens.mainnet.OUSD,
   tokens.base.superOETHb,
+  tokens.sonic.OS,
 ];
 const DEFAULT_TOTALS = [
   'tvlUSD',
@@ -69,6 +70,7 @@ export type TokensChartResult = {
   [tokens.mainnet.OETH.id]: ChartResult[];
   [tokens.mainnet.OUSD.id]: ChartResult[];
   [tokens.base.superOETHb.id]: ChartResult[];
+  [tokens.sonic.OS.id]: ChartResult[];
   totals: Totals[];
 };
 
@@ -95,6 +97,7 @@ const fetcher =
       [tokens.mainnet.OETH.id]: [],
       [tokens.mainnet.OUSD.id]: [],
       [tokens.base.superOETHb.id]: [],
+      [tokens.sonic.OS.id]: [],
       totals: [],
     };
 
@@ -171,7 +174,9 @@ const emptyChartResult = (
   apy7: 0,
   apy14: 0,
   apy30: 0,
-  totalSupply: 0,
+  tvl: 0,
+  tvlUSD: 0,
+  tvlETH: 0,
   rebasingSupply: 0,
   nonRebasingSupply: 0,
   wrappedSupply: 0,
@@ -186,6 +191,10 @@ const emptyChartResult = (
   feesUSD: 0,
   rateETH: 0,
   rateUSD: 0,
-  tvlUSD: 0,
-  tvlETH: 0,
+  rateS: 0,
+  fees: 0,
+  yieldETH: 0,
+  yieldUSD: 0,
+  dripperUSD: 0,
+  yield: 0,
 });

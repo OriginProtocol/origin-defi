@@ -14,13 +14,11 @@ import type { ReactNode } from 'react';
 export type OverviewViewProps = {
   children?: ReactNode;
   token: Token;
-  currency: 'ETH' | 'USD';
 } & StackProps;
 
 export const OverviewView = ({
   token,
   children,
-  currency,
   ...rest
 }: OverviewViewProps) => {
   const [{ isDrawerOpen }] = useLayout();
@@ -32,14 +30,14 @@ export const OverviewView = ({
           <ApyCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
-          <TotalSupplyCard token={token} height={300} currency={currency} />
+          <TotalSupplyCard token={token} height={300} />
         </Grid2>
         {children}
         <Grid2 size={12}>
           <ProtocolRevenueCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
-          <PriceCard token={token} height={300} currency={currency} />
+          <PriceCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <PercentWrappedCard token={token} height={300} />

@@ -5,40 +5,45 @@ import type { ButtonGroupProps } from '@mui/material';
 
 const currencyOptions = {
   ETH: defineMessage({ defaultMessage: 'ETH' }),
+  S: defineMessage({ defaultMessage: 'S' }),
   USD: defineMessage({ defaultMessage: 'USD' }),
 };
 
 export type Currency = keyof typeof currencyOptions;
 
-export type CurrencyControlsProps = {
-  currency: Currency;
-  setCurrency: (value: Currency) => void;
+export type CurrencyControlsProps<T extends Currency> = {
+  currency: T;
+  setCurrency: (value: T) => void;
+  options?: T[];
 } & ButtonGroupProps;
 
-export const CurrencyControls = ({
+export const CurrencyControls = <T extends Currency>({
   currency,
   setCurrency,
+  options = ['ETH', 'USD'] as T[],
   ...rest
-}: CurrencyControlsProps) => {
+}: CurrencyControlsProps<T>) => {
   const intl = useIntl();
 
   return (
     <ButtonGroup size="small" variant="outlined" color="secondary" {...rest}>
-      {Object.entries(currencyOptions).map(([key, value]) => (
-        <Button
-          key={key}
-          onClick={() => {
-            setCurrency(key as Currency);
-          }}
-          sx={[
-            ...(key === currency
-              ? [{ backgroundColor: 'secondary.main' }]
-              : []),
-          ]}
-        >
-          {intl.formatMessage(value)}
-        </Button>
-      ))}
+      {Object.entries(currencyOptions)
+        .filter(([key]) => options.includes(key as T))
+        .map(([key, value]) => (
+          <Button
+            key={key}
+            onClick={() => {
+              setCurrency(key as T);
+            }}
+            sx={[
+              ...(key === currency
+                ? [{ backgroundColor: 'secondary.main' }]
+                : []),
+            ]}
+          >
+            {intl.formatMessage(value)}
+          </Button>
+        ))}
     </ButtonGroup>
   );
 };

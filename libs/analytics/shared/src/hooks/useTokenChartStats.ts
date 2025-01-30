@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useOTokenStatsQuery } from '../queries';
 import { dailyStatMapper } from '../utils';
 
+import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type {
   QueryClient,
@@ -21,6 +22,7 @@ type Key = [
   string | undefined,
   OTokenDailyStatOrderByInput[] | undefined,
   number | undefined,
+  Currency | undefined,
 ];
 
 export type ChartResult = {
@@ -32,7 +34,7 @@ export type ChartResult = {
   apy7: number;
   apy14: number;
   apy30: number;
-  totalSupply: number;
+  tvl: number;
   tvlUSD: number;
   tvlETH: number;
   rebasingSupply: number;
@@ -45,10 +47,16 @@ export type ChartResult = {
   circulatingSupplyETH: number;
   circulatingSupplyUSD: number;
   pctCirculatingSupply: number;
+  fees: number;
   feesETH: number;
   feesUSD: number;
+  yield: number;
+  yieldETH: number;
+  yieldUSD: number;
+  dripperUSD: number;
   rateETH: number;
   rateUSD: number;
+  rateS: number;
 };
 
 const getKey = (
@@ -58,13 +66,25 @@ const getKey = (
   to?: string,
   orderBy?: OTokenDailyStatOrderByInput[],
   offset?: number,
-): Key => ['useTokenChartStats', token, limit, from, to, orderBy, offset];
+  currency?: Currency,
+): Key => [
+  'useTokenChartStats',
+  token,
+  limit,
+  from,
+  to,
+  orderBy,
+  offset,
+  currency,
+];
 
 const fetcher: (
   queryClient: QueryClient,
 ) => QueryFunction<ChartResult[], Key> =
   (queryClient) =>
-  async ({ queryKey: [, token, limit, from, to, orderBy, offset] }) => {
+  async ({
+    queryKey: [, token, limit, from, to, orderBy, offset, currency],
+  }) => {
     const res = await queryClient.fetchQuery({
       queryKey: useOTokenStatsQuery.getKey({
         token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
@@ -88,7 +108,7 @@ const fetcher: (
 
     return res?.oTokenDailyStats
       ?.toReversed()
-      .map((d) => dailyStatMapper(d, token, { isChartFormat: true }));
+      .map((d) => dailyStatMapper(d, token, { isChartFormat: true, currency }));
   };
 
 export const useTokenChartStats = <TResult = ChartResult[]>(
@@ -99,6 +119,7 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
     to,
     orderBy,
     offset,
+    currency,
   }: {
     token: Token;
     limit?: number;
@@ -106,6 +127,7 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
     to?: string;
     orderBy?: OTokenDailyStatOrderByInput[];
     offset?: number;
+    currency?: Currency;
   },
   options?: Omit<
     UseQueryOptions<ChartResult[], Error, TResult, Key>,
@@ -116,7 +138,7 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
 
   return useQuery({
     ...options,
-    queryKey: getKey(token, limit, from, to, orderBy, offset),
+    queryKey: getKey(token, limit, from, to, orderBy, offset, currency),
     queryFn: fetcher(queryClient),
   });
 };

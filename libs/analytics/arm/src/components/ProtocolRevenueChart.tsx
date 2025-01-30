@@ -27,7 +27,7 @@ import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
 import type { ArmDailyStatsQuery } from '@origin/analytics/shared';
-import type { Currency, MovingAvg } from '@origin/shared/components';
+import type { MovingAvg } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
 import type { Dnum } from 'dnum';
 
@@ -42,7 +42,7 @@ export const ProtocolRevenueChart = ({
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(30);
-  const [currency, setCurrency] = useState<Currency>('ETH');
+  const [currency, setCurrency] = useState<'ETH' | 'USD'>('ETH');
   const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
@@ -140,7 +140,11 @@ export const ProtocolRevenueChart = ({
             <LimitControls limit={limit} setLimit={setLimit} />
             <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-end' }}>
               <MovingAvgControls ma={ma} setMa={setMa} />
-              <CurrencyControls currency={currency} setCurrency={setCurrency} />
+              <CurrencyControls
+                options={['ETH', 'USD']}
+                currency={currency}
+                setCurrency={setCurrency}
+              />
             </Stack>
           </Stack>
         </Stack>

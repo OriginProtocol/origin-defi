@@ -40,7 +40,7 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
       isLoading: false,
       config: oTokenConfig[token.id as keyof typeof oTokenConfig],
       xKey: 'timestamp',
-      yKey: 'yieldETH',
+      yKey: 'yield',
       lineKey: 'avg30',
       limit: 30,
     });
@@ -56,7 +56,7 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
         select: useCallback(
           (data: OTokenStatsQuery) => {
             const mapped = data.oTokenDailyStats.map((s) =>
-              dailyStatMapper(s, token),
+              dailyStatMapper(s, token, { currency: state.config.currency }),
             );
             const avg = movingAverages(
               mapped.map(
@@ -75,7 +75,7 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
               avg30: avg[2][i],
             }));
           },
-          [state.yKey, token],
+          [state.config.currency, state.yKey, token],
         ),
       },
     );

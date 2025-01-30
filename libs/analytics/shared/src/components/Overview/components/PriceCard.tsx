@@ -27,23 +27,15 @@ import { CHART_HEADER_HEIGHT } from '../constants';
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-type SupportedCurrency = 'ETH' | 'USD';
-
 export type PriceCardProps = {
   token: Token;
-  currency: SupportedCurrency;
   height: number;
   from?: string;
 } & CardProps;
 
-export const PriceCard = ({
-  token,
-  currency,
-  height,
-  from,
-  ...rest
-}: PriceCardProps) => {
+export const PriceCard = ({ token, height, from, ...rest }: PriceCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
+  const currency = config?.currency ?? 'ETH';
 
   const intl = useIntl();
   const theme = useTheme();
@@ -55,10 +47,13 @@ export const PriceCard = ({
     limit,
     from: from ?? config?.from,
     offset: 1,
+    currency,
   });
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
+
+  const yKey = `rate${currency}` as const;
 
   return (
     <Card {...rest} ref={ref}>
@@ -83,20 +78,11 @@ export const PriceCard = ({
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              {intl.formatMessage(
-                { defaultMessage: '{currency}{rate}' },
-                {
-                  currency: <CurrencyLabel currency={currency} />,
-                  rate: intl.formatNumber(
-                    currency === 'ETH'
-                      ? (activeItem?.rateETH ?? 0)
-                      : (activeItem?.rateUSD ?? 0),
-                    {
-                      maximumFractionDigits: 5,
-                    },
-                  ),
-                },
-              )}
+              <CurrencyLabel currency={currency}>
+                {intl.formatNumber(activeItem?.[yKey] ?? 0, {
+                  maximumFractionDigits: 5,
+                })}
+              </CurrencyLabel>
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -115,9 +101,10 @@ export const PriceCard = ({
             {
               label: 'Exchange rate',
               xKey: 'timestamp',
-              yKey: currency === 'ETH' ? 'rateETH' : 'rateUSD',
-              color: [theme.palette.chart1, theme.palette.chart2],
+              yKey,
+              color: theme.palette.chart2,
               curveType: 'linear',
+              strokeWidth: 2,
             },
           ]}
           onHover={(idx) => {
@@ -135,11 +122,11 @@ export const PriceCard = ({
             {
               label: intl.formatMessage({ defaultMessage: 'Exchange rate' }),
               value: (d) =>
-                intl.formatNumber(currency === 'ETH' ? d.rateETH : d.rateUSD, {
+                intl.formatNumber(d[yKey], {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 }),
-              color: [theme.palette.chart1, theme.palette.chart2],
+              color: theme.palette.chart2,
               currency,
             },
           ]}

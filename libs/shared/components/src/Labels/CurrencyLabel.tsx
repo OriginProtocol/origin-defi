@@ -1,10 +1,13 @@
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { includes, isNilOrEmpty } from '@origin/shared/utils';
+
+import type { ReactNode } from 'react';
 
 export type CurrencyLabelProps = {
   currency?: 'ETH' | 'USD' | 'S';
+  children?: ReactNode;
 };
 
-export const CurrencyLabel = ({ currency }: CurrencyLabelProps) => {
+export const CurrencyLabel = ({ currency, children }: CurrencyLabelProps) => {
   const symbol = isNilOrEmpty(currency) ? (
     ''
   ) : currency === 'ETH' ? (
@@ -15,5 +18,14 @@ export const CurrencyLabel = ({ currency }: CurrencyLabelProps) => {
     '$'
   );
 
-  return symbol;
+  return includes(['ETH', 'USD'], currency) ? (
+    <>
+      {symbol}
+      {children}
+    </>
+  ) : (
+    <>
+      {children} {symbol}
+    </>
+  );
 };

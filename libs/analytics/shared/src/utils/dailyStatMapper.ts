@@ -1,8 +1,9 @@
 import { hasKey } from '@origin/shared/utils';
 import dayjs from 'dayjs';
-import { div, gt, mul, sub, toNumber } from 'dnum';
+import { div, from, gt, mul, sub, toNumber } from 'dnum';
 import { omit } from 'ramda';
 
+import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
@@ -13,7 +14,10 @@ const apiesTrailing = { apy14: 14, apy7: 7, apy30: 30 };
 export const dailyStatMapper = (
   d: Partial<DailyStatFragment> | undefined | null,
   token: Token,
-  { isChartFormat }: { isChartFormat?: boolean } = {},
+  {
+    isChartFormat,
+    currency = 'ETH',
+  }: { isChartFormat?: boolean; currency?: Currency } = {},
 ) => {
   const factor = isChartFormat ? 100 : 1;
 
@@ -24,7 +28,7 @@ export const dailyStatMapper = (
     .second(0)
     .millisecond(0);
   const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
-  const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
+  const tvl = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
   const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;
   const fees = [BigInt(d?.fees ?? 0), 18] as Dnum;
   const rebasingSupply = [
@@ -37,35 +41,41 @@ export const dailyStatMapper = (
   ] as Dnum;
   const rateETH = [BigInt(d?.rateETH ?? 0), 18] as Dnum;
   const rateUSD = [BigInt(d?.rateUSD ?? 0), 18] as Dnum;
-  const yieldETH = [BigInt(d?.yield ?? 0), 18] as Dnum;
+  const rateS = from(1, 18);
+  const yieldAmt = [BigInt(d?.yield ?? 0), 18] as Dnum;
   const dripperWETH = [BigInt(d?.dripperWETH ?? 0), 18] as Dnum;
 
-  const feesETH = mul(fees, rateETH);
+  const rate =
+    currency === 'ETH' ? rateETH : currency === 'S' ? rateS : rateUSD;
+
+  const feesETH = mul(fees, rate);
   const feesUSD = mul(fees, rateUSD);
+  const yieldETH = mul(yieldAmt, rate);
   const yieldUSD = mul(yieldETH, rateUSD);
   const dripperUSD = mul(dripperWETH, rateUSD);
-  const circulating = sub(totalSupply, protocolOwned);
-  const circulatingETH = mul(circulating, rateETH);
+  const circulating = sub(tvl, protocolOwned);
+  const circulatingETH = mul(circulating, rate);
   const circulatingUSD = mul(circulating, rateUSD);
-  const protocolOwnedETH = mul(protocolOwned, rateETH);
+  const protocolOwnedETH = mul(protocolOwned, rate);
   const protocolOwnedUSD = mul(protocolOwned, rateUSD);
   const pctWrapped = gt(circulating, 0)
     ? mul(div(wrapped, circulating), factor)
     : ([0n, token.decimals] as Dnum);
-  const pctCirculating = gt(totalSupply, 0)
-    ? mul(div(circulating, totalSupply), factor)
+  const pctCirculating = gt(tvl, 0)
+    ? mul(div(circulating, tvl), factor)
     : ([0n, token.decimals] as Dnum);
-  const pctProtocolOwned = gt(totalSupply, 0)
-    ? mul(div(protocolOwned, totalSupply), factor)
+  const pctProtocolOwned = gt(tvl, 0)
+    ? mul(div(protocolOwned, tvl), factor)
     : ([0n, token.decimals] as Dnum);
-  const tvlUSD = mul(totalSupply, rateUSD);
-  const tvlETH = mul(totalSupply, rateETH);
+  const tvlUSD = mul(tvl, rateUSD);
+  const tvlETH = mul(tvl, rate);
 
   const apies = {
     apy7: (d?.apy7 ?? 0) * factor,
     apy14: (d?.apy14 ?? 0) * factor,
     apy30: (d?.apy30 ?? 0) * factor,
   };
+
   const bestApy = Object.entries(apies).reduce(
     (acc, [k, v]) => {
       if (hasKey(apiesTrailing, k) && typeof v === 'number' && acc.value < v) {
@@ -89,7 +99,7 @@ export const dailyStatMapper = (
     ...apies,
     bestApy,
     token: omit(['abi'], token),
-    totalSupply: toNumber(totalSupply, {
+    tvl: toNumber(tvl, {
       decimalsRounding: 'ROUND_DOWN',
       digits: 2,
     }),
@@ -149,6 +159,10 @@ export const dailyStatMapper = (
       decimalsRounding: 'ROUND_DOWN',
       digits: 2,
     }),
+    fees: toNumber(fees, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 18,
+    }),
     feesETH: toNumber(feesETH, {
       decimalsRounding: 'ROUND_DOWN',
       digits: 18,
@@ -162,6 +176,14 @@ export const dailyStatMapper = (
       digits: 18,
     }),
     rateUSD: toNumber(rateUSD, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 18,
+    }),
+    rateS: toNumber(rateS, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 18,
+    }),
+    yield: toNumber(yieldAmt, {
       decimalsRounding: 'ROUND_DOWN',
       digits: 18,
     }),
@@ -179,7 +201,7 @@ export const dailyStatMapper = (
     }),
     dripperUSD: toNumber(dripperUSD, {
       decimalsRounding: 'ROUND_DOWN',
-      digits: 3,
+      digits: 18,
     }),
   };
 };

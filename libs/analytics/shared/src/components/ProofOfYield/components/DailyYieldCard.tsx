@@ -58,7 +58,7 @@ export const DailyYieldCard = (props: CardProps) => {
             },
             {
               label: intl.formatMessage({ defaultMessage: 'Vault value' }),
-              value: intl.formatNumber(selectedItem?.totalSupply ?? 0, {
+              value: intl.formatNumber(selectedItem?.tvlETH ?? 0, {
                 maximumFractionDigits: 1,
               }),
             },

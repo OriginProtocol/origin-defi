@@ -211,17 +211,17 @@ export const useBalanceSheet = (token: Token) => {
         const liabilities: BalanceSheetRow = {
           token,
           todayValue: mul(
-            from(todayDailyStat.totalSupply, token.decimals),
+            from(todayDailyStat.tvl, token.decimals),
             todayDailyStat.rateETH,
           ),
           lastWeekValue: mul(
-            from(lastWeekDailyStat.totalSupply, token.decimals),
+            from(lastWeekDailyStat.tvl, token.decimals),
             lastWeekDailyStat.rateETH,
           ),
           pctDifference: toNumber(
             getPercentageDifference(
-              from(todayDailyStat.totalSupply, token.decimals),
-              from(lastWeekDailyStat.totalSupply, token.decimals),
+              from(todayDailyStat.tvl, token.decimals),
+              from(lastWeekDailyStat.tvl, token.decimals),
             ),
           ),
         };

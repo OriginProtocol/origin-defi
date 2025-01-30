@@ -40,6 +40,7 @@ export type ProtocolRevenueCardProps = {
 type Item = {
   timestamp: number;
   oeth?: number;
+  os?: number;
   ousd?: number;
   superOeth?: number;
   arm?: number;
@@ -88,6 +89,7 @@ export const ProtocolRevenueCard = ({
     const serie: Item[] = [];
     for (let i = 0; i < (tokens?.totals?.length ?? 0); i++) {
       const oeth = tokens?.['1:OETH'][i];
+      const os = tokens?.['146:OS'][i];
       const ousd = tokens?.['1:OUSD'][i];
       const superOeth = tokens?.['8453:superOETHb'][i];
       const arm = arms?.find((a) => a.date === oeth?.date) ?? {
@@ -107,6 +109,7 @@ export const ProtocolRevenueCard = ({
         timestamp: oeth?.timestamp ?? 0,
         oeth: currency === 'USD' ? oeth?.feesUSD : oeth?.feesETH,
         ousd: currency === 'USD' ? ousd?.feesUSD : ousd?.feesETH,
+        os: currency === 'USD' ? os?.feesUSD : os?.feesETH,
         superOeth: currency === 'USD' ? superOeth?.feesUSD : superOeth?.feesETH,
         arm: currency === 'USD' ? arm?.feesUSD : arm?.feesETH,
         total: currency === 'USD' ? totals?.feesUSD : totals?.feesETH,
@@ -124,6 +127,11 @@ export const ProtocolRevenueCard = ({
       key: 'oeth',
       label: 'Origin Ether',
       fillColor: oTokenConfig['1:OETH'].lineChartColor,
+    },
+    {
+      key: 'os',
+      label: 'Origin Sonic',
+      fillColor: oTokenConfig['146:OS'].lineChartColor,
     },
     {
       key: 'ousd',

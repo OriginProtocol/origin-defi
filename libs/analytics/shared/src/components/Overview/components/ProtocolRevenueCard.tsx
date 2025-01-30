@@ -64,12 +64,13 @@ export const ProtocolRevenueCard = ({
       limit,
       from: from ?? config?.from,
       offset: 1,
+      currency,
     },
     {
       select: useCallback(
         (data: ChartResult[]) => {
           const averages = movingAverages(
-            pluck(currency === 'ETH' ? 'feesETH' : 'feesUSD', data ?? []),
+            pluck(currency === 'USD' ? 'feesUSD' : 'feesETH', data ?? []),
             [7, 30],
           );
 
@@ -110,18 +111,23 @@ export const ProtocolRevenueCard = ({
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              <CurrencyLabel currency={currency} />
-              {intl.formatNumber(
-                currency === 'ETH'
-                  ? (activeItem?.feesETH ?? 0)
-                  : (activeItem?.feesUSD ?? 0),
-              )}
+              <CurrencyLabel currency={currency}>
+                {intl.formatNumber(
+                  currency === 'USD'
+                    ? (activeItem?.feesUSD ?? 0)
+                    : (activeItem?.feesETH ?? 0),
+                )}
+              </CurrencyLabel>
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
             <Stack direction="row" spacing={1}>
-              <CurrencyControls currency={currency} setCurrency={setCurrency} />
+              <CurrencyControls
+                currency={currency}
+                setCurrency={setCurrency}
+                options={config?.currencyOptions}
+              />
               <MovingAvgControls ma={ma} setMa={setMa} />
             </Stack>
           </Stack>
@@ -148,11 +154,12 @@ export const ProtocolRevenueCard = ({
               {intl.formatMessage({ defaultMessage: 'Moving average' })}
             </Typography>
             <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
-              <CurrencyLabel currency={currency} />
-              {intl.formatNumber((activeItem?.[ma] as number) ?? 0, {
-                notation: 'compact',
-                minimumFractionDigits: 2,
-              })}
+              <CurrencyLabel currency={currency}>
+                {intl.formatNumber((activeItem?.[ma] as number) ?? 0, {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                })}
+              </CurrencyLabel>
             </Typography>
           </Stack>
         </Stack>
@@ -176,7 +183,7 @@ export const ProtocolRevenueCard = ({
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value) =>
-            `${currency === 'ETH' ? 'Ξ' : '$'}${value as number}`
+            `${currency === 'ETH' ? 'Ξ' : currency === 'USD' ? '$' : ''}${value as number}${currency === 'S' ? ' S' : ''}`
           }
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}

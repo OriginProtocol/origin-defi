@@ -87,8 +87,11 @@ export const ChartTooltip = <Datum,>({
                     fontSize: 12,
                   }}
                 >
-                  {currency ? <CurrencyLabel currency={currency} /> : null}
-                  {value}
+                  {currency ? (
+                    <CurrencyLabel currency={currency}>{value}</CurrencyLabel>
+                  ) : (
+                    value
+                  )}
                 </Typography>
               ) : (
                 value

@@ -36,6 +36,8 @@ type Item = {
   timestamp: number;
   oethETH?: number;
   oethUSD?: number;
+  osETH?: number;
+  osUSD?: number;
   ousdETH?: number;
   ousdUSD?: number;
   superOethETH?: number;
@@ -62,6 +64,7 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
       const oeth = data?.['1:OETH'][i];
       const ousd = data?.['1:OUSD'][i];
       const superOeth = data?.['8453:superOETHb'][i];
+      const os = data?.['146:OS'][i];
       const total = data?.totals[i];
 
       serie.push({
@@ -73,6 +76,8 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
           .millisecond(0),
         oethETH: oeth?.tvlETH,
         oethUSD: oeth?.tvlUSD,
+        osETH: os?.tvlETH,
+        osUSD: os?.tvlUSD,
         ousdETH: ousd?.tvlETH,
         ousdUSD: ousd?.tvlUSD,
         superOethETH: superOeth?.tvlETH,
@@ -119,6 +124,19 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
         oTokenConfig[tokens.base.superOETHb.id].lineChartColor ?? '#fff',
         emphasize(
           oTokenConfig[tokens.base.superOETHb.id].lineChartColor ?? '#fff',
+          0.5,
+        ),
+      ],
+      strokeWidth: 2,
+    },
+    {
+      label: 'Origin Sonic',
+      xKey: 'timestamp',
+      yKey: currency === 'USD' ? 'osUSD' : 'osETH',
+      color: [
+        oTokenConfig[tokens.sonic.OS.id].lineChartColor ?? '#fff',
+        emphasize(
+          oTokenConfig[tokens.sonic.OS.id].lineChartColor ?? '#fff',
           0.5,
         ),
       ],
