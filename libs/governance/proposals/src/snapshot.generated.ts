@@ -179,6 +179,13 @@ export type Metrics = {
   total?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Network = {
+  __typename?: 'Network';
+  id: Scalars['String']['output'];
+  premium?: Maybe<Scalars['Boolean']['output']>;
+  spacesCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Option = {
   __typename?: 'Option';
   name?: Maybe<Scalars['String']['output']>;
@@ -286,7 +293,7 @@ export type Query = {
   follows?: Maybe<Array<Maybe<Follow>>>;
   leaderboards?: Maybe<Array<Maybe<Leaderboard>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
-  networks?: Maybe<Array<Maybe<Item>>>;
+  networks?: Maybe<Array<Maybe<Network>>>;
   options?: Maybe<Array<Maybe<Option>>>;
   plugins?: Maybe<Array<Maybe<Item>>>;
   proposal?: Maybe<Proposal>;
@@ -472,6 +479,19 @@ export type RolesWhere = {
   address: Scalars['String']['input'];
 };
 
+export type SkinSettings = {
+  __typename?: 'SkinSettings';
+  bg_color?: Maybe<Scalars['String']['output']>;
+  border_color?: Maybe<Scalars['String']['output']>;
+  content_color?: Maybe<Scalars['String']['output']>;
+  header_color?: Maybe<Scalars['String']['output']>;
+  heading_color?: Maybe<Scalars['String']['output']>;
+  link_color?: Maybe<Scalars['String']['output']>;
+  primary_color?: Maybe<Scalars['String']['output']>;
+  text_color?: Maybe<Scalars['String']['output']>;
+  theme?: Maybe<Scalars['String']['output']>;
+};
+
 export type Space = {
   __typename?: 'Space';
   about?: Maybe<Scalars['String']['output']>;
@@ -512,6 +532,7 @@ export type Space = {
   proposalsCount30d?: Maybe<Scalars['Int']['output']>;
   rank?: Maybe<Scalars['Float']['output']>;
   skin?: Maybe<Scalars['String']['output']>;
+  skinSettings?: Maybe<SkinSettings>;
   strategies?: Maybe<Array<Maybe<Strategy>>>;
   symbol?: Maybe<Scalars['String']['output']>;
   template?: Maybe<Scalars['String']['output']>;

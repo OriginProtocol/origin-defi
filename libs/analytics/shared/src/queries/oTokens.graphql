@@ -100,11 +100,15 @@ query oTokenRebases(
     }
   ) {
     blockNumber
-    feeETH
-    totalSupply
     txHash
-    yieldETH
     timestamp
+    fee
+    feeETH
+    feeUSD
+    yield
+    yieldETH
+    yieldUSD
+    totalSupply    
   }
 }
 

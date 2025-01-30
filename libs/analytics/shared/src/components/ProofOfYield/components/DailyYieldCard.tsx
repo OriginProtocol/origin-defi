@@ -9,7 +9,7 @@ import type { CardProps } from '@mui/material';
 
 export const DailyYieldCard = (props: CardProps) => {
   const intl = useIntl();
-  const { token, selectedItem, isLoading, yKey } = usePoY();
+  const { token, selectedItem, isLoading, yKey, config } = usePoY();
 
   return (
     <Card {...props}>
@@ -58,22 +58,33 @@ export const DailyYieldCard = (props: CardProps) => {
             },
             {
               label: intl.formatMessage({ defaultMessage: 'Vault value' }),
-              value: intl.formatNumber(selectedItem?.tvlETH ?? 0, {
-                maximumFractionDigits: 1,
-              }),
+              value: intl.formatNumber(
+                config.currency === 'USD'
+                  ? (selectedItem?.tvlUSD ?? 0)
+                  : (selectedItem?.tvlETH ?? 0),
+                {
+                  maximumFractionDigits: 1,
+                },
+              ),
+              currency: config.currency,
             },
             {
               label: intl.formatMessage({ defaultMessage: 'Fees generated' }),
-              value: intl.formatNumber(selectedItem?.feesETH ?? 0, {
-                maximumFractionDigits: 3,
-                minimumFractionDigits: 3,
-              }),
+              value: intl.formatNumber(
+                config.currency === 'USD'
+                  ? (selectedItem?.feesUSD ?? 0)
+                  : (selectedItem?.feesETH ?? 0),
+                {
+                  maximumFractionDigits: 3,
+                  minimumFractionDigits: 3,
+                },
+              ),
+              currency: config.currency,
             },
-          ].map(({ label, value }) => (
+          ].map((item) => (
             <ValueLabel
-              key={label}
-              label={label}
-              value={value}
+              key={item.label}
+              {...item}
               isLoading={isLoading}
               valueProps={{
                 variant: 'body1',

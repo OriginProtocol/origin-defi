@@ -48,7 +48,7 @@ export type OTokenRebasesQueryVariables = Types.Exact<{
 }>;
 
 
-export type OTokenRebasesQuery = { __typename?: 'Query', oTokenRebases: Array<{ __typename?: 'OTokenRebase', blockNumber: number, feeETH: string, totalSupply: string, txHash: string, yieldETH: string, timestamp: string }> };
+export type OTokenRebasesQuery = { __typename?: 'Query', oTokenRebases: Array<{ __typename?: 'OTokenRebase', blockNumber: number, txHash: string, timestamp: string, fee: string, feeETH: string, feeUSD: string, yield: string, yieldETH: string, yieldUSD: string, totalSupply: string }> };
 
 export type OTokenStrategiesQueryVariables = Types.Exact<{
   chainId: Types.Scalars['Float']['input'];
@@ -207,11 +207,15 @@ export const OTokenRebasesDocument = `
     where: {timestamp_gte: $from, timestamp_lte: $to, otoken_eq: $token, chainId_eq: $chainId}
   ) {
     blockNumber
-    feeETH
-    totalSupply
     txHash
-    yieldETH
     timestamp
+    fee
+    feeETH
+    feeUSD
+    yield
+    yieldETH
+    yieldUSD
+    totalSupply
   }
 }
     `;

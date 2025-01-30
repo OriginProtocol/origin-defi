@@ -6,6 +6,8 @@ import { CurrencyLabel } from './CurrencyLabel';
 import type { StackProps, TypographyProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
+import type { Currency } from '../Controls';
+
 export type ValueLabelProps = {
   label: ReactNode;
   value: ReactNode;
@@ -14,7 +16,7 @@ export type ValueLabelProps = {
   labelInfoTooltip?: string;
   isLoading?: boolean;
   sWidth?: number;
-  currency?: 'ETH' | 'USD';
+  currency?: Currency;
 } & StackProps;
 
 export const ValueLabel = ({
@@ -79,8 +81,11 @@ export const ValueLabel = ({
               : [valueProps?.sx]),
           ]}
         >
-          <CurrencyLabel currency={currency} />
-          {isLoading ? <Skeleton width={sWidth} /> : value}
+          {isLoading ? (
+            <Skeleton width={sWidth} />
+          ) : (
+            <CurrencyLabel currency={currency}>{value}</CurrencyLabel>
+          )}
         </Typography>
       ) : (
         value

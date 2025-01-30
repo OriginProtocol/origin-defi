@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  CurrencyLabel,
   ExternalLink,
   Spinner,
   TablePagination,
@@ -48,7 +49,7 @@ const columnHelper = createColumnHelper<{
 }>();
 
 export const YieldEventsCard = (props: CardProps) => {
-  const { token, selectedItem } = usePoY();
+  const { token, selectedItem, config } = usePoY();
   const ts = dayjs.utc(selectedItem?.timestamp);
   const morning = ts.hour(0).minute(0).second(0).millisecond(0);
   const evening = ts.hour(23).minute(59).second(59).millisecond(999);
@@ -65,8 +66,19 @@ export const YieldEventsCard = (props: CardProps) => {
       placeholderData: keepPreviousData,
       select: (data) =>
         data?.oTokenRebases?.map((d) => {
-          const fees = [BigInt(d?.feeETH ?? 0), token.decimals] as Dnum;
-          const amount = sub([BigInt(d?.yieldETH ?? 0), token.decimals], fees);
+          const fees =
+            config.currency === 'USD'
+              ? ([BigInt(d?.feeUSD ?? 0), token.decimals] as Dnum)
+              : config.currency === 'ETH'
+                ? ([BigInt(d?.feeETH ?? 0), token.decimals] as Dnum)
+                : ([BigInt(d?.fee ?? 0), token.decimals] as Dnum);
+          const yieldAmt =
+            config.currency === 'USD'
+              ? ([BigInt(d?.yieldUSD ?? 0), token.decimals] as Dnum)
+              : config.currency === 'ETH'
+                ? ([BigInt(d?.yieldETH ?? 0), token.decimals] as Dnum)
+                : ([BigInt(d?.yield ?? 0), token.decimals] as Dnum);
+          const amount = sub(yieldAmt, fees);
 
           return {
             timestamp: new Date(d.timestamp).getTime(),
@@ -110,14 +122,24 @@ export const YieldEventsCard = (props: CardProps) => {
         size: 200,
       }),
       columnHelper.accessor('amount', {
-        cell: (info) =>
-          intl.formatNumber(info.getValue(), { maximumFractionDigits: 4 }),
+        cell: (info) => (
+          <CurrencyLabel currency={config.currency}>
+            {intl.formatNumber(info.getValue(), {
+              maximumFractionDigits: config.currencyDigits,
+            })}
+          </CurrencyLabel>
+        ),
         header: intl.formatMessage({ defaultMessage: 'Amount' }),
         size: 100,
       }),
       columnHelper.accessor('fees', {
-        cell: (info) =>
-          intl.formatNumber(info.getValue(), { maximumFractionDigits: 4 }),
+        cell: (info) => (
+          <CurrencyLabel currency={config.currency}>
+            {intl.formatNumber(info.getValue(), {
+              maximumFractionDigits: config.currencyDigits,
+            })}
+          </CurrencyLabel>
+        ),
         header: intl.formatMessage({ defaultMessage: 'Fees' }),
         size: 100,
       }),

@@ -29,6 +29,8 @@ export type OTokenConfig = {
   currency: Currency;
   // default currency options for chart display
   currencyOptions?: Currency[];
+  // default number of digits for currency display
+  currencyDigits?: number;
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -42,6 +44,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     lineChartColor: '#586CF8',
     currency: 'ETH',
     currencyOptions: ['ETH', 'USD'],
+    currencyDigits: 4,
   },
   [tokens.arbitrum.wOETH.id]: {
     from: '2024-02-07T00:00:00.000000Z',
@@ -49,6 +52,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dripperToken: tokens.arbitrum.WETH,
     currency: 'ETH',
     currencyOptions: ['ETH', 'USD'],
+    currencyDigits: 4,
   },
   [tokens.mainnet.OUSD.id]: {
     from: '2023-06-01T00:00:00.000000Z',
@@ -59,6 +63,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     lineChartColor: '#14C4BA',
     currency: 'USD',
     currencyOptions: ['ETH', 'USD'],
+    currencyDigits: 2,
   },
   [tokens.base.superOETHb.id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -72,6 +77,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     lineChartColor: '#7A26F3',
     currency: 'ETH',
     currencyOptions: ['ETH', 'USD'],
+    currencyDigits: 4,
   },
   [tokens.mainnet['ARM-WETH-stETH'].id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -83,6 +89,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     lineChartColor: '#E85BFF',
     currency: 'ETH',
     currencyOptions: ['ETH', 'USD'],
+    currencyDigits: 4,
   },
   [tokens.sonic.OS.id]: {
     from: '2025-01-20T00:00:00.000000Z',
@@ -95,5 +102,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     lineChartColor: '#E79156',
     currency: 'S',
     currencyOptions: ['S', 'USD'],
+    currencyDigits: 2,
   },
 };
