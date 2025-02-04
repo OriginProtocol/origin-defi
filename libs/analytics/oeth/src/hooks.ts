@@ -3,14 +3,13 @@ import { useCallback } from 'react';
 import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 
-import { useWoethArbitrumByDayQuery } from './queries.generated';
+import { useWrappedOethByDayQuery } from './queries.generated';
 
 import type { ChartResult } from '@origin/analytics/shared';
 
-import type { WoethArbitrumByDayQuery } from './queries.generated';
+import type { WrappedOethByDayQuery } from './queries.generated';
 
 export type TvlCombined = {
   mainnetETH: number;
@@ -46,44 +45,68 @@ export const useOethDistribution = (limit?: number) => {
           queryFn: useTokenChartStats.fetcher(queryClient),
         }),
         queryClient.fetchQuery({
-          queryKey: useWoethArbitrumByDayQuery.getKey(),
-          queryFn: useWoethArbitrumByDayQuery.fetcher(),
+          queryKey: useWrappedOethByDayQuery.getKey(),
+          queryFn: useWrappedOethByDayQuery.fetcher(),
         }),
       ]);
 
       return res;
     },
-    select: useCallback((data: [ChartResult[], WoethArbitrumByDayQuery]) => {
-      if (!data[0]?.length) {
+    select: useCallback((data: [ChartResult[], WrappedOethByDayQuery]) => {
+      const chartData = data[0];
+      const wrappedSupplyData = data[1];
+      if (!chartData?.length || !wrappedSupplyData) {
         return [];
       }
 
-      return data[0].reduce((acc, curr) => {
-        const mainnetETH = curr.tvlETH;
-        const mainnetUSD = curr.tvlUSD;
+      const wrappedSupplyMap = new Map<
+        string,
+        { arbitrum: bigint; base: bigint; rate: bigint }
+      >();
+      for (const item of wrappedSupplyData.arbitrum) {
+        wrappedSupplyMap.set(item.day.slice(0, 10), {
+          arbitrum: BigInt(item.totalSupply),
+          base: 0n,
+          rate: 0n,
+        });
+      }
+      for (const item of wrappedSupplyData.base) {
+        const mapItem = wrappedSupplyMap.get(item.day.slice(0, 10));
+        if (mapItem) {
+          mapItem.base = BigInt(item.totalSupply);
+        }
+      }
+      for (const item of wrappedSupplyData.oTokenDailyStats) {
+        const mapItem = wrappedSupplyMap.get(item.date.slice(0, 10));
+        if (mapItem) {
+          mapItem.rate = BigInt(item.rateWrapped);
+        }
+      }
+      // Fill any rate gaps using previously stated date.
 
-        const arbTotalSupply =
-          data[1]?.arbitrum.find(
-            (d) =>
-              d.day.substring(0, 9) ===
-              dayjs.utc(curr.timestamp).toISOString().substring(0, 9),
-          )?.totalSupply ?? 0;
+      return chartData.reduce((acc, curr) => {
+        const totalETH = curr.tvlETH;
+        const totalUSD = curr.tvlUSD;
+
+        const wrappedMapData = wrappedSupplyMap.get(
+          new Date(curr.timestamp).toJSON().slice(0, 10),
+        );
+        const wrappedRate = wrappedMapData?.rate ?? 0n;
+        const arbTotalSupply = wrappedMapData?.arbitrum ?? 0n;
         const arbitrumETH = toNumber([
-          BigInt(arbTotalSupply),
+          (arbTotalSupply * wrappedRate) / 10n ** 18n,
           tokens.arbitrum.wOETH.decimals,
         ]);
         const arbitrumUSD = arbitrumETH * curr.rateUSD;
-        const baseTotalSupply =
-          data[1]?.base.find(
-            (d) =>
-              d.day.substring(0, 9) ===
-              dayjs.utc(curr.timestamp).toISOString().substring(0, 9),
-          )?.totalSupply ?? 0;
+        const baseTotalSupply = wrappedMapData?.base ?? 0n;
         const baseETH = toNumber([
-          BigInt(baseTotalSupply),
+          (baseTotalSupply * wrappedRate) / 10n ** 18n,
           tokens.arbitrum.wOETH.decimals,
         ]);
         const baseUSD = baseETH * curr.rateUSD;
+
+        const mainnetETH = totalETH - arbitrumETH - baseETH;
+        const mainnetUSD = mainnetETH * curr.rateUSD;
 
         return [
           ...acc,
@@ -94,8 +117,8 @@ export const useOethDistribution = (limit?: number) => {
             arbitrumUSD,
             baseETH,
             baseUSD,
-            totalETH: mainnetETH + arbitrumETH + baseETH,
-            totalUSD: mainnetUSD + arbitrumUSD + baseUSD,
+            totalETH,
+            totalUSD,
             timestamp: curr.timestamp,
           },
         ];

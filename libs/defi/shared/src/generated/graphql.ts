@@ -23634,6 +23634,7 @@ export type OTokenDailyStat = {
   otoken: Scalars['String']['output'];
   rateETH: Scalars['BigInt']['output'];
   rateUSD: Scalars['BigInt']['output'];
+  rateWrapped: Scalars['BigInt']['output'];
   rebasingSupply: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
   totalSupply: Scalars['BigInt']['output'];
@@ -23768,6 +23769,12 @@ export enum OTokenDailyStatOrderByInput {
   RateUsdDesc = 'rateUSD_DESC',
   RateUsdDescNullsFirst = 'rateUSD_DESC_NULLS_FIRST',
   RateUsdDescNullsLast = 'rateUSD_DESC_NULLS_LAST',
+  RateWrappedAsc = 'rateWrapped_ASC',
+  RateWrappedAscNullsFirst = 'rateWrapped_ASC_NULLS_FIRST',
+  RateWrappedAscNullsLast = 'rateWrapped_ASC_NULLS_LAST',
+  RateWrappedDesc = 'rateWrapped_DESC',
+  RateWrappedDescNullsFirst = 'rateWrapped_DESC_NULLS_FIRST',
+  RateWrappedDescNullsLast = 'rateWrapped_DESC_NULLS_LAST',
   RebasingSupplyAsc = 'rebasingSupply_ASC',
   RebasingSupplyAscNullsFirst = 'rebasingSupply_ASC_NULLS_FIRST',
   RebasingSupplyAscNullsLast = 'rebasingSupply_ASC_NULLS_LAST',
@@ -24007,6 +24014,15 @@ export type OTokenDailyStatWhereInput = {
   rateUSD_lte?: InputMaybe<Scalars['BigInt']['input']>;
   rateUSD_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   rateUSD_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  rateWrapped_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  rateWrapped_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  rateWrapped_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  rateWrapped_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  rateWrapped_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  rateWrapped_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  rateWrapped_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  rateWrapped_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  rateWrapped_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   rebasingSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;

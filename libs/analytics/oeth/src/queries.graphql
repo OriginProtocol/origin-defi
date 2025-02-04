@@ -1,4 +1,4 @@
-query WoethArbitrumByDay {
+query WrappedOETHByDay {
   arbitrum: erc20StateByDay(
     address: "0xd8724322f44e5c58d7a815f542036fb17dbbf839"
     from: "2024-02-07"
@@ -14,5 +14,17 @@ query WoethArbitrumByDay {
   ) {
     day
     totalSupply
+  }
+  oTokenDailyStats(
+    orderBy: timestamp_ASC
+    limit: 5000
+    where: {
+      otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"
+      date_gte: "2024-02-07"
+      chainId_eq: 1
+    }
+  ) {
+    date
+    rateWrapped
   }
 }
