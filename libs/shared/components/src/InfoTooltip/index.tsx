@@ -13,6 +13,7 @@ import type { ReactNode } from 'react';
 export type InfoTooltipProps = {
   tooltipLabel: ReactNode;
   tooltipProps?: Omit<TooltipProps, 'children' | 'title'>;
+  icon?: ReactNode;
   iconSize?: number;
   iconColor?: string;
 } & SvgIconProps;
@@ -21,6 +22,7 @@ export function InfoTooltip(props: InfoTooltipProps) {
   const {
     tooltipLabel,
     tooltipProps,
+    icon,
     iconSize = 14,
     iconColor = 'text.secondary',
     ...rest
@@ -55,7 +57,7 @@ export function InfoTooltip(props: InfoTooltipProps) {
           ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}
       >
-        <CircleInfo />
+        {icon ?? <CircleInfo />}
       </SvgIcon>
     </Tooltip>
   );
@@ -64,6 +66,7 @@ export function InfoTooltip(props: InfoTooltipProps) {
 function InfoPopover({
   tooltipLabel,
   tooltipProps,
+  icon,
   iconSize = 14,
   iconColor = 'text.secondary',
   ...rest
@@ -87,7 +90,7 @@ function InfoPopover({
           ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         }}
       >
-        <CircleInfo />
+        {icon ?? <CircleInfo />}
       </SvgIcon>
       <ClickAwayPopover
         anchorEl={ref}
