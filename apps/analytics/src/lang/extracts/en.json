@@ -62,6 +62,9 @@
   "2qF6KB": {
     "defaultMessage": "Arbitrum"
   },
+  "2v3MZq": {
+    "defaultMessage": "Trading Profit"
+  },
   "3TTmje": {
     "defaultMessage": "MC"
   },
@@ -79,6 +82,9 @@
   },
   "5h3TFE": {
     "defaultMessage": "I agree"
+  },
+  "5m8Idm": {
+    "defaultMessage": "7-day avg"
   },
   "6CmkQp": {
     "defaultMessage": "Partial data"
@@ -143,6 +149,9 @@
   "DOyKgT": {
     "defaultMessage": "Moving Average"
   },
+  "Dap8yY": {
+    "defaultMessage": "S"
+  },
   "DqeIg/": {
     "defaultMessage": "Unallocated"
   },
@@ -167,8 +176,8 @@
   "HIM+US": {
     "defaultMessage": "Base TVL"
   },
-  "HQcrRS": {
-    "defaultMessage": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
+  "HNjIxZ": {
+    "defaultMessage": "{symbol} wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
@@ -224,6 +233,9 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
+  "NZqmyx": {
+    "defaultMessage": "20% of those revenues are protocol fees"
+  },
   "NbAPMb": {
     "defaultMessage": "Dripper"
   },
@@ -275,6 +287,9 @@
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
+  "Udr0dp": {
+    "defaultMessage": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an {symbol} holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
+  },
   "Uiq/al": {
     "defaultMessage": "1YR"
   },
@@ -313,9 +328,6 @@
   },
   "YZBSil": {
     "defaultMessage": "Wrapped"
-  },
-  "YqE/OA": {
-    "defaultMessage": "{currency}{rate}"
   },
   "ZOj/Hs": {
     "defaultMessage": "This data is incomplete until midnight UTC"
@@ -455,6 +467,9 @@
   "nCIzeT": {
     "defaultMessage": "This chart shows the level of daily yield distribution"
   },
+  "o0jcye": {
+    "defaultMessage": "OS"
+  },
   "oRg1Ai": {
     "defaultMessage": "Difference"
   },
@@ -532,9 +547,6 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
-  },
-  "wwwQgP": {
-    "defaultMessage": "OETH wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
   },
   "xN53iS": {
     "defaultMessage": "Yield Bonus"

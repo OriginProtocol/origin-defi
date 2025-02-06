@@ -149,6 +149,12 @@
       "value": "Arbitrum"
     }
   ],
+  "2v3MZq": [
+    {
+      "type": 0,
+      "value": "Trading Profit"
+    }
+  ],
   "3TTmje": [
     {
       "type": 0,
@@ -183,6 +189,12 @@
     {
       "type": 0,
       "value": "I agree"
+    }
+  ],
+  "5m8Idm": [
+    {
+      "type": 0,
+      "value": "7-day avg"
     }
   ],
   "6CmkQp": [
@@ -323,6 +335,12 @@
       "value": "Moving Average"
     }
   ],
+  "Dap8yY": [
+    {
+      "type": 0,
+      "value": "S"
+    }
+  ],
   "DqeIg/": [
     {
       "type": 0,
@@ -371,10 +389,14 @@
       "value": "Base TVL"
     }
   ],
-  "HQcrRS": [
+  "HNjIxZ": [
+    {
+      "type": 1,
+      "value": "symbol"
+    },
     {
       "type": 0,
-      "value": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
+      "value": " wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
     }
   ],
   "Hiq4cG": [
@@ -493,6 +515,12 @@
       "value": "Your operation has been executed"
     }
   ],
+  "NZqmyx": [
+    {
+      "type": 0,
+      "value": "20% of those revenues are protocol fees"
+    }
+  ],
   "NbAPMb": [
     {
       "type": 0,
@@ -607,6 +635,20 @@
       "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
     }
   ],
+  "Udr0dp": [
+    {
+      "type": 0,
+      "value": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
+    }
+  ],
   "Uiq/al": [
     {
       "type": 0,
@@ -715,16 +757,6 @@
     {
       "type": 0,
       "value": "Wrapped"
-    }
-  ],
-  "YqE/OA": [
-    {
-      "type": 1,
-      "value": "currency"
-    },
-    {
-      "type": 1,
-      "value": "rate"
     }
   ],
   "ZOj/Hs": [
@@ -1045,6 +1077,12 @@
       "value": "This chart shows the level of daily yield distribution"
     }
   ],
+  "o0jcye": [
+    {
+      "type": 0,
+      "value": "OS"
+    }
+  ],
   "oRg1Ai": [
     {
       "type": 0,
@@ -1217,12 +1255,6 @@
     {
       "type": 0,
       "value": "Wrong Network"
-    }
-  ],
-  "wwwQgP": [
-    {
-      "type": 0,
-      "value": "OETH wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
     }
   ],
   "xN53iS": [

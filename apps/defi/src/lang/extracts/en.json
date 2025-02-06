@@ -62,6 +62,9 @@
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
+  "0F7nvV": {
+    "defaultMessage": "Sonic’s S-tier LST"
+  },
   "0GSZcr": {
     "defaultMessage": "Staked"
   },
@@ -401,6 +404,9 @@
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
+  "Dap8yY": {
+    "defaultMessage": "S"
+  },
   "Dmb2/1": {
     "defaultMessage": "Unlock Stake"
   },
@@ -604,9 +610,6 @@
   },
   "LU9l68": {
     "defaultMessage": "Your balance"
-  },
-  "LYosF7": {
-    "defaultMessage": "Hypersonic liquid staking"
   },
   "LZqvbG": {
     "defaultMessage": "6M"
