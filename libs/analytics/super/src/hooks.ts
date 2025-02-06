@@ -100,9 +100,9 @@ export const useSuperCollaterals = () => {
           }),
           value: toNumber(balanceBridge),
           color: theme.palette.primary.main,
-          token: tokens.mainnet.wOETH,
+          token: tokens.mainnet.ETH,
           total: toNumber(computedTotal),
-          href: `https://basescan.org/address/0x8aF48Aa50e4F7ed67e7d654FE51A4EDA3395123b`,
+          href: `https://basescan.org/address/0x80c864704dd06c3693ed5179190786ee38acf835`,
         },
         {
           label: intl.formatMessage({
