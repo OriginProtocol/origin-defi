@@ -1,6 +1,5 @@
 import { Divider, IconButton, Stack, Typography } from '@mui/material';
 import { ClickAwayPopover, TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -11,14 +10,16 @@ import type { StackProps } from '@mui/material';
 import type { ClickAwayPopoverProps } from '@origin/shared/components';
 import type { Contract, Token } from '@origin/shared/contracts';
 
-export const AlertPopover = (
-  props: Omit<ClickAwayPopoverProps, 'children'>,
-) => {
+export type AlertPopoverProps = {
+  rebaseTokens: Token[];
+} & Omit<ClickAwayPopoverProps, 'children'>;
+
+export const AlertPopover = ({ rebaseTokens, ...rest }: AlertPopoverProps) => {
   const intl = useIntl();
 
   return (
     <ClickAwayPopover
-      {...props}
+      {...rest}
       paperProps={{
         sx: {
           minWidth: 350,
@@ -40,7 +41,7 @@ export const AlertPopover = (
       >
         <IconButton
           onClick={() => {
-            props?.onClose();
+            rest.onClose?.();
           }}
           sx={(theme) => ({
             position: 'absolute',
@@ -62,12 +63,7 @@ export const AlertPopover = (
       </Stack>
       <Divider />
       <Stack divider={<Divider />}>
-        {[
-          tokens.mainnet.OETH,
-          tokens.mainnet.OUSD,
-          tokens.base.superOETHb,
-          tokens.sonic.OS,
-        ].map((token) => (
+        {rebaseTokens.map((token) => (
           <RebaseRow key={token.id} token={token} sx={{ px: 3, py: 1.5 }} />
         ))}
       </Stack>

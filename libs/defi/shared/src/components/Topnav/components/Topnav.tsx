@@ -77,11 +77,13 @@ export const Topnav = ({ routes }: TopnavProps) => {
   ]);
 
   const isLoading = status === 'pending' && pendingCount > 0;
-  const showRebaseMenu =
-    isNonRebasingOETH ||
-    isNonRebasingOUSD ||
-    isNonRebasingSuperOETHb ||
-    isNonRebasingOS;
+  const rebaseTokens = [
+    ...(isNonRebasingOETH ? [tokens.mainnet.OETH] : []),
+    ...(isNonRebasingOUSD ? [tokens.mainnet.OUSD] : []),
+    ...(isNonRebasingSuperOETHb ? [tokens.base.superOETHb] : []),
+    ...(isNonRebasingOS ? [tokens.sonic.OS] : []),
+  ];
+  const showRebaseMenu = rebaseTokens.length > 0;
 
   return (
     <>
@@ -182,6 +184,7 @@ export const Topnav = ({ routes }: TopnavProps) => {
             <AlertPopover
               open={alertMenuOpen}
               anchorEl={alertMenuAnchorEl}
+              rebaseTokens={rebaseTokens}
               onClose={() => {
                 setAlertMenuOpen(false);
               }}
