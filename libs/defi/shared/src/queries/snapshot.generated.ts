@@ -487,6 +487,7 @@ export type SkinSettings = {
   header_color?: Maybe<Scalars['String']['output']>;
   heading_color?: Maybe<Scalars['String']['output']>;
   link_color?: Maybe<Scalars['String']['output']>;
+  logo?: Maybe<Scalars['String']['output']>;
   primary_color?: Maybe<Scalars['String']['output']>;
   text_color?: Maybe<Scalars['String']['output']>;
   theme?: Maybe<Scalars['String']['output']>;

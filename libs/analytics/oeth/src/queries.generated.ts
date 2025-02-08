@@ -30,7 +30,7 @@ export const WrappedOethByDayDocument = `
   oTokenDailyStats(
     orderBy: timestamp_ASC
     limit: 5000
-    where: {otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3", timestamp_gte: "2024-02-07T00:00:00Z", chainId_eq: 1}
+    where: {otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3", date_gte: "2024-02-07", chainId_eq: 1}
   ) {
     date
     rateWrapped
