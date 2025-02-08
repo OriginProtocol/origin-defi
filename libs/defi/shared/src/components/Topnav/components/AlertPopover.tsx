@@ -62,10 +62,14 @@ export const AlertPopover = (
       </Stack>
       <Divider />
       <Stack divider={<Divider />}>
-        <RebaseRow token={tokens.mainnet.OETH} px={3} py={1.5} />
-        <RebaseRow token={tokens.mainnet.OUSD} px={3} py={1.5} />
-        <RebaseRow token={tokens.base.superOETHb} px={3} py={1.5} />
-        <RebaseRow token={tokens.sonic.OS} px={3} py={1.5} />
+        {[
+          tokens.mainnet.OETH,
+          tokens.mainnet.OUSD,
+          tokens.base.superOETHb,
+          tokens.sonic.OS,
+        ].map((token) => (
+          <RebaseRow key={token.id} token={token} sx={{ px: 3, py: 1.5 }} />
+        ))}
       </Stack>
     </ClickAwayPopover>
   );
@@ -91,18 +95,17 @@ const RebaseRow = ({ token, ...rest }: RebaseRowProps) => {
   return (
     <Stack
       direction="row"
-      spacing={0.5}
+      spacing={1}
       {...rest}
       sx={[
         {
           alignItems: 'center',
-          justifyContent: 'space-between',
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <TokenIcon token={token} sx={{ fontSize: 36 }} />
-      <Typography>
+      <TokenIcon token={token} sx={{ fontSize: 28 }} />
+      <Typography sx={{ width: 1 }}>
         {intl.formatMessage(
           { defaultMessage: 'Enable rebasing for {symbol}' },
           { symbol: token.symbol },
@@ -115,6 +118,9 @@ const RebaseRow = ({ token, ...rest }: RebaseRowProps) => {
         waitingSignatureLabel={intl.formatMessage({
           defaultMessage: 'Signing',
         })}
+        disableNetworkCheck
+        size="small"
+        sx={{ whiteSpace: 'nowrap' }}
       />
     </Stack>
   );

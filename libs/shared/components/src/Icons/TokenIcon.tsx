@@ -175,6 +175,8 @@ export const TokenIcon = ({
   if (showNetwork && !networkAlreadyIncludedTokenIds.includes(token.id)) {
     return (
       <BadgeIcon
+        badgeSize={networkIconSize}
+        overlap="rectangular"
         badgeContent={
           <NetworkIcon
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

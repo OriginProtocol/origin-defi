@@ -9,6 +9,7 @@ import type { ButtonProps } from '@mui/material';
 export type ConnectedButtonProps = {
   targetChainId?: number;
   disableNetworkCheck?: boolean;
+  switchNetworkLabel?: string;
   connectLabel?: string;
 } & ButtonProps;
 
@@ -19,6 +20,7 @@ export const ConnectedButton = ({
   targetChainId,
   disableNetworkCheck,
   connectLabel,
+  switchNetworkLabel,
   ...rest
 }: ConnectedButtonProps) => {
   const intl = useIntl();
@@ -61,7 +63,8 @@ export const ConnectedButton = ({
   if (!disableNetworkCheck && wrongChain) {
     return (
       <Button onClick={handleSwitchToDefaultNetwork} {...rest}>
-        {intl.formatMessage({ defaultMessage: 'Switch network' })}
+        {switchNetworkLabel ??
+          intl.formatMessage({ defaultMessage: 'Switch network' })}
       </Button>
     );
   }
