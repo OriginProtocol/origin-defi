@@ -41,7 +41,7 @@ export const SonicBanner = (props: StackProps) => {
           py: 3,
           overflow: 'hidden',
           color: 'primary.contrastText',
-          backgroundImage: `url('/images/base-icon.svg')`,
+          backgroundImage: `url('/images/sonic-logo.svg')`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: {
             xs: 'right -300px center',

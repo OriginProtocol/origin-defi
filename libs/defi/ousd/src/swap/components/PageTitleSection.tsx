@@ -1,5 +1,9 @@
 import { Stack, Typography } from '@mui/material';
-import { ColorChip, useOTokenStatsQuery } from '@origin/defi/shared';
+import {
+  ColorChip,
+  dailyStatMapper,
+  useOTokenStatsQuery,
+} from '@origin/defi/shared';
 import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
@@ -10,30 +14,16 @@ export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
   const { data: apies, isLoading: isApiesLoading } = useOTokenStatsQuery(
     {
-      token: tokens.mainnet.OUSD.address.toLowerCase(),
-      chainId: tokens.mainnet.OUSD.chainId,
+      token: tokens.mainnet.OETH.address.toLowerCase(),
+      chainId: tokens.mainnet.OETH.chainId,
+      offset: 1,
+      limit: 1,
     },
     {
-      select: (data) => {
-        return data?.oTokenDailyStats[0];
-      },
+      select: (data) =>
+        dailyStatMapper(data.oTokenDailyStats?.[0], tokens.mainnet.OUSD),
     },
   );
-
-  const { apy, tooltip } =
-    (apies?.apy30 ?? 0) > (apies?.apy7 ?? 0)
-      ? {
-          apy: apies?.apy30,
-          tooltip: intl.formatMessage({
-            defaultMessage: '30-day trailing APY',
-          }),
-        }
-      : {
-          apy: apies?.apy7,
-          tooltip: intl.formatMessage({
-            defaultMessage: '7-day trailing APY',
-          }),
-        };
 
   return (
     <Stack
@@ -52,12 +42,13 @@ export const PageTitleSection = (props: StackProps) => {
       <ColorChip spacing={0.5} minHeight={40}>
         <LoadingLabel
           isLoading={isApiesLoading}
-          sx={{ color: 'inherit', fontWeight: 'bold' }}
           sWidth={90}
+          sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
-          {intl.formatNumber(apy ?? 0, {
+          {intl.formatNumber(apies?.bestApy.value ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
           })}
         </LoadingLabel>
         <Typography
@@ -68,7 +59,17 @@ export const PageTitleSection = (props: StackProps) => {
         >
           {intl.formatMessage({ defaultMessage: 'APY' })}
         </Typography>
-        <InfoTooltip tooltipLabel={tooltip} iconColor="primary.main" />
+        <InfoTooltip
+          tooltipLabel={intl.formatMessage(
+            {
+              defaultMessage: '{trailing}-day trailing APY',
+            },
+            {
+              trailing: apies?.bestApy.trailingDays,
+            },
+          )}
+          iconColor="primary.main"
+        />
       </ColorChip>
     </Stack>
   );
