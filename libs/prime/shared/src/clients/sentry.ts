@@ -9,7 +9,7 @@ export const registerSentry = () => {
   if (!isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN?.trim())) {
     init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
-      enableTracing: false,
+      tracesSampleRate: 0,
       defaultIntegrations: false,
       integrations: [
         globalHandlersIntegration({
