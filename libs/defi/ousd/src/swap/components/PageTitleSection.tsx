@@ -14,8 +14,8 @@ export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
   const { data: apies, isLoading: isApiesLoading } = useOTokenStatsQuery(
     {
-      token: tokens.mainnet.OETH.address.toLowerCase(),
-      chainId: tokens.mainnet.OETH.chainId,
+      token: tokens.mainnet.OUSD.address.toLowerCase(),
+      chainId: tokens.mainnet.OUSD.chainId,
       offset: 1,
       limit: 1,
     },
