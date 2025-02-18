@@ -43,7 +43,7 @@ query Proposal($proposalId: String!) {
   }
 }
 
-query ProposalVotes($proposalId: String!, $limit: Int = 5000) {
+query ProposalVotes($proposalId: String!, $limit: Int = 1000) {
   governanceProposalVotes(
     limit: $limit
     where: { proposal: { id_eq: $proposalId } }
@@ -65,7 +65,7 @@ query ProposalVotes($proposalId: String!, $limit: Int = 5000) {
   }
 }
 
-query UserVotes($address: String!, $limit: Int = 5000) {
+query UserVotes($address: String!, $limit: Int = 1000) {
   governanceProposalVotes(
     limit: $limit
     where: { voter_eq: $address }
@@ -84,7 +84,7 @@ query UserVotes($address: String!, $limit: Int = 5000) {
   }
 }
 
-query UserVotingPower($address: String!, $limit: Int = 5000) {
+query UserVotingPower($address: String!, $limit: Int = 1000) {
   esAccounts(limit: $limit, where: { account_eq: $address }) {
     id
     address
@@ -100,7 +100,7 @@ query UserVotingPower($address: String!, $limit: Int = 5000) {
   }
 }
 
-query UserDelegators($address: String!, $limit: Int = 5000) {
+query UserDelegators($address: String!, $limit: Int = 1000) {
   esAccounts(
     limit: $limit
     where: { delegatesFrom_some: { account_eq: $address } }
