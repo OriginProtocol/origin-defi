@@ -636,6 +636,7 @@ export type StrategyItem = {
   id: Scalars['String']['output'];
   schema?: Maybe<Scalars['Any']['output']>;
   spacesCount?: Maybe<Scalars['Int']['output']>;
+  verifiedSpacesCount?: Maybe<Scalars['Int']['output']>;
   version?: Maybe<Scalars['String']['output']>;
 };
 
