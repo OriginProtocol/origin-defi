@@ -41,6 +41,9 @@
   "/6/sPX": {
     "defaultMessage": "Docs"
   },
+  "/FwVeB": {
+    "defaultMessage": "Origin Token"
+  },
   "/Kr6f5": {
     "defaultMessage": "End block"
   },
@@ -179,9 +182,6 @@
   "4R0mVR": {
     "defaultMessage": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
   },
-  "4SoDfQ": {
-    "defaultMessage": "coming soon"
-  },
   "4WNsNT": {
     "defaultMessage": "Migrated"
   },
@@ -302,9 +302,6 @@
   "9W24c9": {
     "defaultMessage": "wOETH Balance"
   },
-  "9eLCqd": {
-    "defaultMessage": "stETH Redemptions"
-  },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
   },
@@ -314,6 +311,9 @@
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
   },
+  "9oQCRd": {
+    "defaultMessage": "Stablecoin"
+  },
   "A7ewt8": {
     "defaultMessage": "1:{value}"
   },
@@ -322,9 +322,6 @@
   },
   "ABavuV": {
     "defaultMessage": "The amount to deposit"
-  },
-  "AFsCmQ": {
-    "defaultMessage": "ARM Vaults"
   },
   "AMBM0T": {
     "defaultMessage": "1-15 days"
@@ -584,6 +581,9 @@
   "KN7zKn": {
     "defaultMessage": "Error"
   },
+  "KVHC7J": {
+    "defaultMessage": "Origin ARM"
+  },
   "KXTAK8": {
     "defaultMessage": "Abstain"
   },
@@ -806,9 +806,6 @@
   "TJOfi8": {
     "defaultMessage": "Yield bearing stablecoin"
   },
-  "TTccxt": {
-    "defaultMessage": "Stablecoins"
-  },
   "TdHjj5": {
     "defaultMessage": "Origin DeFi Governance"
   },
@@ -836,6 +833,9 @@
   "U/ep9f": {
     "defaultMessage": "Deposit {amount} {symbolIn}"
   },
+  "UJQFN/": {
+    "defaultMessage": "LST"
+  },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
@@ -856,9 +856,6 @@
   },
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
-  },
-  "VCCZaw": {
-    "defaultMessage": "Sustainable yield with no hidden exit costs"
   },
   "VK+Ydv": {
     "defaultMessage": "OUSD"
@@ -922,9 +919,6 @@
   },
   "YnftYz": {
     "defaultMessage": "Wait time:"
-  },
-  "YqwF2+": {
-    "defaultMessage": "Supercharged LSTs"
   },
   "YtTAoV": {
     "defaultMessage": "Vote {choice} on proposal {proposalId}"
@@ -1042,6 +1036,9 @@
   },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
+  },
+  "da1ebU": {
+    "defaultMessage": "Product type"
   },
   "di23JU": {
     "defaultMessage": "Currently selected chain<br></br>is not supported"
@@ -1169,9 +1166,6 @@
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
   },
-  "i/wHQN": {
-    "defaultMessage": "Earn passively with low risk."
-  },
   "iFsDVR": {
     "defaultMessage": "Loading"
   },
@@ -1286,9 +1280,6 @@
   "n+21Rg": {
     "defaultMessage": "2M"
   },
-  "n5cmll": {
-    "defaultMessage": "LSTs"
-  },
   "n6nILs": {
     "defaultMessage": "Receive amount"
   },
@@ -1316,14 +1307,14 @@
   "oFLXgf": {
     "defaultMessage": "Add to wallet"
   },
+  "oH9g2K": {
+    "defaultMessage": "Supercharged LST"
+  },
   "ok8VIA": {
     "defaultMessage": "Shape the future of Origin's products"
   },
   "oy7udF": {
     "defaultMessage": "Approval cancelled"
-  },
-  "oz/WEO": {
-    "defaultMessage": "30-day trailing APY"
   },
   "p1P+hQ": {
     "defaultMessage": "Request"
@@ -1367,9 +1358,6 @@
   "qXCbgZ": {
     "defaultMessage": "Unlock"
   },
-  "qZbg2x": {
-    "defaultMessage": "Auto-compounding yield and diversification since Summer 2020."
-  },
   "qaYPXz": {
     "defaultMessage": "No calldata"
   },
@@ -1390,6 +1378,9 @@
   },
   "rhQtuf": {
     "defaultMessage": "Voted Against"
+  },
+  "rs6XNw": {
+    "defaultMessage": "Product name"
   },
   "rscf9U": {
     "defaultMessage": "Your Unclaimed OGV Rewards"
@@ -1496,9 +1487,6 @@
   "vLIiaK": {
     "defaultMessage": "Bridge {symbol}"
   },
-  "var6Pi": {
-    "defaultMessage": "Stake OGN to participate in governance and earn rewards. Own a stake in the network and benefit from the growth of Origin's products."
-  },
   "vdpci9": {
     "defaultMessage": "Rewards available"
   },
@@ -1534,9 +1522,6 @@
   },
   "wyZ3k/": {
     "defaultMessage": "wsuperOETHb Balance"
-  },
-  "xXgeM8": {
-    "defaultMessage": "7-day trailing APY"
   },
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"
@@ -1588,6 +1573,9 @@
   },
   "zGckFA": {
     "defaultMessage": "Yield earned"
+  },
+  "zIL25h": {
+    "defaultMessage": "{trailing}-day trailing APY"
   },
   "zQvVDJ": {
     "defaultMessage": "All"

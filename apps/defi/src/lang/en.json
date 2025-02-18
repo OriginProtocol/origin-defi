@@ -83,6 +83,12 @@
       "value": "Docs"
     }
   ],
+  "/FwVeB": [
+    {
+      "type": 0,
+      "value": "Origin Token"
+    }
+  ],
   "/Kr6f5": [
     {
       "type": 0,
@@ -477,12 +483,6 @@
       "value": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
     }
   ],
-  "4SoDfQ": [
-    {
-      "type": 0,
-      "value": "coming soon"
-    }
-  ],
   "4WNsNT": [
     {
       "type": 0,
@@ -723,12 +723,6 @@
       "value": "wOETH Balance"
     }
   ],
-  "9eLCqd": [
-    {
-      "type": 0,
-      "value": "stETH Redemptions"
-    }
-  ],
   "9ghOJK": [
     {
       "type": 0,
@@ -745,6 +739,12 @@
     {
       "type": 0,
       "value": "Discord support channel"
+    }
+  ],
+  "9oQCRd": [
+    {
+      "type": 0,
+      "value": "Stablecoin"
     }
   ],
   "A7ewt8": [
@@ -767,12 +767,6 @@
     {
       "type": 0,
       "value": "The amount to deposit"
-    }
-  ],
-  "AFsCmQ": [
-    {
-      "type": 0,
-      "value": "ARM Vaults"
     }
   ],
   "AMBM0T": [
@@ -1357,6 +1351,12 @@
     {
       "type": 0,
       "value": "Error"
+    }
+  ],
+  "KVHC7J": [
+    {
+      "type": 0,
+      "value": "Origin ARM"
     }
   ],
   "KXTAK8": [
@@ -1963,12 +1963,6 @@
       "value": "Yield bearing stablecoin"
     }
   ],
-  "TTccxt": [
-    {
-      "type": 0,
-      "value": "Stablecoins"
-    }
-  ],
   "TdHjj5": [
     {
       "type": 0,
@@ -2087,6 +2081,12 @@
       "value": "symbolIn"
     }
   ],
+  "UJQFN/": [
+    {
+      "type": 0,
+      "value": "LST"
+    }
+  ],
   "ULVduL": [
     {
       "type": 0,
@@ -2143,12 +2143,6 @@
     {
       "type": 0,
       "value": "Finding the best route..."
-    }
-  ],
-  "VCCZaw": [
-    {
-      "type": 0,
-      "value": "Sustainable yield with no hidden exit costs"
     }
   ],
   "VK+Ydv": [
@@ -2283,12 +2277,6 @@
     {
       "type": 0,
       "value": "Wait time:"
-    }
-  ],
-  "YqwF2+": [
-    {
-      "type": 0,
-      "value": "Supercharged LSTs"
     }
   ],
   "YtTAoV": [
@@ -2563,6 +2551,12 @@
     {
       "type": 0,
       "value": "Processing Transaction"
+    }
+  ],
+  "da1ebU": [
+    {
+      "type": 0,
+      "value": "Product type"
     }
   ],
   "di23JU": [
@@ -2879,12 +2873,6 @@
       "value": "Transaction executed"
     }
   ],
-  "i/wHQN": [
-    {
-      "type": 0,
-      "value": "Earn passively with low risk."
-    }
-  ],
   "iFsDVR": [
     {
       "type": 0,
@@ -3149,12 +3137,6 @@
       "value": "2M"
     }
   ],
-  "n5cmll": [
-    {
-      "type": 0,
-      "value": "LSTs"
-    }
-  ],
   "n6nILs": [
     {
       "type": 0,
@@ -3213,6 +3195,12 @@
       "value": "Add to wallet"
     }
   ],
+  "oH9g2K": [
+    {
+      "type": 0,
+      "value": "Supercharged LST"
+    }
+  ],
   "ok8VIA": [
     {
       "type": 0,
@@ -3223,12 +3211,6 @@
     {
       "type": 0,
       "value": "Approval cancelled"
-    }
-  ],
-  "oz/WEO": [
-    {
-      "type": 0,
-      "value": "30-day trailing APY"
     }
   ],
   "p1P+hQ": [
@@ -3337,12 +3319,6 @@
       "value": "Unlock"
     }
   ],
-  "qZbg2x": [
-    {
-      "type": 0,
-      "value": "Auto-compounding yield and diversification since Summer 2020."
-    }
-  ],
   "qaYPXz": [
     {
       "type": 0,
@@ -3387,6 +3363,12 @@
     {
       "type": 0,
       "value": "Voted Against"
+    }
+  ],
+  "rs6XNw": [
+    {
+      "type": 0,
+      "value": "Product name"
     }
   ],
   "rscf9U": [
@@ -3615,12 +3597,6 @@
       "value": "symbol"
     }
   ],
-  "var6Pi": [
-    {
-      "type": 0,
-      "value": "Stake OGN to participate in governance and earn rewards. Own a stake in the network and benefit from the growth of Origin's products."
-    }
-  ],
   "vdpci9": [
     {
       "type": 0,
@@ -3709,12 +3685,6 @@
     {
       "type": 0,
       "value": "wsuperOETHb Balance"
-    }
-  ],
-  "xXgeM8": [
-    {
-      "type": 0,
-      "value": "7-day trailing APY"
     }
   ],
   "xZIm6b": [
@@ -3903,6 +3873,16 @@
     {
       "type": 0,
       "value": "Yield earned"
+    }
+  ],
+  "zIL25h": [
+    {
+      "type": 1,
+      "value": "trailing"
+    },
+    {
+      "type": 0,
+      "value": "-day trailing APY"
     }
   ],
   "zQvVDJ": [

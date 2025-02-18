@@ -140,7 +140,7 @@ useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', va
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
 
 export const ProposalVotesDocument = `
-    query ProposalVotes($proposalId: String!, $limit: Int = 5000) {
+    query ProposalVotes($proposalId: String!, $limit: Int = 1000) {
   governanceProposalVotes(limit: $limit, where: {proposal: {id_eq: $proposalId}}) {
     id
     address
@@ -182,7 +182,7 @@ useProposalVotesQuery.getKey = (variables: ProposalVotesQueryVariables) => ['Pro
 useProposalVotesQuery.fetcher = (variables: ProposalVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalVotesQuery, ProposalVotesQueryVariables>(ProposalVotesDocument, variables, options);
 
 export const UserVotesDocument = `
-    query UserVotes($address: String!, $limit: Int = 5000) {
+    query UserVotes($address: String!, $limit: Int = 1000) {
   governanceProposalVotes(
     limit: $limit
     where: {voter_eq: $address}
@@ -224,7 +224,7 @@ useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes',
 useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);
 
 export const UserVotingPowerDocument = `
-    query UserVotingPower($address: String!, $limit: Int = 5000) {
+    query UserVotingPower($address: String!, $limit: Int = 1000) {
   esAccounts(limit: $limit, where: {account_eq: $address}) {
     id
     address
@@ -263,7 +263,7 @@ useUserVotingPowerQuery.getKey = (variables: UserVotingPowerQueryVariables) => [
 useUserVotingPowerQuery.fetcher = (variables: UserVotingPowerQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotingPowerQuery, UserVotingPowerQueryVariables>(UserVotingPowerDocument, variables, options);
 
 export const UserDelegatorsDocument = `
-    query UserDelegators($address: String!, $limit: Int = 5000) {
+    query UserDelegators($address: String!, $limit: Int = 1000) {
   esAccounts(limit: $limit, where: {delegatesFrom_some: {account_eq: $address}}) {
     id
     address
