@@ -6,6 +6,7 @@ import {
   Divider,
   Grid2,
   Stack,
+  SvgIcon,
   Typography,
 } from '@mui/material';
 import { useLayout } from '@origin/analytics/shared';
@@ -25,8 +26,9 @@ import { useIntl } from 'react-intl';
 
 import { useSuperCollaterals } from '../hooks';
 
-import type { StackProps } from '@mui/material';
+import type { StackProps, SvgIconProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { ComponentType } from 'react';
 
 export const CollateralsView = () => {
   const intl = useIntl();
@@ -151,6 +153,7 @@ export const CollateralsView = () => {
 
 type CollateralCardProps = {
   value: number;
+  icon: ComponentType<SvgIconProps>;
   label?: string;
   token: Token;
   href?: string;
@@ -160,6 +163,7 @@ type CollateralCardProps = {
 
 const CollateralCard = ({
   value,
+  icon,
   label,
   total,
   title,
@@ -186,7 +190,7 @@ const CollateralCard = ({
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <TokenIcon token={token} sx={{ fontSize: 36 }} />
+      <SvgIcon component={icon} sx={{ fontSize: 36 }} />
       <Stack sx={{ flexGrow: 1 }}>
         {label?.length || href?.length ? (
           <Stack

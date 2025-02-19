@@ -1,5 +1,6 @@
 import { useTheme } from '@mui/material';
 import { contracts, tokens } from '@origin/shared/contracts';
+import { Curve, ETH, wOETH } from '@origin/shared/icons';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { add, from, gt, sub, toNumber } from 'dnum';
@@ -44,6 +45,13 @@ export const useSuperCollaterals = () => {
             functionName: 'balanceOf',
             args: [contracts.base.superOETHbStrategyAero.address],
           },
+          {
+            address: contracts.base.superOETHbCurveAMOStrategy.address,
+            abi: contracts.base.superOETHbCurveAMOStrategy.abi,
+            chainId: contracts.base.superOETHbCurveAMOStrategy.chainId,
+            functionName: 'checkBalance',
+            args: [tokens.base.WETH.address],
+          },
         ],
       });
 
@@ -67,6 +75,10 @@ export const useSuperCollaterals = () => {
         data?.[3]?.status === 'success'
           ? ([data[3].result, tokens.base.WETH.decimals] as Dnum)
           : from(0);
+      const curveAmoSuper =
+        data?.[4]?.status === 'success'
+          ? ([data[4].result, tokens.base.WETH.decimals] as Dnum)
+          : from(0);
 
       const balanceAmo = [balanceAmoWeth, pendingAmoWeth].reduce(
         (acc, curr) => add(acc, curr),
@@ -76,11 +88,15 @@ export const useSuperCollaterals = () => {
         balanceAmoWeth,
         balanceAmoSuper,
         pendingAmoWeth,
+        curveAmoSuper,
       ].reduce(
         (acc, curr) => add(acc, curr),
         from(0, tokens.base.WETH.decimals),
       );
-      const circulating = add(fullAmoBalanceWeth, balanceBridge);
+      const circulating = [fullAmoBalanceWeth, balanceBridge].reduce(
+        (acc, curr) => add(curr, acc),
+        from(0, tokens.base.WETH.decimals),
+      );
       const unallocatedBalance = gt(
         sub(superOethVaultTotalValue, circulating),
         0,
@@ -90,6 +106,7 @@ export const useSuperCollaterals = () => {
       const computedTotal = [
         balanceAmo,
         balanceBridge,
+        curveAmoSuper,
         unallocatedBalance,
       ].reduce((acc, curr) => add(acc, curr), from(0, 18));
 
@@ -98,6 +115,7 @@ export const useSuperCollaterals = () => {
           label: intl.formatMessage({
             defaultMessage: 'Liquid Staking',
           }),
+          icon: wOETH,
           value: toNumber(balanceBridge),
           color: theme.palette.primary.main,
           token: tokens.mainnet.ETH,
@@ -108,6 +126,7 @@ export const useSuperCollaterals = () => {
           label: intl.formatMessage({
             defaultMessage: 'Aerodrome AMO',
           }),
+          icon: ETH,
           value: toNumber(balanceAmo),
           color: theme.palette.chart6,
           token: tokens.mainnet.ETH,
@@ -116,8 +135,20 @@ export const useSuperCollaterals = () => {
         },
         {
           label: intl.formatMessage({
+            defaultMessage: 'Curve AMO',
+          }),
+          icon: Curve,
+          value: toNumber(curveAmoSuper),
+          color: theme.palette.chart5,
+          token: tokens.mainnet.ETH,
+          total: toNumber(computedTotal),
+          href: 'https://basescan.org/address/0xcDD21c5544A5B07fab409284cEE6c6097091B589',
+        },
+        {
+          label: intl.formatMessage({
             defaultMessage: 'Unallocated',
           }),
+          icon: ETH,
           value: Math.max(toNumber(unallocatedBalance), 0),
           color: theme.palette.chart1,
           token: tokens.mainnet.ETH,

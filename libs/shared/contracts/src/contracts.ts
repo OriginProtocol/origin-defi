@@ -17,6 +17,7 @@ import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { ConvexEthMetaStrategyABI } from './abis/ConvexEthMetaStrategy';
 import { ConvexStrategyABI } from './abis/ConvexStrategy';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
+import { CurveAMOStrategyABI } from './abis/CurveAMOStrategy';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
 import { CurveRouterABI } from './abis/CurveRouter';
@@ -453,6 +454,12 @@ export const contracts = {
       chainId: base.id,
       abi: DripperABI,
       name: 'superOETHbDripper',
+    },
+    superOETHbCurveAMOStrategy: {
+      address: '0x9cfcAF81600155e01c63e4D2993A8A81A8205829',
+      chainId: base.id,
+      abi: CurveAMOStrategyABI,
+      name: 'superOETHbCurveAMOStrategy',
     },
     superOETHbStrategyAero: {
       address: '0xF611cC500eEE7E4e4763A05FE623E2363c86d2Af',
