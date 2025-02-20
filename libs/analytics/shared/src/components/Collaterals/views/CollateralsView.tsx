@@ -23,7 +23,7 @@ export const CollateralsView = ({
     useStrategyAllocations(token);
 
   return (
-    <Stack spacing={3} {...rest}>
+    <Stack spacing={3} {...rest} key={token.id}>
       <CollateralsCard
         token={token}
         collaterals={collaterals}

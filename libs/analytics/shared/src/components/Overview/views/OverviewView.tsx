@@ -24,7 +24,7 @@ export const OverviewView = ({
   const [{ isDrawerOpen }] = useLayout();
 
   return (
-    <Stack {...rest}>
+    <Stack {...rest} key={token.id}>
       <Grid2 container spacing={2}>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <ApyCard token={token} height={300} />
