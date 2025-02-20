@@ -51,19 +51,19 @@ export const OethDistributionCard = ({
 
   const series = [
     {
-      key: currency === 'ETH' ? 'arbitrumETH' : 'arbitrumUSD',
+      key: currency === 'USD' ? 'arbitrumUSD' : 'arbitrumETH',
       label: intl.formatMessage({ defaultMessage: 'Arbitrum' }),
       lineColor: theme.palette.chart5,
       fillColor: alpha(theme.palette.chart5, 0.4),
     },
     {
-      key: currency === 'ETH' ? 'baseETH' : 'baseUSD',
+      key: currency === 'USD' ? 'baseUSD' : 'baseETH',
       label: intl.formatMessage({ defaultMessage: 'Base' }),
       lineColor: theme.palette.chart3,
       fillColor: alpha(theme.palette.chart3, 0.4),
     },
     {
-      key: currency === 'ETH' ? 'mainnetETH' : 'mainnetUSD',
+      key: currency === 'USD' ? 'mainnetUSD' : 'mainnetETH',
       label: intl.formatMessage({ defaultMessage: 'Ethereum' }),
       lineColor: [theme.palette.chart1, theme.palette.chart2],
       fillColor: [
@@ -75,9 +75,9 @@ export const OethDistributionCard = ({
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const activeTotal =
-    currency === 'ETH'
-      ? (activeItem?.totalETH ?? 0)
-      : (activeItem?.totalUSD ?? 0);
+    currency === 'USD'
+      ? (activeItem?.totalUSD ?? 0)
+      : (activeItem?.totalETH ?? 0);
 
   return (
     <Card {...rest} ref={ref}>

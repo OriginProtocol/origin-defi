@@ -68,7 +68,7 @@ export const TradingProfitCard = ({
       select: useCallback(
         (data: ChartResult[]) => {
           const averages = movingAverages(
-            pluck(currency === 'ETH' ? 'feesETH' : 'feesUSD', data ?? []),
+            pluck(currency === 'USD' ? 'feesUSD' : 'feesETH', data ?? []),
             [7, 30],
           );
 
@@ -125,9 +125,9 @@ export const TradingProfitCard = ({
             >
               <CurrencyLabel currency={currency} />
               {intl.formatNumber(
-                currency === 'ETH'
-                  ? (activeItem?.feesETH ?? 0)
-                  : (activeItem?.feesUSD ?? 0),
+                currency === 'USD'
+                  ? (activeItem?.feesUSD ?? 0)
+                  : (activeItem?.feesETH ?? 0),
               )}
             </LoadingLabel>
           </Stack>
@@ -178,7 +178,7 @@ export const TradingProfitCard = ({
           height={height}
           data={feesData ?? []}
           xKey="timestamp"
-          yKey={currency === 'ETH' ? 'feesETH' : 'feesUSD'}
+          yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
           lineData={{
             xKey: 'timestamp',
             yKey: ma,
@@ -189,7 +189,7 @@ export const TradingProfitCard = ({
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value) =>
-            `${currency === 'ETH' ? 'Ξ' : '$'}${value as number}`
+            `${currency === 'USD' ? '$' : 'Ξ'}${value as number}`
           }
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}
@@ -200,7 +200,7 @@ export const TradingProfitCard = ({
             {
               label: 'Trading profit',
               value: (d) =>
-                intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
+                intl.formatNumber(currency === 'USD' ? d.feesUSD : d.feesETH, {
                   notation: 'compact',
                 }),
               color: theme.palette.chart3,

@@ -153,7 +153,7 @@ export const TradingProfitChart = ({
           height={height}
           data={data ?? []}
           xKey="timestamp"
-          yKey={currency === 'ETH' ? 'feesETH' : 'feesUSD'}
+          yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
           lineData={{
             label: intl.formatMessage({
               defaultMessage: 'Moving Average',
@@ -169,7 +169,7 @@ export const TradingProfitChart = ({
           }}
           margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
           tickYFormat={(value: NumberLike) =>
-            `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
+            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
               Number(value),
               {
                 notation: 'compact',
@@ -185,7 +185,7 @@ export const TradingProfitChart = ({
             {
               label: 'Fees',
               value: (d) =>
-                intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
+                intl.formatNumber(currency === 'USD' ? d.feesUSD : d.feesETH, {
                   notation: 'compact',
                 }),
               currency,

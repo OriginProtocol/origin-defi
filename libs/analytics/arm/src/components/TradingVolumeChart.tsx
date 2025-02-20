@@ -71,7 +71,7 @@ export const TradingVolumeChart = ({
               <CurrencyLabel currency={currency} />
               {intl.formatNumber(
                 activeItem?.[
-                  currency === 'ETH' ? 'tradingVolumeETH' : 'tradingVolumeUSD'
+                  currency === 'USD' ? 'tradingVolumeUSD' : 'tradingVolumeETH'
                 ] ?? 0,
               )}
             </LoadingLabel>
@@ -103,7 +103,7 @@ export const TradingVolumeChart = ({
               }),
               xKey: 'timestamp',
               yKey:
-                currency === 'ETH' ? 'tradingVolumeETH' : 'tradingVolumeUSD',
+                currency === 'USD' ? 'tradingVolumeUSD' : 'tradingVolumeETH',
               color: [theme.palette.chart1, theme.palette.chart2],
               curveType: 'linear',
             },
@@ -124,9 +124,9 @@ export const TradingVolumeChart = ({
               label: intl.formatMessage({ defaultMessage: 'Trading Volume' }),
               value: (d) =>
                 intl.formatNumber(
-                  (currency === 'ETH'
-                    ? d.tradingVolumeETH
-                    : d.tradingVolumeUSD) ?? 0,
+                  (currency === 'USD'
+                    ? d.tradingVolumeUSD
+                    : d.tradingVolumeETH) ?? 0,
                   {
                     notation: 'compact',
                   },
