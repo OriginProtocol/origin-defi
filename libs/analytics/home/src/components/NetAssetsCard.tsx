@@ -40,7 +40,7 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const width = measures?.width ?? 0;
   const totalNAV =
-    currency === 'ETH' ? activeItem?.totalETH : activeItem?.totalUSD;
+    currency === 'USD' ? activeItem?.totalUSD : activeItem?.totalETH;
 
   return (
     <Card {...rest} ref={ref}>
@@ -90,13 +90,13 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
           height={height}
           data={data ?? []}
           xKey="timestamp"
-          yKey={currency === 'ETH' ? 'totalETH' : 'totalUSD'}
+          yKey={currency === 'USD' ? 'totalUSD' : 'totalETH'}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
           tickYFormat={(value: NumberLike) =>
-            `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
+            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
               Number(value),
               {
                 notation: 'compact',
@@ -113,7 +113,7 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
               label: 'NAV',
               value: (d) =>
                 intl.formatNumber(
-                  currency === 'ETH' ? d.totalETH : d.totalUSD,
+                  currency === 'USD' ? d.totalUSD : d.totalETH,
                   {
                     notation: 'compact',
                   },

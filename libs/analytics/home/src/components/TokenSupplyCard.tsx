@@ -146,7 +146,7 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(serie ?? []) : serie?.[hoverIdx];
   const totalTvl =
-    currency === 'ETH' ? activeItem?.totalETH : activeItem?.totalUSD;
+    currency === 'USD' ? activeItem?.totalUSD : activeItem?.totalETH;
 
   return (
     <Card {...rest} ref={ref}>
@@ -193,7 +193,7 @@ export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value: NumberLike) =>
-            `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
+            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
               Number(value),
               {
                 notation: 'compact',

@@ -237,7 +237,7 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value: NumberLike) =>
-            `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
+            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
               Number(value),
               {
                 notation: 'compact',

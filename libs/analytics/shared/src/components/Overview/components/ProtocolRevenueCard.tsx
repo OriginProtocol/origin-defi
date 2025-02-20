@@ -172,7 +172,7 @@ export const ProtocolRevenueCard = ({
           height={height}
           data={feesData ?? []}
           xKey="timestamp"
-          yKey={currency === 'ETH' ? 'feesETH' : 'feesUSD'}
+          yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
           lineData={{
             xKey: 'timestamp',
             yKey: ma,
@@ -194,7 +194,7 @@ export const ProtocolRevenueCard = ({
             {
               label: 'Protocol revenue',
               value: (d) =>
-                intl.formatNumber(currency === 'ETH' ? d.feesETH : d.feesUSD, {
+                intl.formatNumber(currency === 'USD' ? d.feesUSD : d.feesETH, {
                   notation: 'compact',
                 }),
               color: theme.palette.chart3,

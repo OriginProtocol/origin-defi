@@ -126,7 +126,9 @@ export const DailyStatCard = ({
               {format(
                 currency === 'ETH'
                   ? (data?.circulatingSupplyETH ?? from(0))
-                  : (data?.circulatingSupplyUSD ?? from(0)),
+                  : currency === 'USD'
+                    ? (data?.circulatingSupplyUSD ?? from(0))
+                    : (data?.circulatingSupply ?? from(0)),
                 2,
               )}
             </Typography>
@@ -141,9 +143,9 @@ export const DailyStatCard = ({
             <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
               <CurrencyLabel currency={currency} />
               {format(
-                currency === 'ETH'
-                  ? (data?.amoSupplyETH ?? from(0))
-                  : (data?.amoSupplyUSD ?? from(0)),
+                currency === 'USD'
+                  ? (data?.amoSupplyUSD ?? from(0))
+                  : (data?.amoSupplyETH ?? from(0)),
                 2,
               )}
             </Typography>

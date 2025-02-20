@@ -96,7 +96,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
               <CurrencyLabel currency={currency} />
               {intl.formatNumber(
                 activeItem?.[
-                  currency === 'ETH' ? 'totalSupplyETH' : 'totalSupplyUSD'
+                  currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH'
                 ] ?? 0,
               )}
             </LoadingLabel>
@@ -118,7 +118,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
             {
               label: 'TVL',
               xKey: 'timestamp',
-              yKey: currency === 'ETH' ? 'totalSupplyETH' : 'totalSupplyUSD',
+              yKey: currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH',
               color: [theme.palette.chart1, theme.palette.chart2],
               curveType: 'base',
             },
@@ -141,7 +141,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
               }),
               value: (d) =>
                 intl.formatNumber(
-                  d[currency === 'ETH' ? 'totalSupplyETH' : 'totalSupplyUSD'],
+                  d[currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH'],
                 ),
               color: [theme.palette.chart1, theme.palette.chart2],
               currency,
