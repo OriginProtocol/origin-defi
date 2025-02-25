@@ -131,7 +131,7 @@ export const useSuperCollaterals = () => {
           color: theme.palette.chart6,
           token: tokens.mainnet.ETH,
           total: toNumber(computedTotal),
-          href: 'https://basescan.org/address/0xcDD21c5544A5B07fab409284cEE6c6097091B589',
+          href: 'https://basescan.org/address/0xf611cc500eee7e4e4763a05fe623e2363c86d2af',
         },
         {
           label: intl.formatMessage({
@@ -142,7 +142,7 @@ export const useSuperCollaterals = () => {
           color: theme.palette.chart5,
           token: tokens.mainnet.ETH,
           total: toNumber(computedTotal),
-          href: 'https://basescan.org/address/0xcDD21c5544A5B07fab409284cEE6c6097091B589',
+          href: 'https://basescan.org/address/0x9cfcaf81600155e01c63e4d2993a8a81a8205829',
         },
         {
           label: intl.formatMessage({
