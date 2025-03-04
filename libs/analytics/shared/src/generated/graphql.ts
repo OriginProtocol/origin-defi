@@ -15518,10 +15518,187 @@ export type Erc20State = {
 export type Erc20StateByDay = {
   __typename?: 'ERC20StateByDay';
   address: Scalars['String']['output'];
+  blockNumber: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  date: Scalars['String']['output'];
+  holderCount: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  totalSupply: Scalars['BigInt']['output'];
+};
+
+export type Erc20StateByDayEdge = {
+  __typename?: 'ERC20StateByDayEdge';
+  cursor: Scalars['String']['output'];
+  node: Erc20StateByDay;
+};
+
+export enum Erc20StateByDayOrderByInput {
+  AddressAsc = 'address_ASC',
+  AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
+  AddressAscNullsLast = 'address_ASC_NULLS_LAST',
+  AddressDesc = 'address_DESC',
+  AddressDescNullsFirst = 'address_DESC_NULLS_FIRST',
+  AddressDescNullsLast = 'address_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  DateAsc = 'date_ASC',
+  DateAscNullsFirst = 'date_ASC_NULLS_FIRST',
+  DateAscNullsLast = 'date_ASC_NULLS_LAST',
+  DateDesc = 'date_DESC',
+  DateDescNullsFirst = 'date_DESC_NULLS_FIRST',
+  DateDescNullsLast = 'date_DESC_NULLS_LAST',
+  HolderCountAsc = 'holderCount_ASC',
+  HolderCountAscNullsFirst = 'holderCount_ASC_NULLS_FIRST',
+  HolderCountAscNullsLast = 'holderCount_ASC_NULLS_LAST',
+  HolderCountDesc = 'holderCount_DESC',
+  HolderCountDescNullsFirst = 'holderCount_DESC_NULLS_FIRST',
+  HolderCountDescNullsLast = 'holderCount_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TotalSupplyAsc = 'totalSupply_ASC',
+  TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
+  TotalSupplyAscNullsLast = 'totalSupply_ASC_NULLS_LAST',
+  TotalSupplyDesc = 'totalSupply_DESC',
+  TotalSupplyDescNullsFirst = 'totalSupply_DESC_NULLS_FIRST',
+  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST'
+}
+
+export type Erc20StateByDayR = {
+  __typename?: 'ERC20StateByDayR';
+  address: Scalars['String']['output'];
   chainId: Scalars['String']['output'];
   day: Scalars['DateTime']['output'];
   holderCount: Scalars['Int']['output'];
   totalSupply: Scalars['BigInt']['output'];
+};
+
+export type Erc20StateByDayWhereInput = {
+  AND?: InputMaybe<Array<Erc20StateByDayWhereInput>>;
+  OR?: InputMaybe<Array<Erc20StateByDayWhereInput>>;
+  address_contains?: InputMaybe<Scalars['String']['input']>;
+  address_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_eq?: InputMaybe<Scalars['String']['input']>;
+  address_gt?: InputMaybe<Scalars['String']['input']>;
+  address_gte?: InputMaybe<Scalars['String']['input']>;
+  address_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  address_lt?: InputMaybe<Scalars['String']['input']>;
+  address_lte?: InputMaybe<Scalars['String']['input']>;
+  address_not_contains?: InputMaybe<Scalars['String']['input']>;
+  address_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_not_eq?: InputMaybe<Scalars['String']['input']>;
+  address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  address_startsWith?: InputMaybe<Scalars['String']['input']>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  date_contains?: InputMaybe<Scalars['String']['input']>;
+  date_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  date_endsWith?: InputMaybe<Scalars['String']['input']>;
+  date_eq?: InputMaybe<Scalars['String']['input']>;
+  date_gt?: InputMaybe<Scalars['String']['input']>;
+  date_gte?: InputMaybe<Scalars['String']['input']>;
+  date_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  date_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  date_lt?: InputMaybe<Scalars['String']['input']>;
+  date_lte?: InputMaybe<Scalars['String']['input']>;
+  date_not_contains?: InputMaybe<Scalars['String']['input']>;
+  date_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  date_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  date_not_eq?: InputMaybe<Scalars['String']['input']>;
+  date_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  date_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  date_startsWith?: InputMaybe<Scalars['String']['input']>;
+  holderCount_eq?: InputMaybe<Scalars['Int']['input']>;
+  holderCount_gt?: InputMaybe<Scalars['Int']['input']>;
+  holderCount_gte?: InputMaybe<Scalars['Int']['input']>;
+  holderCount_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  holderCount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  holderCount_lt?: InputMaybe<Scalars['Int']['input']>;
+  holderCount_lte?: InputMaybe<Scalars['Int']['input']>;
+  holderCount_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  holderCount_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  totalSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupply_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalSupply_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export type Erc20StateByDaysConnection = {
+  __typename?: 'ERC20StateByDaysConnection';
+  edges: Array<Erc20StateByDayEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
 };
 
 export type Erc20StateEdge = {
@@ -27466,7 +27643,10 @@ export type Query = {
   erc20HolderById?: Maybe<Erc20Holder>;
   erc20Holders: Array<Erc20Holder>;
   erc20HoldersConnection: Erc20HoldersConnection;
-  erc20StateByDay: Array<Erc20StateByDay>;
+  erc20StateByDay: Array<Erc20StateByDayR>;
+  erc20StateByDayById?: Maybe<Erc20StateByDay>;
+  erc20StateByDays: Array<Erc20StateByDay>;
+  erc20StateByDaysConnection: Erc20StateByDaysConnection;
   erc20StateById?: Maybe<Erc20State>;
   erc20States: Array<Erc20State>;
   erc20StatesConnection: Erc20StatesConnection;
@@ -29268,9 +29448,30 @@ export type QueryErc20HoldersConnectionArgs = {
 
 export type QueryErc20StateByDayArgs = {
   address: Scalars['String']['input'];
-  chainId: Scalars['Float']['input'];
+  chainId: Scalars['Int']['input'];
   from: Scalars['String']['input'];
   to?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryErc20StateByDayByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryErc20StateByDaysArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<Erc20StateByDayOrderByInput>>;
+  where?: InputMaybe<Erc20StateByDayWhereInput>;
+};
+
+
+export type QueryErc20StateByDaysConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<Erc20StateByDayOrderByInput>;
+  where?: InputMaybe<Erc20StateByDayWhereInput>;
 };
 
 
