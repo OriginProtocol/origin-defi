@@ -5,7 +5,7 @@ import { graphqlClient } from '@origin/analytics/shared';
 export type WrappedOethByDayQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type WrappedOethByDayQuery = { __typename?: 'Query', arbitrum: Array<{ __typename?: 'ERC20StateByDay', day: string, totalSupply: string }>, base: Array<{ __typename?: 'ERC20StateByDay', day: string, totalSupply: string }>, oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', date: string, rateWrapped: string }> };
+export type WrappedOethByDayQuery = { __typename?: 'Query', arbitrum: Array<{ __typename?: 'ERC20StateByDayR', day: string, totalSupply: string }>, base: Array<{ __typename?: 'ERC20StateByDayR', day: string, totalSupply: string }>, oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', date: string, rateWrapped: string }> };
 
 
 
