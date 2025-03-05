@@ -903,6 +903,12 @@
       "value": "Theme:"
     }
   ],
+  "C73Nbd": [
+    {
+      "type": 0,
+      "value": "Swap with Curve"
+    }
+  ],
   "CKr0mb": [
     {
       "type": 0,
@@ -2661,12 +2667,6 @@
     {
       "type": 0,
       "value": "Pending"
-    }
-  ],
-  "eerX6M": [
-    {
-      "type": 0,
-      "value": "Swap via CurvePool"
     }
   ],
   "egoEtz": [

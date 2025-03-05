@@ -8,6 +8,7 @@ import { GridRows } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar, BarRounded, LinePath } from '@visx/shape';
 import dayjs from 'dayjs';
+import { useIntl } from 'react-intl';
 
 import { usePoY } from '../hooks';
 
@@ -24,6 +25,7 @@ export const ChartController = ({
   height,
   ...rest
 }: ChartControllerProps) => {
+  const intl = useIntl();
   const theme = useTheme();
   const chartId = useId();
   const {
@@ -70,7 +72,12 @@ export const ChartController = ({
   };
   const xFormat = (value: NumberLike) =>
     dayjs.utc(value as number).format('DD MMM');
-  const tickYFormat = (value: NumberLike) => `${value as number}`;
+  const tickYFormat = (value: NumberLike) =>
+    intl.formatNumber(value as number, {
+      style: 'percent',
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    });
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
   const selectedIdx = data?.findIndex((s) => s.id === selectedId) ?? -1;
