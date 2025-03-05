@@ -40,7 +40,7 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
       isLoading: false,
       config: oTokenConfig[token.id as keyof typeof oTokenConfig],
       xKey: 'timestamp',
-      yKey: 'yield',
+      yKey: 'apy',
       lineKey: 'avg30',
       limit: 30,
     });

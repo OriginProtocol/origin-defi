@@ -374,6 +374,9 @@
   "BuhEl+": {
     "defaultMessage": "Theme:"
   },
+  "C73Nbd": {
+    "defaultMessage": "Swap with Curve"
+  },
   "CKr0mb": {
     "defaultMessage": "Locked Tokens Received Now"
   },
@@ -1078,9 +1081,6 @@
   },
   "eKEL/g": {
     "defaultMessage": "Pending"
-  },
-  "eerX6M": {
-    "defaultMessage": "Swap via CurvePool"
   },
   "egoEtz": {
     "defaultMessage": "instant"
