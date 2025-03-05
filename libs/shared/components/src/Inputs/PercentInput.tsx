@@ -21,7 +21,7 @@ type UpdateSource = 'user' | 'prop' | null;
 export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
   ({ value, precision = 4, onChange, ...rest }, ref) => {
     const [displayValue, setDisplayValue] = useState(() =>
-      formatPercent(value, precision),
+      value === 0 ? '' : formatPercent(value, precision),
     );
 
     const updateSourceRef = useRef<UpdateSource>(null);
