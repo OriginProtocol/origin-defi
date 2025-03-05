@@ -33,10 +33,12 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
     const displayPrecision = precision ?? decimals;
 
     const [displayValue, setDisplayValue] = useState(() =>
-      formatUnits(value, decimals).slice(
-        0,
-        formatUnits(value, decimals).indexOf('.') + displayPrecision + 1,
-      ),
+      value === 0n
+        ? ''
+        : formatUnits(value, decimals).slice(
+            0,
+            formatUnits(value, decimals).indexOf('.') + displayPrecision + 1,
+          ),
     );
 
     const updateSourceRef = useRef<UpdateSource>(null);

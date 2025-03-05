@@ -24,10 +24,12 @@ type UpdateSource = 'user' | 'prop' | null;
 export const DnumInput = forwardRef<HTMLInputElement, DnumInputProps>(
   ({ value, isError, onChange, precision = 8, ...rest }, ref) => {
     const [displayValue, setDisplayValue] = useState(() =>
-      format(value, {
-        decimalsRounding: 'ROUND_DOWN',
-        digits: precision,
-      }),
+      eq(value, 0)
+        ? ''
+        : format(value, {
+            decimalsRounding: 'ROUND_DOWN',
+            digits: precision,
+          }),
     );
 
     const updateSourceRef = useRef<UpdateSource>(null);
