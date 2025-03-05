@@ -5,7 +5,6 @@ export type OethRoute =
   | 'redeem-vault-oeth'
   | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
-  | 'swap-curve-oeth-eth'
   | 'swap-curve-oeth-sfrxeth'
   | 'swap-zapper-oeth-eth'
   | 'swap-zapper-oeth-sfrxeth'
@@ -16,6 +15,7 @@ export type SuperOethbRoute =
   | 'mint-vault-oeth'
   | 'redeem-vault-async-superOethb'
   | 'swap-aerodrome-superOethb'
+  | 'swap-curve-superOethb'
   | 'swap-zapper-superOethb'
   | 'unwrap-oeth-woeth'
   | 'wrap-oeth-oeth';

@@ -1,8 +1,5 @@
-import {
-  isNativeCurrency,
-  simulateContractWithTxTracker,
-  useCurve,
-} from '@origin/shared/providers';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { isNativeCurrency } from '@origin/shared/providers';
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
@@ -18,11 +15,15 @@ import {
 } from '@wagmi/core';
 import { path } from 'ramda';
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
+import { base, mainnet } from 'viem/chains';
 
-import { GAS_BUFFER } from '../../constants';
-import { defaultRoute } from '../../defaultRoute';
-import { curveRoutes } from './curveRoutes';
+import { GAS_BUFFER } from '../constants';
+import { defaultRoute } from '../defaultRoute';
+import { oethCurveRoutes } from './routes/oeth';
+import { ousdCurveRoutes } from './routes/ousd';
+import { superOethbCurveRoutes } from './routes/superOethb';
 
+import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
   Approve,
@@ -30,39 +31,83 @@ import type {
   EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
+  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
+
+const getCurveConfig = (tokenIn: Token, tokenOut: Token) => {
+  if (
+    tokenIn.id === tokens.mainnet.OETH.id ||
+    tokenOut.id === tokens.mainnet.OETH.id
+  ) {
+    return path([tokenIn.symbol, tokenOut.symbol], oethCurveRoutes);
+  } else if (
+    tokenIn.id === tokens.mainnet.OUSD.id ||
+    tokenOut.id === tokens.mainnet.OUSD.id
+  ) {
+    return path([tokenIn.symbol, tokenOut.symbol], ousdCurveRoutes);
+  } else if (
+    tokenIn.id === tokens.base.superOETHb.id ||
+    tokenOut.id === tokens.base.superOETHb.id
+  ) {
+    return path([tokenIn.symbol, tokenOut.symbol], superOethbCurveRoutes);
+  }
+
+  return null;
+};
+
+const getCurveRouter = (chainId: number) => {
+  if (chainId === mainnet.id) {
+    return contracts.mainnet.CurveRouterNG;
+  } else if (chainId === base.id) {
+    return contracts.base.CurveRouterNG;
+  }
+
+  return null;
+};
+
+const isRouteAvailable: IsRouteAvailable = async (
+  { config },
+  { tokenIn, tokenOut },
+) => {
+  const curveConfig = getCurveConfig(tokenIn, tokenOut);
+  const curveRouter = getCurveRouter(tokenIn.chainId);
+
+  if (!curveConfig || !curveRouter) {
+    return false;
+  }
+
+  return true;
+};
 
 const estimateAmount: EstimateAmount = async (
   { config, queryClient },
   { tokenIn, tokenOut, amountIn },
 ) => {
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
-  if (amountIn === 0n || isNilOrEmpty(curve?.CurveRegistryExchange)) {
+  if (amountIn === 0n) {
     return 0n;
   }
 
-  const curveConfig = path<{ routes: unknown[]; swapParams: unknown[] }>(
-    [tokenIn.symbol, tokenOut.symbol],
-    curveRoutes,
-  );
+  const curveConfig = getCurveConfig(tokenIn, tokenOut);
+  const curveRouter = getCurveRouter(tokenIn.chainId);
 
-  if (!curveConfig) {
+  if (!curveConfig || !curveRouter) {
     throw new Error(
       `No curve route found, verify exchange mapping ${tokenIn.symbol} -> ${tokenOut.symbol}`,
     );
   }
 
   const amountOut = await readContract(config, {
-    address: curve.CurveRegistryExchange.address,
-    abi: curve.CurveRegistryExchange.abi,
-    functionName: 'get_exchange_multiple_amount',
-    args: [curveConfig.routes, curveConfig.swapParams, amountIn],
-    chainId: curve.CurveRegistryExchange.chainId,
+    address: curveRouter.address,
+    abi: curveRouter.abi,
+    functionName: 'get_dy',
+    args: [
+      curveConfig.routes,
+      curveConfig.swapParams,
+      amountIn,
+      curveConfig.pools,
+    ],
+    chainId: curveRouter.chainId,
   });
 
   return amountOut as unknown as bigint;
@@ -85,25 +130,17 @@ const estimateGas: EstimateGas = async (
     slippage,
   );
 
-  const curveConfig = path<{ routes: unknown[]; swapParams: unknown[] }>(
-    [tokenIn.symbol, tokenOut.symbol],
-    curveRoutes,
-  );
+  const curveConfig = getCurveConfig(tokenIn, tokenOut);
+  const curveRouter = getCurveRouter(tokenIn.chainId);
 
-  if (!curveConfig) {
+  if (!curveConfig || !curveRouter) {
     throw new Error(
       `No curve route found, verify exchange mapping ${tokenIn.symbol} -> ${tokenOut.symbol}`,
     );
   }
 
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
-
   const publicClient = getPublicClient(config, {
-    chainId: curve.CurveRegistryExchange.chainId,
+    chainId: tokenIn.chainId,
   });
 
   if (!publicClient) {
@@ -114,19 +151,20 @@ const estimateGas: EstimateGas = async (
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: curve.CurveRegistryExchange.address,
-      abi: curve.CurveRegistryExchange.abi,
-      functionName: 'exchange_multiple',
+      address: curveRouter.address,
+      abi: curveRouter.abi,
+      functionName: 'exchange',
       args: [
         curveConfig.routes,
         curveConfig.swapParams,
         amountIn,
         minAmountOut[0],
+        curveConfig.pools,
       ],
       account: address ?? ETH_ADDRESS_CURVE,
       ...(isTokenInNative && { value: amountIn }),
     });
-  } catch (e) {
+  } catch {
     gasEstimate = 350000n;
   }
 
@@ -135,13 +173,9 @@ const estimateGas: EstimateGas = async (
 
 const allowance: Allowance = async ({ config, queryClient }, { tokenIn }) => {
   const { address } = getAccount(config);
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
+  const curveRouter = getCurveRouter(tokenIn.chainId);
 
-  if (!address || isNilOrEmpty(curve?.CurveRegistryExchange)) {
+  if (!address || !curveRouter) {
     return 0n;
   }
 
@@ -153,7 +187,7 @@ const allowance: Allowance = async ({ config, queryClient }, { tokenIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address, curve.CurveRegistryExchange.address],
+    args: [address, curveRouter.address],
     chainId: tokenIn.chainId,
   });
 
@@ -166,24 +200,19 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const curveRouter = getCurveRouter(tokenIn.chainId);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !address || !publicClient) {
+  if (amountIn === 0n || !address || !publicClient || !curveRouter) {
     return approvalEstimate;
   }
-
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address ?? ZERO_ADDRESS,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [curve.CurveRegistryExchange.address, amountIn],
+      args: [curveRouter.address, amountIn],
       account: address,
     });
   } catch {
@@ -237,19 +266,17 @@ const approve: Approve = async (
   { config, queryClient },
   { tokenIn, amountIn },
 ) => {
-  if (!tokenIn?.address) {
+  const curveRouter = getCurveRouter(tokenIn.chainId);
+
+  if (!tokenIn?.address || !curveRouter) {
     return null;
   }
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [curve.CurveRegistryExchange.address, amountIn],
+    args: [curveRouter.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -267,11 +294,6 @@ const swap: Swap = async (
     return null;
   }
 
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
   const approved = await allowance(
     { config, queryClient },
     { tokenIn, tokenOut },
@@ -286,12 +308,10 @@ const swap: Swap = async (
     slippage,
   );
 
-  const curveConfig = path<{ routes: unknown[]; swapParams: unknown[] }>(
-    [tokenIn.symbol, tokenOut?.symbol],
-    curveRoutes,
-  );
+  const curveConfig = getCurveConfig(tokenIn, tokenOut);
+  const curveRouter = getCurveRouter(tokenIn.chainId);
 
-  if (!curveConfig) {
+  if (!curveConfig || !curveRouter) {
     throw new Error(
       `No curve route found, verify exchange mapping ${tokenIn.symbol} -> ${tokenOut.symbol}`,
     );
@@ -311,18 +331,19 @@ const swap: Swap = async (
 
   const isTokenInNative = isNativeCurrency(tokenIn);
 
-  const { request } = await simulateContractWithTxTracker(config, {
-    address: curve.CurveRegistryExchange.address,
-    abi: curve.CurveRegistryExchange.abi,
-    functionName: 'exchange_multiple',
+  const { request } = await simulateContract(config, {
+    address: curveRouter.address,
+    abi: curveRouter.abi,
+    functionName: 'exchange',
     args: [
       curveConfig.routes,
       curveConfig.swapParams,
       amountIn,
       minAmountOut[0],
+      curveConfig.pools,
     ],
     gas,
-    chainId: curve.CurveRegistryExchange.chainId,
+    chainId: curveRouter.chainId,
     ...(isTokenInNative && { value: amountIn }),
   });
   const hash = await writeContract(config, request);
@@ -330,8 +351,9 @@ const swap: Swap = async (
   return hash;
 };
 
-export const SwapCurveOeth = {
+export const swapCurve = {
   ...defaultRoute,
+  isRouteAvailable,
   estimateAmount,
   estimateGas,
   estimateRoute,

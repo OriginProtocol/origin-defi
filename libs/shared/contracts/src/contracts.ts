@@ -16,11 +16,10 @@ import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { ConvexEthMetaStrategyABI } from './abis/ConvexEthMetaStrategy';
 import { ConvexStrategyABI } from './abis/ConvexStrategy';
-import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurveAMOStrategyABI } from './abis/CurveAMOStrategy';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
-import { CurveRouterABI } from './abis/CurveRouter';
+import { CurveRouterNGABI } from './abis/CurveRouterNG';
 import { DIAOracleABI } from './abis/DIAOracle';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
@@ -107,17 +106,11 @@ export const contracts = {
       name: 'ChainlinkOracle',
     },
     // Curve
-    CurveAddressProvider: {
-      address: '0x0000000022d53366457f9d5e68ec105046fc4383',
+    CurveRouterNG: {
+      address: '0x16C6521Dff6baB339122a0FE25a9116693265353',
       chainId: mainnet.id,
-      abi: CurveAddressProviderABI,
-      name: 'CurveAddressProvider',
-    },
-    CurveRouter: {
-      address: '0xF0d4c12A5768D806021F80a262B4d39d26C58b8D',
-      chainId: mainnet.id,
-      abi: CurveRouterABI,
-      name: 'CurveRouter',
+      abi: CurveRouterNGABI,
+      name: 'CurveRouterNG',
     },
     // DIA Oracle
     DIAOracle: {
@@ -421,6 +414,12 @@ export const contracts = {
       abi: CCIPRouterABI,
       name: 'ccipRouter',
     },
+    // Curve Router NG
+    CurveRouterNG: {
+      address: '0x2191718CD32d02B8E60BAdFFeA33E4B5DD9A0A0D',
+      chainId: arbitrum.id,
+      abi: CurveRouterNGABI,
+    },
   },
   base: {
     // Aerodrome
@@ -441,6 +440,12 @@ export const contracts = {
       chainId: base.id,
       abi: AerodromePoolABI,
       name: 'aerodromeWethSuperOethbPool',
+    },
+    // Curve Router NG
+    CurveRouterNG: {
+      address: '0x4f37A9d177470499A2dD084621020b023fcffc1F',
+      chainId: base.id,
+      abi: CurveRouterNGABI,
     },
     // superOETHb
     superOETHbVault: {

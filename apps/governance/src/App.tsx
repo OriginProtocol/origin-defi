@@ -5,15 +5,12 @@ import {
   trackSentryError,
 } from '@origin/governance/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import { useCurve } from '@origin/shared/providers';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router';
 
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
-  useCurve();
-
   return (
     <ErrorBoundary
       ErrorComponent={<ErrorPage height={1} width={1} />}

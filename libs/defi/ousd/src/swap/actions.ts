@@ -1,6 +1,6 @@
 import {
   mintOtoken,
-  swapCurveOusd,
+  swapCurve,
   swapFlipperOusd,
   swapSushiswapOusd,
   swapUniswapV2Ousd,
@@ -28,7 +28,7 @@ export const ousdSwapActions: Record<OusdSwapAction, SwapApi> = {
     routeLabel: defineMessage({ defaultMessage: 'Swap via SushiSwap' }),
   },
   'swap-curve-ousd': {
-    ...swapCurveOusd,
+    ...swapCurve,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
   },
   'swap-uniswap-v2-ousd': {
