@@ -1,6 +1,7 @@
 import {
   mintOtoken,
   swapAerodromeSuperOethb,
+  swapCurve,
   swapZapperSuperOethb,
   wrapOtoken,
 } from '@origin/shared/routes';
@@ -18,6 +19,11 @@ export const oethSwapActions: Partial<Record<SuperOethbRoute, SwapApi>> = {
   'swap-aerodrome-superOethb': {
     ...swapAerodromeSuperOethb,
     routeLabel: defineMessage({ defaultMessage: 'Swap with Aerodrome' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-curve-superOethb': {
+    ...swapCurve,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Curve' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-zapper-superOethb': {

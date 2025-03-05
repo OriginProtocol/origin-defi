@@ -25,6 +25,11 @@ export const superOethbSwapRoutes: SwapRoute<SuperOethbRoute>[] = [
   {
     tokenIn: tokens.base.WETH,
     tokenOut: tokens.base.superOETHb,
+    action: 'swap-curve-superOethb',
+  },
+  {
+    tokenIn: tokens.base.WETH,
+    tokenOut: tokens.base.superOETHb,
     action: 'mint-vault-oeth',
     noSlippage: true,
   },
@@ -47,6 +52,11 @@ export const superOethbSwapRoutes: SwapRoute<SuperOethbRoute>[] = [
     tokenIn: tokens.base.superOETHb,
     tokenOut: tokens.base.WETH,
     action: 'swap-aerodrome-superOethb',
+  },
+  {
+    tokenIn: tokens.base.superOETHb,
+    tokenOut: tokens.base.WETH,
+    action: 'swap-curve-superOethb',
   },
   // Wrap
   {

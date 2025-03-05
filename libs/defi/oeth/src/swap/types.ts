@@ -6,8 +6,6 @@ export type OethSwapAction = Extract<
   | 'redeem-arm-oeth'
   | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
-  | 'swap-curve-oeth-eth'
-  | 'swap-curve-oeth-sfrxeth'
   | 'swap-zapper-oeth-eth'
   | 'swap-zapper-oeth-sfrxeth'
   | 'unwrap-oeth-woeth'
