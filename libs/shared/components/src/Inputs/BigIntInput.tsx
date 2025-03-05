@@ -65,7 +65,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
 
       if (evt.target.validity.valid && regex.test(newValue)) {
         if (newValue === '') {
-          setDisplayValue('0');
+          setDisplayValue('');
           updateSourceRef.current = 'user';
           if (onChange) {
             onChange(0n);
@@ -119,6 +119,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
           minLength: 0,
           maxLength: 30,
           inputMode: 'decimal',
+          placeholder: '0',
           ...rest?.inputProps,
         }}
       />
