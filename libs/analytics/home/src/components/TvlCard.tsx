@@ -16,12 +16,12 @@ import {
 } from '@origin/analytics/shared';
 import {
   CurrencyLabel,
+  ExpandablePanel,
   LineChart,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { from as dfrom, mul, toNumber } from 'dnum';
 import { last } from 'ramda';
@@ -59,7 +59,6 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
   const theme = useTheme();
   const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokensChartStats(
     limit,
     from || to ? 0 : offset,
@@ -186,11 +185,10 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
     },
   ];
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(serie ?? []) : serie?.[hoverIdx];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'TVL' })} />
       <Divider />
       <CardContent>
@@ -225,50 +223,59 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
         </Stack>
       </CardContent>
       {isLoading || isArmLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <LineChart
-          data={serie}
-          series={series}
-          width={width}
+        <ExpandablePanel
           height={height}
-          margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value: NumberLike) =>
-            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
-              Number(value),
-              {
-                notation: 'compact',
-              },
-            )}`
-          }
-          tooltipLabels={[
-            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
-            ...series.map((s) => ({
-              label: s.label,
-              value: (d: Item) =>
-                intl.formatNumber(d[s.yKey as keyof Item] ?? 0, {
-                  notation: 'compact',
-                }),
-              color: s.color,
-              currency,
-            })),
-            {
-              label: 'Total',
-              value: (d: Item) =>
-                intl.formatNumber(
-                  currency === 'USD' ? (d.totalUSD ?? 0) : (d.totalETH ?? 0),
+          title={intl.formatMessage({ defaultMessage: 'TVL' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              data={serie}
+              series={series}
+              width={width}
+              height={containerHeight}
+              margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value: NumberLike) =>
+                `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
+                  Number(value),
                   {
                     notation: 'compact',
                   },
-                ),
-              color: theme.palette.chart3,
-              currency,
-            },
-          ]}
-        />
+                )}`
+              }
+              tooltipLabels={[
+                { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+                ...series.map((s) => ({
+                  label: s.label,
+                  value: (d: Item) =>
+                    intl.formatNumber(d[s.yKey as keyof Item] ?? 0, {
+                      notation: 'compact',
+                    }),
+                  color: s.color,
+                  currency,
+                })),
+                {
+                  label: 'Total',
+                  value: (d: Item) =>
+                    intl.formatNumber(
+                      currency === 'USD'
+                        ? (d.totalUSD ?? 0)
+                        : (d.totalETH ?? 0),
+                      {
+                        notation: 'compact',
+                      },
+                    ),
+                  color: theme.palette.chart3,
+                  currency,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

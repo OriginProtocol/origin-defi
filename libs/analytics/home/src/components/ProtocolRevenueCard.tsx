@@ -15,12 +15,12 @@ import {
 } from '@origin/analytics/shared';
 import {
   CurrencyLabel,
+  ExpandablePanel,
   LoadingLabel,
   Spinner,
   StackedBarChart,
 } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
 import { last, pluck } from 'ramda';
@@ -56,8 +56,6 @@ export const ProtocolRevenueCard = ({
   const theme = useTheme();
   const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
-  const width = measures?.width ?? 0;
   const { data: tokens, isLoading: isTokensLoading } = useTokensChartStats(
     limit,
     from || to ? 0 : offset,
@@ -155,7 +153,7 @@ export const ProtocolRevenueCard = ({
   const isLoading = isTokensLoading || isArmLoading;
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage({
           defaultMessage: 'Protocol Revenue',
@@ -189,65 +187,72 @@ export const ProtocolRevenueCard = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <StackedBarChart
+        <ExpandablePanel
           height={height}
-          width={width}
-          data={serie}
-          xKey="timestamp"
-          yKeys={series}
-          tickYFormat={(value: NumberLike) =>
-            currency === 'USD'
-              ? `$${intl.formatNumber(Number(value), {
-                  notation: 'compact',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`
-              : `Ξ${intl.formatNumber(Number(value), {
-                  notation: 'compact',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}`
-          }
-          lineData={{
-            label: intl.formatMessage({
-              defaultMessage: 'Moving Average',
-            }),
-            xKey: 'timestamp',
-            yKey: 'avg',
-            color: [theme.palette.chart5, theme.palette.chart2],
-            strokeWidth: 3,
-            curveType: 'linear',
-          }}
-          margins={margins}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tooltipLabels={[
-            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
-            ...series.map((s) => ({
-              label: s.label,
-              value: (d: Item) =>
-                intl.formatNumber(d[s.key] ?? 0, {
-                  notation: 'compact',
-                  maximumFractionDigits: 2,
+          title={intl.formatMessage({ defaultMessage: 'Protocol Revenue' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <StackedBarChart
+              height={containerHeight}
+              width={width}
+              data={serie}
+              xKey="timestamp"
+              yKeys={series}
+              tickYFormat={(value: NumberLike) =>
+                currency === 'USD'
+                  ? `$${intl.formatNumber(Number(value), {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}`
+                  : `Ξ${intl.formatNumber(Number(value), {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}`
+              }
+              lineData={{
+                label: intl.formatMessage({
+                  defaultMessage: 'Moving Average',
                 }),
-              color: s.fillColor,
-              currency,
-            })),
-            {
-              label: intl.formatMessage({ defaultMessage: '7-day avg' }),
-              value: (d: Item) =>
-                intl.formatNumber(d.avg, {
-                  notation: 'compact',
-                  maximumFractionDigits: 2,
-                }),
-              color: [theme.palette.chart5, theme.palette.chart2],
-              currency,
-            },
-          ]}
-        />
+                xKey: 'timestamp',
+                yKey: 'avg',
+                color: [theme.palette.chart5, theme.palette.chart2],
+                strokeWidth: 3,
+                curveType: 'linear',
+              }}
+              margins={margins}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tooltipLabels={[
+                { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+                ...series.map((s) => ({
+                  label: s.label,
+                  value: (d: Item) =>
+                    intl.formatNumber(d[s.key] ?? 0, {
+                      notation: 'compact',
+                      maximumFractionDigits: 2,
+                    }),
+                  color: s.fillColor,
+                  currency,
+                })),
+                {
+                  label: intl.formatMessage({ defaultMessage: '7-day avg' }),
+                  value: (d: Item) =>
+                    intl.formatNumber(d.avg, {
+                      notation: 'compact',
+                      maximumFractionDigits: 2,
+                    }),
+                  color: [theme.palette.chart5, theme.palette.chart2],
+                  currency,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

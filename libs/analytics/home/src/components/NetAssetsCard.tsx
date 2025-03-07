@@ -11,11 +11,11 @@ import {
 import {
   BarChart,
   CurrencyLabel,
+  ExpandablePanel,
   InfoTooltipLabel,
   LoadingLabel,
 } from '@origin/shared/components';
 import { Spinner } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -34,16 +34,14 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   const theme = useTheme();
   const { currency } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useNetAssetValue();
 
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
-  const width = measures?.width ?? 0;
   const totalNAV =
     currency === 'USD' ? activeItem?.totalUSD : activeItem?.totalETH;
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={
           <InfoTooltipLabel
@@ -83,46 +81,53 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <BarChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          xKey="timestamp"
-          yKey={currency === 'USD' ? 'totalUSD' : 'totalETH'}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
-          tickYFormat={(value: NumberLike) =>
-            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
-              Number(value),
-              {
-                notation: 'compact',
-              },
-            )}`
-          }
-          barColor={theme.palette.chart3}
-          activeBarColor={theme.palette.chart8}
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            {
-              label: 'NAV',
-              value: (d) =>
-                intl.formatNumber(
-                  currency === 'USD' ? d.totalUSD : d.totalETH,
+          title={intl.formatMessage({ defaultMessage: 'Net Asset Value' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <BarChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              xKey="timestamp"
+              yKey={currency === 'USD' ? 'totalUSD' : 'totalETH'}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
+              tickYFormat={(value: NumberLike) =>
+                `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
+                  Number(value),
                   {
                     notation: 'compact',
                   },
-                ),
-              currency,
-              color: theme.palette.chart3,
-            },
-          ]}
-        />
+                )}`
+              }
+              barColor={theme.palette.chart3}
+              activeBarColor={theme.palette.chart8}
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                {
+                  label: 'NAV',
+                  value: (d) =>
+                    intl.formatNumber(
+                      currency === 'USD' ? d.totalUSD : d.totalETH,
+                      {
+                        notation: 'compact',
+                      },
+                    ),
+                  currency,
+                  color: theme.palette.chart3,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );
