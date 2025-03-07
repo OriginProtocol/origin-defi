@@ -8,6 +8,8 @@ import {
   DialogTitle,
   IconButton,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { FaExpandRegular, FaXmarkRegular } from '@origin/shared/icons';
 import { useMeasure } from '@react-hookz/web';
@@ -33,6 +35,8 @@ export const ExpandablePanel = ({
   children,
   ...rest
 }: ExpandablePanelProps) => {
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [initialMeasures, initialRef] = useMeasure<HTMLDivElement>();
@@ -85,8 +89,7 @@ export const ExpandablePanel = ({
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        fullWidth
-        maxWidth="xl"
+        {...(isSm ? { fullScreen: true } : { fullWidth: true, maxWidth: 'xl' })}
       >
         <DialogTitle
           display="flex"
