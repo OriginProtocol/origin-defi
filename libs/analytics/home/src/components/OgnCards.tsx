@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { useOgnInfo, useXOgnStakingApy } from '@origin/analytics/shared';
 import {
+  ExpandablePanel,
   LimitControls,
   LineChart,
   Spinner,
@@ -19,7 +20,6 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { format, from } from 'dnum';
 import { defineMessage, useIntl } from 'react-intl';
@@ -177,7 +177,6 @@ export const OgnPerformanceCard = (props: CardProps) => {
   const theme = useTheme();
   const [metric, setMetric] = useState<'price' | 'mc'>('price');
   const [limit, setLimit] = useState<number | undefined>(182);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data: dailyStats, isLoading: isDailyStatsLoading } =
     useOgnDailyStatsQuery(
       { limit },
@@ -191,10 +190,8 @@ export const OgnPerformanceCard = (props: CardProps) => {
       },
     );
 
-  const width = measures?.width ?? 0;
-
   return (
-    <Card {...props} ref={ref}>
+    <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'OGN Performance' })}
       />
@@ -236,45 +233,52 @@ export const OgnPerformanceCard = (props: CardProps) => {
         </Stack>
       </CardContent>
       {isDailyStatsLoading ? (
-        <Spinner sx={{ height: 400 }} />
+        <Spinner sx={{ width: 1, height: 400 }} />
       ) : (
-        <LineChart
-          width={width}
+        <ExpandablePanel
           height={400}
-          data={dailyStats ?? []}
-          series={[
-            {
-              label: metric === 'price' ? 'Price' : 'Market Cap',
-              xKey: 'timestamp',
-              yKey: metric,
-              color: [theme.palette.chart1, theme.palette.chart2],
-              strokeWidth: 2,
-            },
-          ]}
-          tickYFormat={(value: NumberLike) =>
-            metric === 'price'
-              ? `$${value}`
-              : intl.formatNumber(Number(value), {
-                  notation: 'compact',
-                  maximumFractionDigits: 2,
-                })
-          }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            {
-              label: metric === 'price' ? 'Price' : 'MC',
-              value: (d) =>
-                intl.formatNumber(d[metric], {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                }),
-              color: [theme.palette.chart1, theme.palette.chart2],
-              currency: 'USD',
-            },
-          ]}
-        />
+          title={intl.formatMessage({ defaultMessage: 'OGN Performance' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              width={width}
+              height={containerHeight}
+              data={dailyStats ?? []}
+              series={[
+                {
+                  label: metric === 'price' ? 'Price' : 'Market Cap',
+                  xKey: 'timestamp',
+                  yKey: metric,
+                  color: [theme.palette.chart1, theme.palette.chart2],
+                  strokeWidth: 2,
+                },
+              ]}
+              tickYFormat={(value: NumberLike) =>
+                metric === 'price'
+                  ? `$${value}`
+                  : intl.formatNumber(Number(value), {
+                      notation: 'compact',
+                      maximumFractionDigits: 2,
+                    })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                {
+                  label: metric === 'price' ? 'Price' : 'MC',
+                  value: (d) =>
+                    intl.formatNumber(d[metric], {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    }),
+                  color: [theme.palette.chart1, theme.palette.chart2],
+                  currency: 'USD',
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

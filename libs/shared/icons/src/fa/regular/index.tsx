@@ -38,6 +38,7 @@ import CommentsSvg from './comments.svg?react';
 import CopySvg from './copy.svg?react';
 import EllipsisVerticalSvg from './ellipsis-vertical.svg?react';
 import ExclamationSvg from './exclamation.svg?react';
+import ExpandSvg from './expand.svg?react';
 import EyeSvg from './eye.svg?react';
 import FileLinesSvg from './file-lines.svg?react';
 import FilterSvg from './filter.svg?react';
@@ -328,6 +329,9 @@ export const FaEyeRegular = (props: SvgIconProps) => (
 );
 export const FaExclamationRegular = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ExclamationSvg} inheritViewBox />
+);
+export const FaExpandRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ExpandSvg} inheritViewBox />
 );
 export const FaFileLinesRegular = (props: SvgIconProps) => (
   <SvgIcon

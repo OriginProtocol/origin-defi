@@ -3,6 +3,7 @@ export * from './Charts';
 export * from './Controls';
 export * from './Countdown';
 export * from './Errors';
+export * from './Expandables';
 export * from './InfoTooltip';
 export * from './Inputs';
 export * from './Icons';
