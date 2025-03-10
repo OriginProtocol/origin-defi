@@ -8,7 +8,7 @@ import {
 import { from } from 'dnum';
 import { pathOr } from 'ramda';
 import { parseUnits } from 'viem';
-import { arbitrum, base, mainnet, optimism } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
 
 import type { Dnum } from 'dnum';
 
@@ -57,6 +57,11 @@ export const chainlinkOraclesBase = {
 
 export const chainlinkOraclesOptimism = {
   ETH_USD: '0x13e3Ee699D1909E989722E753853AE30b17e08c5',
+} as const;
+
+export const chainlinkOraclesSonic = {
+  ETH_USD: '0x824364077993847f71293B24ccA8567c00c2de11',
+  S_USD: '0xc76dFb89fF298145b417d221B2c747d84952e01d',
 } as const;
 
 export const fixedOracleSonic = {
@@ -548,10 +553,27 @@ export const priceOptions = {
     type: 'derived',
     dependsOn: ['10:ETH_USD'],
   },
+  '146:ETH_USD': {
+    id: '146:ETH_USD',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesSonic.ETH_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: sonic.id,
+    },
+    mapResult: chainLinkUsdMapper,
+  },
   '146:S_USD': {
     id: '146:S_USD',
-    type: 'coingecko',
-    config: coingeckoTokenIds.S,
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesSonic.S_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: sonic.id,
+    },
+    mapResult: chainLinkUsdMapper,
   },
   '146:wS_USD': {
     id: '146:wS_USD',
