@@ -133,6 +133,12 @@ module.exports = [
       },
     })),
   {
-    ignores: ['dist', '**/*.generated.ts', '**/generated/graphql.ts'],
+    ignores: [
+      'dist',
+      '**/*.generated.ts',
+      '**/generated/graphql.ts',
+      '**/vite.config.*.timestamp*',
+      '**/vitest.config.*.timestamp*',
+    ],
   },
 ];
