@@ -141,6 +141,15 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         onMouseLeave={() => {
           setOpen(false);
         }}
+        onClick={() => {
+          let target;
+          if (route.children?.[0]?.index) {
+            target = `${route?.path ?? ''}/`;
+          } else {
+            target = `${route?.path ?? ''}/${route?.children?.[0]?.path ?? ''}`;
+          }
+          navigate(target);
+        }}
       >
         {intl.formatMessage(route.handle.title)}
       </Button>

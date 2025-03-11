@@ -189,31 +189,33 @@ export const Topnav = ({ routes }: TopnavProps) => {
                 setAlertMenuOpen(false);
               }}
             />
-            <ChainMenuButton
-              variant="nav"
-              color="secondary"
-              hideChainName={isLg}
-              sx={{ flexShrink: 0 }}
-              iconSize={24}
-              menuProps={{
-                paperProps: {
-                  sx: {
-                    mt: 1.5,
-                    borderRadius: 4,
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    backgroundColor: 'background.highlight',
-                    p: 1,
+            {isConnected && (
+              <ChainMenuButton
+                variant="nav"
+                color="secondary"
+                hideChainName={isLg}
+                sx={{ flexShrink: 0 }}
+                iconSize={24}
+                menuProps={{
+                  paperProps: {
+                    sx: {
+                      mt: 1.5,
+                      borderRadius: 4,
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      backgroundColor: 'background.highlight',
+                      p: 1,
+                    },
                   },
-                },
-              }}
-              menuItemProps={{
-                sx: {
-                  ...theme.typography.body3,
-                  borderRadius: 2,
-                },
-              }}
-            />
+                }}
+                menuItemProps={{
+                  sx: {
+                    ...theme.typography.body3,
+                    borderRadius: 2,
+                  },
+                }}
+              />
+            )}
             <OpenAccountModalButton
               variant="nav"
               ref={accountMenuAnchorEl}

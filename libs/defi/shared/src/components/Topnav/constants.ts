@@ -42,6 +42,13 @@ export const additionalLinks: Record<string, NavItem[]> = {
       href: `${ORIGIN_ANALYTICS_URL}/ousd`,
     },
   ],
+  arm: [
+    {
+      title: defineMessage({ defaultMessage: 'Analytics' }),
+      icon: FaChartPieRegular,
+      href: `${ORIGIN_ANALYTICS_URL}/arm`,
+    },
+  ],
   more: [
     {
       title: defineMessage({ defaultMessage: 'Discussion forum' }),
