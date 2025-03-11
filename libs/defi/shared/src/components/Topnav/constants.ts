@@ -53,6 +53,11 @@ export const additionalLinks: Record<string, NavItem[]> = {
       icon: Snapshot,
       href: GOVERNANCE_OGN_SNAPSHOT_VOTES_URL,
     },
+    {
+      title: defineMessage({ defaultMessage: 'Analytics' }),
+      icon: FaChartPieRegular,
+      href: ORIGIN_ANALYTICS_URL,
+    },
   ],
 };
 
