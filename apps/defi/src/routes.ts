@@ -1,5 +1,4 @@
 import * as arm from '@origin/defi/arm';
-import * as governance from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
 import * as oeth from '@origin/defi/oeth';
 import * as ogn from '@origin/defi/ogn';
@@ -183,6 +182,18 @@ export const routes: RouteObject[] = [
         handle: { title: defineMessage({ defaultMessage: 'OGN' }), icon: OGN },
         children: [
           {
+            index: true,
+            Component: ogn.OverviewView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Governance' }),
+              icon: FaGavelRegular,
+            },
+          },
+          {
+            path: ':proposalId',
+            Component: ogn.ProposalDetailView,
+          },
+          {
             path: 'staking',
             Component: ogn.StakingView,
             handle: {
@@ -217,18 +228,6 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            Component: governance.OverviewView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Governance' }),
-              icon: FaGavelRegular,
-            },
-          },
-          {
-            path: ':proposalId',
-            Component: governance.ProposalDetailView,
-          },
-          {
-            path: 'migration',
             Component: ogv.MigrationView,
             handle: {
               title: defineMessage({ defaultMessage: 'Migration' }),
