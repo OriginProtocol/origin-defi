@@ -32,7 +32,7 @@ export const DailyYieldCard = (props: CardProps) => {
               sWidth={120}
               sx={{ fontWeight: 'medium' }}
             >
-              {intl.formatNumber((selectedItem?.[yKey] as number) ?? 0, {
+              {intl.formatNumber(selectedItem?.yield ?? 0, {
                 maximumFractionDigits: 4,
               })}
             </LoadingLabel>
