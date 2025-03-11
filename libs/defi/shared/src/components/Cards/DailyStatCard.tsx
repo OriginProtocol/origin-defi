@@ -15,7 +15,7 @@ import {
 } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import { FaChevronDownRegular } from '@origin/shared/icons';
-import { format, from } from 'dnum';
+import { format, from, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { OTokenDailyStatOrderByInput } from '../../generated/graphql';
@@ -75,25 +75,31 @@ export const DailyStatCard = ({
             },
           ),
           value: (
-            <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
-              {['ETH', 'USD'].includes(currency) && (
-                <CurrencyLabel currency={currency} />
+            <Stack spacing={0.5}>
+              <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
+                <CurrencyLabel currency={currency}>
+                  {format(
+                    currency === 'ETH'
+                      ? (data?.tvlETH ?? from(0))
+                      : currency === 'USD'
+                        ? (data?.tvlUSD ?? from(0))
+                        : (data?.totalSupply ?? from(0)),
+
+                    0,
+                  )}
+                </CurrencyLabel>
+              </Typography>
+              {currency !== 'USD' && (
+                <Typography variant="caption1" sx={{ color: 'text.secondary' }}>
+                  <CurrencyLabel currency="USD">
+                    {intl.formatNumber(toNumber(data?.tvlUSD ?? from(0)), {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                    })}
+                  </CurrencyLabel>
+                </Typography>
               )}
-              {format(
-                currency === 'ETH'
-                  ? (data?.tvlETH ?? from(0))
-                  : currency === 'USD'
-                    ? (data?.tvlUSD ?? from(0))
-                    : (data?.totalSupply ?? from(0)),
-                0,
-              )}
-              {['S'].includes(currency) && (
-                <>
-                  &nbsp;
-                  <CurrencyLabel currency={currency} />
-                </>
-              )}
-            </Typography>
+            </Stack>
           ),
         });
       }
@@ -121,17 +127,33 @@ export const DailyStatCard = ({
             defaultMessage: 'Circulating token supply',
           }),
           value: (
-            <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
-              <CurrencyLabel currency={currency} />
-              {format(
-                currency === 'ETH'
-                  ? (data?.circulatingSupplyETH ?? from(0))
-                  : currency === 'USD'
-                    ? (data?.circulatingSupplyUSD ?? from(0))
-                    : (data?.circulatingSupply ?? from(0)),
-                2,
+            <Stack spacing={0.5}>
+              <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
+                <CurrencyLabel currency={currency}>
+                  {format(
+                    currency === 'ETH'
+                      ? (data?.circulatingSupplyETH ?? from(0))
+                      : currency === 'USD'
+                        ? (data?.circulatingSupplyUSD ?? from(0))
+                        : (data?.circulatingSupply ?? from(0)),
+                    2,
+                  )}
+                </CurrencyLabel>
+              </Typography>
+              {currency !== 'USD' && (
+                <Typography variant="caption1" sx={{ color: 'text.secondary' }}>
+                  <CurrencyLabel currency="USD">
+                    {intl.formatNumber(
+                      toNumber(data?.circulatingSupplyUSD ?? from(0)),
+                      {
+                        notation: 'compact',
+                        minimumFractionDigits: 2,
+                      },
+                    )}
+                  </CurrencyLabel>
+                </Typography>
               )}
-            </Typography>
+            </Stack>
           ),
         });
         res.push({
@@ -140,15 +162,31 @@ export const DailyStatCard = ({
             defaultMessage: 'Protocol Owned Liquidity',
           }),
           value: (
-            <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
-              <CurrencyLabel currency={currency} />
-              {format(
-                currency === 'USD'
-                  ? (data?.amoSupplyUSD ?? from(0))
-                  : (data?.amoSupplyETH ?? from(0)),
-                2,
+            <Stack spacing={0.5}>
+              <Typography variant="body3" sx={{ fontWeight: 'medium' }}>
+                <CurrencyLabel currency={currency}>
+                  {format(
+                    currency === 'USD'
+                      ? (data?.amoSupplyUSD ?? from(0))
+                      : (data?.amoSupplyETH ?? from(0)),
+                    2,
+                  )}
+                </CurrencyLabel>
+              </Typography>
+              {currency !== 'USD' && (
+                <Typography variant="caption1" sx={{ color: 'text.secondary' }}>
+                  <CurrencyLabel currency="USD">
+                    {intl.formatNumber(
+                      toNumber(data?.amoSupplyUSD ?? from(0)),
+                      {
+                        notation: 'compact',
+                        minimumFractionDigits: 2,
+                      },
+                    )}
+                  </CurrencyLabel>
+                </Typography>
               )}
-            </Typography>
+            </Stack>
           ),
         });
       }
@@ -159,6 +197,7 @@ export const DailyStatCard = ({
     currency,
     data?.amoSupplyETH,
     data?.amoSupplyUSD,
+    data?.circulatingSupply,
     data?.circulatingSupplyETH,
     data?.circulatingSupplyUSD,
     data?.rateUSD,
@@ -214,7 +253,7 @@ export const DailyStatCard = ({
             <ValueLabel
               key={s.label}
               direction="row"
-              sx={{ justifyContent: 'space-between' }}
+              sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}
               label={s.label}
               labelProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
               labelInfoTooltip={s.labelInfoTooltip}
