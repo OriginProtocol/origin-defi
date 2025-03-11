@@ -14,13 +14,13 @@ import {
 import { useArmStatesQuery } from '@origin/analytics/shared';
 import {
   AreaChart,
+  ExpandablePanel,
   InfoTooltipLabel,
   LimitControls,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { ascend, last, prop, takeLast } from 'ramda';
@@ -42,7 +42,6 @@ export const VaultAssetsChart = ({
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(7);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const dateTo = dayjs
     .utc()
     .subtract(1, 'day')
@@ -112,7 +111,6 @@ export const VaultAssetsChart = ({
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const series = [
     {
@@ -144,7 +142,6 @@ export const VaultAssetsChart = ({
   return (
     <Card
       {...rest}
-      ref={ref}
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader
@@ -233,40 +230,48 @@ export const VaultAssetsChart = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <AreaChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          xKey="timestamp"
-          yKeys={series}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          curveType="step"
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              maximumFractionDigits: 2,
-            })
-          }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM YYYY HH:mm'),
-            },
-            ...series.map((s) => ({
-              label: s.label,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              value: (d: any) =>
-                intl.formatNumber(d?.[s.key] ?? 0, {
-                  notation: 'compact',
-                  minimumFractionDigits: 2,
+          title={intl.formatMessage({ defaultMessage: 'Vault Assets' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <AreaChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              xKey="timestamp"
+              yKeys={series}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              curveType="step"
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
                   maximumFractionDigits: 2,
-                }),
-              color: s.lineColor,
-            })),
-          ]}
-        />
+                })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) =>
+                    dayjs.utc(d?.timestamp).format('DD MMM YYYY HH:mm'),
+                },
+                ...series.map((s) => ({
+                  label: s.label,
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  value: (d: any) =>
+                    intl.formatNumber(d?.[s.key] ?? 0, {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }),
+                  color: s.lineColor,
+                })),
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

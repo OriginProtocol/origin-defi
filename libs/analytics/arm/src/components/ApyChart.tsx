@@ -11,6 +11,7 @@ import {
 import { useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
   BarChart,
+  ExpandablePanel,
   InfoTooltip,
   LimitControls,
   LoadingLabel,
@@ -18,7 +19,6 @@ import {
   TrailingControls,
 } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -38,7 +38,6 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const [limit, setLimit] = useState<number | undefined>(30);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     { offset: 1 },
     {
@@ -62,13 +61,11 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
     <Card
       {...rest}
-      ref={ref}
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
@@ -106,58 +103,65 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <BarChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          xKey="timestamp"
-          yKey="apy"
-          lineData={{
-            xKey: 'timestamp',
-            yKey: trailing,
-            color: [theme.palette.chart5, theme.palette.chart2],
-            strokeWidth: 3,
-          }}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value: NumberLike) => `${value}%`}
-          barColor={theme.palette.chart7}
-          activeBarColor={theme.palette.chart3}
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            {
-              label: `APY`,
-              value: (d) =>
-                intl.formatNumber(d.apy / 100, {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                }),
-              color: theme.palette.chart3,
-            },
-            {
-              label: `${
+          title={intl.formatMessage({ defaultMessage: 'APY' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <BarChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              xKey="timestamp"
+              yKey="apy"
+              lineData={{
+                xKey: 'timestamp',
+                yKey: trailing,
+                color: [theme.palette.chart5, theme.palette.chart2],
+                strokeWidth: 3,
+              }}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value: NumberLike) => `${value}%`}
+              barColor={theme.palette.chart7}
+              activeBarColor={theme.palette.chart3}
+              tooltipLabels={[
                 {
-                  apy30: '30d',
-                  apy14: '14d',
-                  apy7: '7d',
-                }[trailing]
-              } avg APY`,
-              value: (d) =>
-                intl.formatNumber(d[trailing] / 100, {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                }),
-              color: [theme.palette.chart5, theme.palette.chart2],
-            },
-          ]}
-        />
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                {
+                  label: `APY`,
+                  value: (d) =>
+                    intl.formatNumber(d.apy / 100, {
+                      style: 'percent',
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    }),
+                  color: theme.palette.chart3,
+                },
+                {
+                  label: `${
+                    {
+                      apy30: '30d',
+                      apy14: '14d',
+                      apy7: '7d',
+                    }[trailing]
+                  } avg APY`,
+                  value: (d) =>
+                    intl.formatNumber(d[trailing] / 100, {
+                      style: 'percent',
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    }),
+                  color: [theme.palette.chart5, theme.palette.chart2],
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

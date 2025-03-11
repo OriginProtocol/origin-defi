@@ -15,11 +15,11 @@ import {
   AreaChart,
   CurrencyControls,
   CurrencyLabel,
+  ExpandablePanel,
   LimitControls,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -46,7 +46,6 @@ export const OethDistributionCard = ({
   const [currency, setCurrency] = useState<Currency>('ETH');
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useOethDistribution(limit);
 
   const series = [
@@ -72,7 +71,6 @@ export const OethDistributionCard = ({
       ],
     },
   ] as YKey<TvlCombined>[];
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const activeTotal =
     currency === 'USD'
@@ -80,7 +78,7 @@ export const OethDistributionCard = ({
       : (activeItem?.totalETH ?? 0);
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Network distribution' })}
       />
@@ -163,40 +161,47 @@ export const OethDistributionCard = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <AreaChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          xKey="timestamp"
-          yKeys={series}
-          curveType="base"
-          showGrid
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })
-          }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
-            },
-            ...series.map((s) => ({
-              label: s.label,
-              value: (d: TvlCombined) =>
-                intl.formatNumber(d?.[s.key] ?? 0, {
+          title={intl.formatMessage({ defaultMessage: 'Network distribution' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <AreaChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              xKey="timestamp"
+              yKeys={series}
+              curveType="base"
+              showGrid
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
                   notation: 'compact',
-                  minimumFractionDigits: 2,
-                }),
-              color: s.lineColor,
-              currency,
-            })),
-          ]}
-        />
+                })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+                },
+                ...series.map((s) => ({
+                  label: s.label,
+                  value: (d: TvlCombined) =>
+                    intl.formatNumber(d?.[s.key] ?? 0, {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                    }),
+                  color: s.lineColor,
+                  currency,
+                })),
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

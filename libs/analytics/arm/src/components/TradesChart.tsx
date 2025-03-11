@@ -11,11 +11,11 @@ import {
 } from '@mui/material';
 import {
   ColorLabel,
+  ExpandablePanel,
   InfoTooltipLabel,
   LimitControls,
   Spinner,
 } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 
@@ -33,10 +33,7 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(3);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmTrades(limit);
-
-  const width = measures?.width ?? 0;
 
   const dateStart = dayjs
     .utc()
@@ -47,7 +44,6 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
   return (
     <Card
       {...rest}
-      ref={ref}
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader
@@ -90,29 +86,36 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <BubbleChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          serie={{
-            label: (d) =>
-              d?.swapType === 'buy'
-                ? intl.formatMessage({ defaultMessage: 'Buy' })
-                : intl.formatMessage({ defaultMessage: 'Sell' }),
-            xKey: 'timestamp',
-            yKey: 'price',
-            rKey: 'amountIn',
-            colorFn: (d) =>
-              d?.swapType === 'buy'
-                ? theme.palette.chart1
-                : theme.palette.chart4,
-          }}
-          tickYFormat={(d: NumberLike) =>
-            intl.formatNumber(Number(d), { maximumFractionDigits: 4 })
-          }
-        />
+          title={intl.formatMessage({ defaultMessage: 'Trader Buy v. Sell' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <BubbleChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              serie={{
+                label: (d) =>
+                  d?.swapType === 'buy'
+                    ? intl.formatMessage({ defaultMessage: 'Buy' })
+                    : intl.formatMessage({ defaultMessage: 'Sell' }),
+                xKey: 'timestamp',
+                yKey: 'price',
+                rKey: 'amountIn',
+                colorFn: (d) =>
+                  d?.swapType === 'buy'
+                    ? theme.palette.chart1
+                    : theme.palette.chart4,
+              }}
+              tickYFormat={(d: NumberLike) =>
+                intl.formatNumber(Number(d), { maximumFractionDigits: 4 })
+              }
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

@@ -15,11 +15,11 @@ import {
   AreaChart,
   CurrencyControls,
   CurrencyLabel,
+  ExpandablePanel,
   LimitControls,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -53,7 +53,6 @@ export const TotalSupplyCard = ({
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [currency, setCurrency] = useState<Currency>(config?.currency ?? 'ETH');
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
     token,
     limit,
@@ -88,13 +87,13 @@ export const TotalSupplyCard = ({
         ]
       : []),
   ] as YKey<ChartResult>[];
-  const width = measures?.width ?? 0;
+
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const totalSupply =
     currency === 'USD' ? activeItem?.tvlUSD : activeItem?.tvlETH;
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={
           config?.showCirculatingSplit
@@ -185,39 +184,50 @@ export const TotalSupplyCard = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <AreaChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          xKey="timestamp"
-          yKeys={series}
-          curveType="base"
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })
+          title={
+            config?.showCirculatingSplit
+              ? intl.formatMessage({ defaultMessage: 'Token supply' })
+              : intl.formatMessage({ defaultMessage: 'Total supply' })
           }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
-            },
-            ...series.map((s) => ({
-              label: s.label,
-              value: (d: ChartResult) =>
-                intl.formatNumber(Number(d?.[s.key] ?? 0), {
+        >
+          {({ width, height: containerHeight }) => (
+            <AreaChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              xKey="timestamp"
+              yKeys={series}
+              curveType="base"
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
                   notation: 'compact',
-                  minimumFractionDigits: 2,
-                }),
-              color: s.lineColor,
-              currency: currency,
-            })),
-          ]}
-        />
+                })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+                },
+                ...series.map((s) => ({
+                  label: s.label,
+                  value: (d: ChartResult) =>
+                    intl.formatNumber(Number(d?.[s.key] ?? 0), {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                    }),
+                  color: s.lineColor,
+                  currency: currency,
+                })),
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

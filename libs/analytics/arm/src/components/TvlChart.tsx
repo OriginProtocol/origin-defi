@@ -12,13 +12,13 @@ import { useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
   CurrencyControls,
   CurrencyLabel,
+  ExpandablePanel,
   LimitControls,
   LineChart,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { last, takeLast } from 'ramda';
@@ -38,7 +38,6 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const [currency, setCurrency] = useState<Currency>('ETH');
   const [limit, setLimit] = useState<number | undefined>(30);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     { offset: 1 },
     {
@@ -68,13 +67,11 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
     <Card
       {...rest}
-      ref={ref}
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader title={intl.formatMessage({ defaultMessage: 'TVL' })} />
@@ -108,46 +105,56 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <LineChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          series={[
-            {
-              label: 'TVL',
-              xKey: 'timestamp',
-              yKey: currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH',
-              color: [theme.palette.chart1, theme.palette.chart2],
-              curveType: 'base',
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })
-          }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            {
-              label: intl.formatMessage({
-                defaultMessage: 'TVL',
-              }),
-              value: (d) =>
-                intl.formatNumber(
-                  d[currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH'],
-                ),
-              color: [theme.palette.chart1, theme.palette.chart2],
-              currency,
-            },
-          ]}
-        />
+          title={intl.formatMessage({ defaultMessage: 'TVL' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              series={[
+                {
+                  label: 'TVL',
+                  xKey: 'timestamp',
+                  yKey:
+                    currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH',
+                  color: [theme.palette.chart1, theme.palette.chart2],
+                  curveType: 'base',
+                },
+              ]}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
+                  notation: 'compact',
+                })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                {
+                  label: intl.formatMessage({
+                    defaultMessage: 'TVL',
+                  }),
+                  value: (d) =>
+                    intl.formatNumber(
+                      d[
+                        currency === 'USD' ? 'totalSupplyUSD' : 'totalSupplyETH'
+                      ],
+                    ),
+                  color: [theme.palette.chart1, theme.palette.chart2],
+                  currency,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );
