@@ -13,9 +13,11 @@ import {
   useArmDailyStatsQuery,
 } from '@origin/defi/shared';
 import {
+  BadgeIcon,
   CurrencyLabel,
   InfoTooltip,
   LoadingLabel,
+  NetworkIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -28,6 +30,7 @@ import {
 import { from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router';
+import { mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import { GRID_SIZES } from '../constants';
@@ -113,7 +116,13 @@ export const ARMRow = (props: StackProps) => {
                 </Typography>
               </Stack>
             </Stack>
-            <ARM sx={{ fontSize: 40 }} />
+            <BadgeIcon
+              badgeContent={<NetworkIcon chainId={mainnet.id} size={14} />}
+              overlap="rectangular"
+              badgeSize={14}
+            >
+              <ARM sx={{ fontSize: 40 }} />
+            </BadgeIcon>
           </Stack>
           <Stack
             direction="row"
@@ -218,7 +227,13 @@ export const ARMRow = (props: StackProps) => {
       <Grid2 container spacing={1} sx={{ width: 1 }}>
         <Grid2 size={GRID_SIZES[0]} {...gridProps}>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            <ARM sx={{ fontSize: 40 }} />
+            <BadgeIcon
+              badgeContent={<NetworkIcon chainId={mainnet.id} size={14} />}
+              overlap="rectangular"
+              badgeSize={14}
+            >
+              <ARM sx={{ fontSize: 40 }} />
+            </BadgeIcon>
             <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
               {intl.formatMessage({
                 defaultMessage: 'Origin ARM',
