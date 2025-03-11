@@ -157,7 +157,7 @@ export const GovernanceRow = (props: StackProps) => {
           <Stack direction="row" spacing={1}>
             <Button
               component={Link}
-              to="more"
+              to="ogn"
               variant="outlined"
               color="secondary"
               fullWidth
@@ -283,7 +283,7 @@ export const GovernanceRow = (props: StackProps) => {
         <Grid2 size={GRID_SIZES[6]} offset={GRID_SIZES[5]} {...gridProps}>
           <Button
             component={Link}
-            to="more"
+            to="ogn"
             variant="outlined"
             color="secondary"
             fullWidth

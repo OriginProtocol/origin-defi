@@ -95,7 +95,7 @@ export const MergerBanner = (props: StackProps) => {
           }}
         />
         <Button
-          href={`${ORIGIN_DAPP_URL}/#/more/migration`}
+          href={`${ORIGIN_DAPP_URL}/#/more`}
           color="secondary"
           sx={{ height: 44 }}
           target="_blank"

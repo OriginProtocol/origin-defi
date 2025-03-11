@@ -165,7 +165,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
     if (['snapshot', 'snapshot_ogv'].includes(proposal.type)) {
       window.open(proposal.link, '_blank');
     } else {
-      navigate(proposal.id);
+      navigate(`/ogn/${proposal.id}`);
     }
   };
 

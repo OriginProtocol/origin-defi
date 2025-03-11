@@ -374,7 +374,7 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
           {intl.formatMessage({ defaultMessage: 'Done' })}
         </Button>
         <Button
-          href={`${ORIGIN_DAPP_URL}/#/more/migration`}
+          href={`${ORIGIN_DAPP_URL}/#/more`}
           target="_blank"
           rel="noopener noreferrer nofollow"
           fullWidth

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { snapshot } from '@origin/defi/shared';
 import { contracts } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';

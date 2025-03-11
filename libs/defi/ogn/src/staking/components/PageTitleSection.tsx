@@ -51,7 +51,7 @@ export const PageTitleSection = (props: StackProps) => {
           {intl.formatMessage({ defaultMessage: 'Max vAPY' })}
         </Typography>
       </ColorChip>
-      <Button component={RouterLink} to="/more/migration" sx={{ gap: 0.5 }}>
+      <Button component={RouterLink} to="/ogn/staking" sx={{ gap: 0.5 }}>
         <TokenIcon token={tokens.mainnet.OGV} sx={{ fontSize: 24 }} outlined />
         <FaArrowRightRegular />
         <MultiTokenIcon
