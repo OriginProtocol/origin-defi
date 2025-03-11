@@ -14,6 +14,7 @@ import {
   BarChart,
   CurrencyControls,
   CurrencyLabel,
+  ExpandablePanel,
   InfoTooltipLabel,
   LimitControls,
   LoadingLabel,
@@ -21,7 +22,6 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last, pluck } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -56,7 +56,6 @@ export const TradingProfitCard = ({
   const [limit, setLimit] = useState<number | undefined>(30);
   const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
     {
       token,
@@ -85,12 +84,11 @@ export const TradingProfitCard = ({
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem =
     hoverIdx === null ? last(feesData ?? []) : feesData?.[hoverIdx];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={
           <InfoTooltipLabel
@@ -171,57 +169,67 @@ export const TradingProfitCard = ({
         </Stack>
       </CardContent>
       {isFeesLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <BarChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={feesData ?? []}
-          xKey="timestamp"
-          yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
-          lineData={{
-            xKey: 'timestamp',
-            yKey: ma,
-            color: [theme.palette.chart5, theme.palette.chart2],
-            strokeWidth: 3,
-          }}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value) =>
-            `${currency === 'USD' ? '$' : 'Ξ'}${value as number}`
-          }
-          barColor={theme.palette.chart7}
-          activeBarColor={theme.palette.chart3}
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
-            },
-            {
-              label: 'Trading profit',
-              value: (d) =>
-                intl.formatNumber(currency === 'USD' ? d.feesUSD : d.feesETH, {
-                  notation: 'compact',
-                }),
-              color: theme.palette.chart3,
-              currency,
-            },
-            {
-              label: `${
+          title={intl.formatMessage({ defaultMessage: 'Net Asset Value' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <BarChart
+              width={width}
+              height={containerHeight}
+              data={feesData ?? []}
+              xKey="timestamp"
+              yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
+              lineData={{
+                xKey: 'timestamp',
+                yKey: ma,
+                color: [theme.palette.chart5, theme.palette.chart2],
+                strokeWidth: 3,
+              }}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value) =>
+                `${currency === 'USD' ? '$' : 'Ξ'}${value as number}`
+              }
+              barColor={theme.palette.chart7}
+              activeBarColor={theme.palette.chart3}
+              tooltipLabels={[
                 {
-                  feesMovingAvg7Days: '7-day',
-                  feesMovingAvg30Days: '30-day',
-                }[ma]
-              } avg`,
-              value: (d) =>
-                intl.formatNumber(Number(d?.[ma] ?? 0), {
-                  notation: 'compact',
-                }),
-              color: [theme.palette.chart5, theme.palette.chart2],
-              currency,
-            },
-          ]}
-        />
+                  label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+                },
+                {
+                  label: 'Trading profit',
+                  value: (d) =>
+                    intl.formatNumber(
+                      currency === 'USD' ? d.feesUSD : d.feesETH,
+                      {
+                        notation: 'compact',
+                      },
+                    ),
+                  color: theme.palette.chart3,
+                  currency,
+                },
+                {
+                  label: `${
+                    {
+                      feesMovingAvg7Days: '7-day',
+                      feesMovingAvg30Days: '30-day',
+                    }[ma]
+                  } avg`,
+                  value: (d) =>
+                    intl.formatNumber(Number(d?.[ma] ?? 0), {
+                      notation: 'compact',
+                    }),
+                  color: [theme.palette.chart5, theme.palette.chart2],
+                  currency,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

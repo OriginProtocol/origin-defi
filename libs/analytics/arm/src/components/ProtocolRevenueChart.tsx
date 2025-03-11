@@ -13,13 +13,13 @@ import {
   BarChart,
   CurrencyControls,
   CurrencyLabel,
+  ExpandablePanel,
   LimitControls,
   MovingAvgControls,
   Spinner,
 } from '@origin/shared/components';
 import { LoadingLabel } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { mul, toNumber } from 'dnum';
 import { last, pluck, takeLast } from 'ramda';
@@ -45,7 +45,6 @@ export const ProtocolRevenueChart = ({
   const [currency, setCurrency] = useState<'ETH' | 'USD'>('ETH');
   const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     {
       offset: 1,
@@ -89,14 +88,12 @@ export const ProtocolRevenueChart = ({
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const fees = currency === 'USD' ? activeItem?.feesUSD : activeItem?.feesETH;
 
   return (
     <Card
       {...rest}
-      ref={ref}
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader
@@ -150,68 +147,78 @@ export const ProtocolRevenueChart = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <BarChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          xKey="timestamp"
-          yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
-          lineData={{
-            label: intl.formatMessage({
-              defaultMessage: 'Moving Average',
-            }),
-            xKey: 'timestamp',
-            yKey: `${ma}${currency}`,
-            color: [theme.palette.chart5, theme.palette.chart2],
-            strokeWidth: 3,
-            curveType: 'linear',
-          }}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
-          tickYFormat={(value: NumberLike) =>
-            `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
-              Number(value),
-              {
-                notation: 'compact',
-              },
-            )}`
-          }
-          barColor={theme.palette.chart3}
-          activeBarColor={theme.palette.chart8}
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            {
-              label: 'Fees',
-              value: (d) =>
-                intl.formatNumber(currency === 'USD' ? d.feesUSD : d.feesETH, {
-                  notation: 'compact',
+          title={intl.formatMessage({ defaultMessage: 'Protocol Revenue' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <BarChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              xKey="timestamp"
+              yKey={currency === 'USD' ? 'feesUSD' : 'feesETH'}
+              lineData={{
+                label: intl.formatMessage({
+                  defaultMessage: 'Moving Average',
                 }),
-              currency,
-              color: theme.palette.chart3,
-            },
-            {
-              label: `${
+                xKey: 'timestamp',
+                yKey: `${ma}${currency}`,
+                color: [theme.palette.chart5, theme.palette.chart2],
+                strokeWidth: 3,
+                curveType: 'linear',
+              }}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
+              tickYFormat={(value: NumberLike) =>
+                `${currency === 'USD' ? '$' : 'Ξ'} ${intl.formatNumber(
+                  Number(value),
+                  {
+                    notation: 'compact',
+                  },
+                )}`
+              }
+              barColor={theme.palette.chart3}
+              activeBarColor={theme.palette.chart8}
+              tooltipLabels={[
                 {
-                  feesMovingAvg30Days: '30d',
-                  feesMovingAvg7Days: '7d',
-                }[ma]
-              } avg`,
-              value: (d) =>
-                intl.formatNumber(d[`${ma}${currency}`] / 100, {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                }),
-              color: [theme.palette.chart5, theme.palette.chart2],
-            },
-          ]}
-        />
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                {
+                  label: 'Fees',
+                  value: (d) =>
+                    intl.formatNumber(
+                      currency === 'USD' ? d.feesUSD : d.feesETH,
+                      {
+                        notation: 'compact',
+                      },
+                    ),
+                  currency,
+                  color: theme.palette.chart3,
+                },
+                {
+                  label: `${
+                    {
+                      feesMovingAvg30Days: '30d',
+                      feesMovingAvg7Days: '7d',
+                    }[ma]
+                  } avg`,
+                  value: (d) =>
+                    intl.formatNumber(d[`${ma}${currency}`] / 100, {
+                      style: 'percent',
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    }),
+                  color: [theme.palette.chart5, theme.palette.chart2],
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

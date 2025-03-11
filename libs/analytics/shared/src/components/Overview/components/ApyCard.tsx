@@ -10,12 +10,12 @@ import {
 } from '@mui/material';
 import {
   BarChart,
+  ExpandablePanel,
   LimitControls,
   LoadingLabel,
   Spinner,
   TrailingControls,
 } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -48,7 +48,6 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
   const [limit, setLimit] = useState<number | undefined>(182);
   const [trailing, setTrailing] = useState<Trailing>(defaultTrailing);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
     token,
     limit,
@@ -56,11 +55,10 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
     offset: 1,
   });
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
       <Divider />
       <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
@@ -88,58 +86,65 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
       </CardContent>
 
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <BarChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          xKey="timestamp"
-          yKey="apy"
-          lineData={{
-            xKey: 'timestamp',
-            yKey: trailing,
-            color: [theme.palette.chart5, theme.palette.chart2],
-            strokeWidth: 3,
-          }}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value: NumberLike) => `${value}%`}
-          barColor={theme.palette.chart7}
-          activeBarColor={theme.palette.chart3}
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            {
-              label: 'APY',
-              value: (d) =>
-                intl.formatNumber(d.apy / 100, {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                }),
-              color: theme.palette.chart3,
-            },
-            {
-              label: `${
+          title={intl.formatMessage({ defaultMessage: 'Net Asset Value' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <BarChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              xKey="timestamp"
+              yKey="apy"
+              lineData={{
+                xKey: 'timestamp',
+                yKey: trailing,
+                color: [theme.palette.chart5, theme.palette.chart2],
+                strokeWidth: 3,
+              }}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value: NumberLike) => `${value}%`}
+              barColor={theme.palette.chart7}
+              activeBarColor={theme.palette.chart3}
+              tooltipLabels={[
                 {
-                  apy30: '30d',
-                  apy14: '14d',
-                  apy7: '7d',
-                }[trailing]
-              } avg`,
-              value: (d) =>
-                intl.formatNumber(d[trailing] / 100, {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                }),
-              color: [theme.palette.chart5, theme.palette.chart2],
-            },
-          ]}
-        />
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                {
+                  label: 'APY',
+                  value: (d) =>
+                    intl.formatNumber(d.apy / 100, {
+                      style: 'percent',
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    }),
+                  color: theme.palette.chart3,
+                },
+                {
+                  label: `${
+                    {
+                      apy30: '30d',
+                      apy14: '14d',
+                      apy7: '7d',
+                    }[trailing]
+                  } avg`,
+                  value: (d) =>
+                    intl.formatNumber(d[trailing] / 100, {
+                      style: 'percent',
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    }),
+                  color: [theme.palette.chart5, theme.palette.chart2],
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

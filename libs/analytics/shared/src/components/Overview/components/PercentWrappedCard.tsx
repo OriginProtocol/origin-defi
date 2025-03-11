@@ -9,12 +9,12 @@ import {
   useTheme,
 } from '@mui/material';
 import {
+  ExpandablePanel,
   LimitControls,
   LineChart,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -45,7 +45,6 @@ export const PercentWrappedCard = ({
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
     token,
     limit,
@@ -53,11 +52,10 @@ export const PercentWrappedCard = ({
     offset: 1,
   });
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage(
           { defaultMessage: 'Percentage of wrapped {symbol} (w{symbol})' },
@@ -88,34 +86,44 @@ export const PercentWrappedCard = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <LineChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          series={[
-            {
-              label: '% wrapped',
-              xKey: 'timestamp',
-              yKey: 'pctWrappedSupply',
-              color: [theme.palette.chart1, theme.palette.chart2],
-              curveType: 'base',
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value: NumberLike) => `${value}%`}
-          tooltipLabels={[
-            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
-            {
-              label: intl.formatMessage({ defaultMessage: 'Wrapped' }),
-              value: (d) => `${intl.formatNumber(d.pctWrappedSupply)}%`,
-              color: [theme.palette.chart1, theme.palette.chart2],
-            },
-          ]}
-        />
+          title={intl.formatMessage(
+            { defaultMessage: 'Percentage of wrapped {symbol} (w{symbol})' },
+            { symbol: token.symbol },
+          )}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              series={[
+                {
+                  label: '% wrapped',
+                  xKey: 'timestamp',
+                  yKey: 'pctWrappedSupply',
+                  color: [theme.palette.chart1, theme.palette.chart2],
+                  curveType: 'base',
+                },
+              ]}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value: NumberLike) => `${value}%`}
+              tooltipLabels={[
+                { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+                {
+                  label: intl.formatMessage({ defaultMessage: 'Wrapped' }),
+                  value: (d) => `${intl.formatNumber(d.pctWrappedSupply)}%`,
+                  color: [theme.palette.chart1, theme.palette.chart2],
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

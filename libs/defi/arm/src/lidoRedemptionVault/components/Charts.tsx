@@ -14,6 +14,7 @@ import {
 import { useArmDailyStatsQuery } from '@origin/defi/shared';
 import {
   AreaChart,
+  ExpandablePanel,
   InfoTooltip,
   InfoTooltipLabel,
   LimitControls,
@@ -24,7 +25,6 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { movingAverages } from '@origin/shared/utils';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { toNumber } from 'dnum';
 import { last } from 'ramda';
@@ -44,7 +44,6 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const [limit, setLimit] = useState<number | undefined>(30);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     { limit, offset: 1 },
     {
@@ -69,11 +68,10 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
       <Divider />
       <CardContent>
@@ -111,35 +109,42 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <LineChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          series={[
-            {
-              label: 'APY',
-              xKey: 'timestamp',
-              yKey: trailing,
-              color: theme.palette.primary.main,
-              curveType: 'base',
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value: NumberLike) => `${value}%`}
-          tooltipLabels={[
-            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
-            {
-              label: 'APY',
-              value: (d) =>
-                `${intl.formatNumber(d.apy, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
-              color: theme.palette.primary.main,
-            },
-          ]}
-        />
+          title={intl.formatMessage({ defaultMessage: 'APY' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              series={[
+                {
+                  label: 'APY',
+                  xKey: 'timestamp',
+                  yKey: trailing,
+                  color: theme.palette.primary.main,
+                  curveType: 'base',
+                },
+              ]}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value: NumberLike) => `${value}%`}
+              tooltipLabels={[
+                { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+                {
+                  label: 'APY',
+                  value: (d) =>
+                    `${intl.formatNumber(d.apy, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
+                  color: theme.palette.primary.main,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );
@@ -154,7 +159,6 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(30);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     { limit, offset: 1 },
     {
@@ -178,11 +182,11 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
       },
     },
   );
-  const width = measures?.width ?? 0;
+
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'TVL' })} />
       <Divider />
       <CardContent>
@@ -210,44 +214,51 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <LineChart
-          data={data ?? []}
-          width={width}
+        <ExpandablePanel
           height={height}
-          series={[
-            {
-              label: 'TVL',
-              xKey: 'timestamp',
-              yKey: 'totalSupply',
-              color: theme.palette.primary.main,
-              curveType: 'base',
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })
-          }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
-            },
-            {
-              label: 'TVL',
-              value: (d) =>
-                intl.formatNumber(Number(d.totalSupply), {
+          title={intl.formatMessage({ defaultMessage: 'TVL' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              data={data ?? []}
+              width={width}
+              height={containerHeight}
+              series={[
+                {
+                  label: 'TVL',
+                  xKey: 'timestamp',
+                  yKey: 'totalSupply',
+                  color: theme.palette.primary.main,
+                  curveType: 'base',
+                },
+              ]}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
                   notation: 'compact',
-                  minimumFractionDigits: 2,
-                }),
-              color: theme.palette.primary.main,
-            },
-          ]}
-        />
+                })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d?.timestamp).format('DD MMM'),
+                },
+                {
+                  label: 'TVL',
+                  value: (d) =>
+                    intl.formatNumber(Number(d.totalSupply), {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                    }),
+                  color: theme.palette.primary.main,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );
@@ -262,7 +273,6 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(7);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     { limit, offset: 1 },
     {
@@ -303,7 +313,6 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
     },
   );
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const series = [
     {
@@ -333,7 +342,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   }>[];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={
           <InfoTooltipLabel
@@ -420,39 +429,46 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <AreaChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          xKey="timestamp"
-          yKeys={series}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          curveType="step"
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              maximumFractionDigits: 2,
-            })
-          }
-          tooltipLabels={[
-            {
-              label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
-            },
-            ...series.map((s) => ({
-              label: s.label,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              value: (d: any) =>
-                intl.formatNumber(Number(d?.[s.key] ?? 0), {
-                  notation: 'compact',
-                  minimumFractionDigits: 2,
-                }),
-              color: s.lineColor,
-            })),
-          ]}
-        />
+          title={intl.formatMessage({ defaultMessage: 'Vault Assets' })}
+        >
+          {({ width, height: containerHeight }) => (
+            <AreaChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              xKey="timestamp"
+              yKeys={series}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              curveType="step"
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
+                  maximumFractionDigits: 2,
+                })
+              }
+              tooltipLabels={[
+                {
+                  label: (d) => dayjs.utc(d.timestamp).format('DD MMM'),
+                },
+                ...series.map((s) => ({
+                  label: s.label,
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  value: (d: any) =>
+                    intl.formatNumber(Number(d?.[s.key] ?? 0), {
+                      notation: 'compact',
+                      minimumFractionDigits: 2,
+                    }),
+                  color: s.lineColor,
+                })),
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );

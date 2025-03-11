@@ -10,12 +10,12 @@ import {
 } from '@mui/material';
 import {
   CurrencyLabel,
+  ExpandablePanel,
   LimitControls,
   LineChart,
   LoadingLabel,
   Spinner,
 } from '@origin/shared/components';
-import { useMeasure } from '@react-hookz/web';
 import dayjs from 'dayjs';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -41,7 +41,6 @@ export const PriceCard = ({ token, height, from, ...rest }: PriceCardProps) => {
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
     token,
     limit,
@@ -50,13 +49,12 @@ export const PriceCard = ({ token, height, from, ...rest }: PriceCardProps) => {
     currency,
   });
 
-  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   const yKey = `rate${currency}` as const;
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage(
           { defaultMessage: '1 {symbol} equals' },
@@ -91,46 +89,58 @@ export const PriceCard = ({ token, height, from, ...rest }: PriceCardProps) => {
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Spinner sx={{ width, height }} />
+        <Spinner sx={{ width: 1, height }} />
       ) : (
-        <LineChart
-          width={width}
+        <ExpandablePanel
           height={height}
-          data={data ?? []}
-          series={[
-            {
-              label: 'Exchange rate',
-              xKey: 'timestamp',
-              yKey,
-              color: theme.palette.chart2,
-              curveType: 'linear',
-              strokeWidth: 2,
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-          }
-          yScaleDomain={[0.95, 1.05]}
-          tooltipLabels={[
-            { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
-            {
-              label: intl.formatMessage({ defaultMessage: 'Exchange rate' }),
-              value: (d) =>
-                intl.formatNumber(d[yKey], {
+          title={intl.formatMessage(
+            { defaultMessage: '1 {symbol} equals' },
+            { symbol: token.symbol },
+          )}
+        >
+          {({ width, height: containerHeight }) => (
+            <LineChart
+              width={width}
+              height={containerHeight}
+              data={data ?? []}
+              series={[
+                {
+                  label: 'Exchange rate',
+                  xKey: 'timestamp',
+                  yKey,
+                  color: theme.palette.chart2,
+                  curveType: 'linear',
+                  strokeWidth: 2,
+                },
+              ]}
+              onHover={(idx) => {
+                setHoverIdx(idx ?? null);
+              }}
+              tickYFormat={(value) =>
+                intl.formatNumber(Number(value), {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                }),
-              color: theme.palette.chart2,
-              currency,
-            },
-          ]}
-        />
+                })
+              }
+              yScaleDomain={[0.95, 1.05]}
+              tooltipLabels={[
+                { label: (d) => dayjs.utc(d.timestamp).format('DD MMM') },
+                {
+                  label: intl.formatMessage({
+                    defaultMessage: 'Exchange rate',
+                  }),
+                  value: (d) =>
+                    intl.formatNumber(d[yKey], {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }),
+                  color: theme.palette.chart2,
+                  currency,
+                },
+              ]}
+            />
+          )}
+        </ExpandablePanel>
       )}
     </Card>
   );
