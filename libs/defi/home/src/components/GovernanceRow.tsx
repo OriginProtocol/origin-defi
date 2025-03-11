@@ -190,7 +190,11 @@ export const GovernanceRow = (props: StackProps) => {
       <Grid2 container spacing={1} sx={{ width: 1 }}>
         <Grid2 size={GRID_SIZES[0]} {...gridProps}>
           <Stack direction="row" spacing={1}>
-            <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 40 }} />
+            <TokenIcon
+              token={tokens.mainnet.OGN}
+              showNetwork
+              sx={{ fontSize: 40 }}
+            />
             <Stack>
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                 {intl.formatMessage({

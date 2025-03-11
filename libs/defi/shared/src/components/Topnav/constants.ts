@@ -42,6 +42,13 @@ export const additionalLinks: Record<string, NavItem[]> = {
       href: `${ORIGIN_ANALYTICS_URL}/ousd`,
     },
   ],
+  arm: [
+    {
+      title: defineMessage({ defaultMessage: 'Analytics' }),
+      icon: FaChartPieRegular,
+      href: `${ORIGIN_ANALYTICS_URL}/arm`,
+    },
+  ],
   more: [
     {
       title: defineMessage({ defaultMessage: 'Discussion forum' }),
@@ -52,6 +59,11 @@ export const additionalLinks: Record<string, NavItem[]> = {
       title: defineMessage({ defaultMessage: 'Snapshot vote' }),
       icon: Snapshot,
       href: GOVERNANCE_OGN_SNAPSHOT_VOTES_URL,
+    },
+    {
+      title: defineMessage({ defaultMessage: 'Analytics' }),
+      icon: FaChartPieRegular,
+      href: ORIGIN_ANALYTICS_URL,
     },
   ],
 };
