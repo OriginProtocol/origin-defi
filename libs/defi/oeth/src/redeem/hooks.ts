@@ -86,8 +86,7 @@ const fetcher: (
     return requests.map((r) => {
       const claimable =
         !r.claimed &&
-        wethBalance + BigInt(queueData?.[1] ?? 0) - BigInt(r?.queued ?? 0) >
-          0n &&
+        BigInt(queueData?.[1] ?? 0) >= BigInt(r?.queued ?? 0) &&
         wethBalance >= BigInt(r.amount) &&
         isAfter(
           new Date(),
