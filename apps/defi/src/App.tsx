@@ -12,6 +12,7 @@ import { Outlet } from 'react-router';
 import { routes } from './routes';
 
 export const App = () => {
+  console.log('bla');
   return (
     <ErrorBoundary
       ErrorComponent={<ErrorPage height={1} width={1} />}
