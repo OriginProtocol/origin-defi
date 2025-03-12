@@ -49,7 +49,7 @@ const fetcher: (
 ) => QueryFunction<WithdrawalRequest[]> =
   (config, queryClient) =>
   async ({ queryKey: [, address] }) => {
-    const res = await Promise.all([
+    const [queueData, requests, wSBalance, delay] = await Promise.all([
       readContract(config, {
         address: contracts.sonic.osVault.address,
         abi: contracts.sonic.osVault.abi,
@@ -82,19 +82,12 @@ const fetcher: (
         chainId: contracts.sonic.osVault.chainId,
       }),
     ]);
-    const queueData = res[0];
-    const requests = res[1]?.oTokenWithdrawalRequests?.length
-      ? res[1].oTokenWithdrawalRequests
-      : [];
-    const wethBalance = res[2] ?? 0n;
-    const delay = res[3] ?? 0;
 
-    return requests.map((r) => {
+    return requests.oTokenWithdrawalRequests.map((r) => {
       const claimable =
         !r.claimed &&
-        wethBalance + BigInt(queueData?.[1] ?? 0) - BigInt(r?.queued ?? 0) >
-          0n &&
-        wethBalance >= BigInt(r.amount) &&
+        BigInt(queueData?.[1] ?? 0) >= BigInt(r?.queued ?? 0) &&
+        wSBalance >= BigInt(r.amount) &&
         isAfter(new Date(), addSeconds(new Date(r.timestamp), Number(delay)));
 
       return {
