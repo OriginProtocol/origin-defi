@@ -157,7 +157,7 @@ export const YieldEventsCard = (props: CardProps) => {
         size: 100,
       }),
     ],
-    [intl, token.chainId],
+    [config.currency, config.currencyDigits, intl, token.chainId],
   );
   const table = useReactTable({
     data: rebases ?? [],
