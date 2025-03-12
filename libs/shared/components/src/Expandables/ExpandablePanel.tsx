@@ -59,7 +59,7 @@ export const ExpandablePanel = ({
       <Box
         {...rest}
         sx={[
-          { position: 'relative' },
+          { position: 'relative', height },
           ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}
         ref={initialRef}
