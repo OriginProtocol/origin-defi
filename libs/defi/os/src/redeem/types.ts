@@ -25,4 +25,8 @@ export type WithdrawalRequest = {
   blockNumber: number;
   claimable: boolean;
   txHash: string;
+  timeRemaining: number;
+  delay: number;
+  queueDiff: bigint;
+  balanceDiff: bigint;
 };

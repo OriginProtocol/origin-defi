@@ -9,9 +9,14 @@ import {
   FormControlLabel,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { SectionCard, useTxButton } from '@origin/defi/shared';
-import { ValueLabel } from '@origin/shared/components';
+import {
+  InfoTooltipLabel,
+  ProgressIcon,
+  ValueLabel,
+} from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import {
   FaArrowUpRightRegular,
@@ -20,7 +25,7 @@ import {
 } from '@origin/shared/icons';
 import { TxButton, useIdlePollInterval } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty, txLink } from '@origin/shared/utils';
-import { add, eq, format, from } from 'dnum';
+import { add, eq, format, from, toNumber } from 'dnum';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 import { sonic } from 'viem/chains';
@@ -239,7 +244,7 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
           alignItems: 'center',
         }}
       >
-        <ClaimChip claimable={request.claimable} />
+        <ClaimChip request={request} />
         <Button
           variant="outlined"
           color="secondary"
@@ -255,20 +260,59 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
 };
 
 type ClaimChipProps = {
-  claimable: boolean;
+  request: WithdrawalRequest;
 } & StackProps;
 
-const ClaimChip = ({ claimable, ...rest }: ClaimChipProps) => {
+const ClaimChip = ({ request, ...rest }: ClaimChipProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const { claimable, delay, timeRemaining, queueDiff, balanceDiff } = request;
+
+  console.log(request);
 
   const icon = claimable ? (
     <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
+  ) : timeRemaining > 0 ? (
+    <ProgressIcon
+      value={timeRemaining / delay}
+      color={theme.palette.warning.main as string}
+      size={16}
+    />
+  ) : queueDiff <= 0n ? (
+    <FaClockRegular sx={{ color: 'warning.dark' }} />
   ) : (
     <FaClockRegular sx={{ color: 'warning.dark' }} />
   );
   const label = claimable
     ? intl.formatMessage({ defaultMessage: 'Ready' })
-    : intl.formatMessage({ defaultMessage: 'Pending' });
+    : timeRemaining > 0
+      ? intl.formatMessage({ defaultMessage: 'Waiting' })
+      : queueDiff < 0n
+        ? intl.formatMessage({ defaultMessage: 'Queued' })
+        : intl.formatMessage({ defaultMessage: 'Pending' });
+  const tooltipLabel =
+    timeRemaining > 0
+      ? intl.formatMessage(
+          {
+            defaultMessage:
+              'Security delay of {delay}s<br></br>Remaining time: {timeRemaining}s',
+          },
+          { delay, timeRemaining },
+        )
+      : queueDiff <= 0
+        ? intl.formatMessage(
+            {
+              defaultMessage:
+                'Your claim is queued, the vault still<br></br>needs to process <b>{queueDiff} wS</b> before<br></br>your claim is ready',
+            },
+            {
+              queueDiff: intl.formatNumber(toNumber([-queueDiff, 18]), {
+                notation: 'compact',
+              }),
+            },
+          )
+        : intl.formatMessage({ defaultMessage: 'Pending' });
+
   const color = claimable ? 'success.dark' : 'warning.dark';
   const backgroundColor = claimable ? 'success.faded' : 'warning.faded';
 
@@ -290,13 +334,17 @@ const ClaimChip = ({ claimable, ...rest }: ClaimChipProps) => {
       ]}
     >
       {icon}
-      <Typography
+      <InfoTooltipLabel
+        tooltipLabel={tooltipLabel}
+        infoTooltipProps={{
+          iconColor: color,
+        }}
         sx={{
           color: color,
         }}
       >
         {label}
-      </Typography>
+      </InfoTooltipLabel>
     </Stack>
   );
 };
