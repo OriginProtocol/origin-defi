@@ -149,6 +149,9 @@
   "3PhHPe": {
     "defaultMessage": "The variable APY currently being earned on staked xOGN."
   },
+  "3THvfQ": {
+    "defaultMessage": "Swap with Swapx"
+  },
   "3a5wL8": {
     "defaultMessage": "Active"
   },
@@ -1339,6 +1342,9 @@
   },
   "phZMsU": {
     "defaultMessage": "Claim {amount} {symbolIn}"
+  },
+  "ppAhoU": {
+    "defaultMessage": "Swap with Metropolis"
   },
   "q1h7mQ": {
     "defaultMessage": "Passive earnings on ETH"

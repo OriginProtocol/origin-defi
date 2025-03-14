@@ -182,6 +182,7 @@ export type Metrics = {
 export type Network = {
   __typename?: 'Network';
   id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
   premium?: Maybe<Scalars['Boolean']['output']>;
   spacesCount?: Maybe<Scalars['Int']['output']>;
 };
@@ -632,6 +633,7 @@ export type StrategyItem = {
   __typename?: 'StrategyItem';
   about?: Maybe<Scalars['String']['output']>;
   author?: Maybe<Scalars['String']['output']>;
+  disabled?: Maybe<Scalars['Boolean']['output']>;
   examples?: Maybe<Array<Maybe<Scalars['Any']['output']>>>;
   id: Scalars['String']['output'];
   schema?: Maybe<Scalars['Any']['output']>;
