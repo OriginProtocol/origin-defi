@@ -39,6 +39,9 @@ const estimateAmount: EstimateAmount = async (
   if (amountIn === 0n || !publicClient) {
     return 0n;
   }
+
+  const { address } = getAccount(config);
+
   try {
     const quote = await simulateContract(config, {
       address: contracts.sonic.swapxQuoter.address,
@@ -53,6 +56,7 @@ const estimateAmount: EstimateAmount = async (
           limitSqrtPrice: 0n,
         },
       ],
+      account: address ?? ZERO_ADDRESS,
     });
 
     return quote.result[0];
