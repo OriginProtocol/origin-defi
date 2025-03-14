@@ -31,6 +31,8 @@ import { LidoWithdrawStrategyABI } from './abis/LidoWithdrawStrategy';
 import { LrtConfigABI } from './abis/LrtConfig';
 import { LrtDepositPoolABI } from './abis/LrtDepositPool';
 import { LrtOracleABI } from './abis/LrtOracle';
+import { metropolisQuoterABI } from './abis/MetropolisQuoter';
+import { metropolisRouterAbi } from './abis/MetropolisRouter';
 import { MigratorABI } from './abis/Migrator';
 import { MorphoAaveStrategyABI } from './abis/MorphoAaveStrategy';
 import { MorphoCompoundStrategyABI } from './abis/MorphoCompoundStrategy';
@@ -52,6 +54,8 @@ import { SuperOETHbABI } from './abis/SuperOETHbABI';
 import { SuperOETHbStrategyAeroABI } from './abis/SuperOETHbStrategyAero';
 import { SuperOETHbStrategyBridgeABI } from './abis/SuperOETHbStrategyBridge';
 import { superOETHbZapperABI } from './abis/superOETHbZapper';
+import { SwapxQuoterABI } from './abis/SwapxQuoter';
+import { SwapxRouterABI } from './abis/SwapxRouterABI';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
@@ -486,6 +490,19 @@ export const contracts = {
     },
   },
   sonic: {
+    // Metropolis
+    metropolisQuoter: {
+      address: '0x56eaa884F29620fD6914827AaAE9Ee6a5C383149',
+      chainId: sonic.id,
+      abi: metropolisQuoterABI,
+      name: 'metropolisQuoter',
+    },
+    metropolisRouter: {
+      address: '0x67803fe6d76409640efDC9b7ABcD2c6c2E7cBa48',
+      chainId: sonic.id,
+      abi: metropolisRouterAbi,
+      name: 'metropolisRouter',
+    },
     // OS
     osVault: {
       address: '0xa3c0eCA00D2B76b4d1F170b0AB3FdeA16C180186',
@@ -504,6 +521,19 @@ export const contracts = {
       chainId: sonic.id,
       abi: superOETHbZapperABI,
       name: 'osZapper',
+    },
+    // SwapX
+    swapxQuoter: {
+      address: '0xd74a9Bd1C98B2CbaB5823107eb2BE9C474bEe09A',
+      chainId: sonic.id,
+      abi: SwapxQuoterABI,
+      name: 'swapxQuoter',
+    },
+    swapxRouter: {
+      address: '0x037c162092881A249DC347D40Eb84438e3457c02',
+      chainId: sonic.id,
+      abi: SwapxRouterABI,
+      name: 'swapxRouter',
     },
   },
 } as const;
