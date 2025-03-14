@@ -20,9 +20,11 @@ export type SuperOethbRoute =
   | 'unwrap-oeth-woeth'
   | 'wrap-oeth-oeth';
 
-export type OSTokenRoute =
+export type OSRoute =
   | 'mint-vault-os'
   | 'mint-zapper-os'
+  | 'swap-metropolis-os'
+  | 'swap-swapx-os'
   | 'redeem-vault-async-os'
   | 'unwrap-wos-os'
   | 'wrap-os-wos';
