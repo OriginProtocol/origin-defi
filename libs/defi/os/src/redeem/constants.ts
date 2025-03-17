@@ -1,6 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
 import { OS } from '@origin/shared/icons';
-import { defineMessage } from 'react-intl';
 
 import type { SwapRoute } from '@origin/shared/providers';
 
@@ -15,7 +14,6 @@ export const redeemRoutes: SwapRoute<OSTokenRedeemAction, Meta>[] = [
     action: 'redeem-vault-async-os',
     meta: {
       icon: OS,
-      waitTime: defineMessage({ defaultMessage: '1-15 days' }),
       waitTimeColor: 'warning.dark',
     },
   },

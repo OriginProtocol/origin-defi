@@ -6,8 +6,10 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import dayjs from 'dayjs';
+import { sub } from 'dnum';
+import { pathOr } from 'ramda';
 import { useSearchParams } from 'react-router';
-import { useAccount, useConfig } from 'wagmi';
+import { useAccount, useConfig, useReadContracts } from 'wagmi';
 
 import type { HexAddress } from '@origin/shared/utils';
 import type {
@@ -16,6 +18,7 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
+import type { Dnum } from 'dnum';
 
 import type { WithdrawalRequest } from './types';
 
@@ -135,3 +138,56 @@ export const useWithdrawalRequests = (
 };
 useWithdrawalRequests.getKey = getKey;
 useWithdrawalRequests.fetcher = fetcher;
+
+export const useQueueState = () => {
+  return useReadContracts({
+    contracts: [
+      {
+        address: contracts.sonic.osVault.address,
+        abi: contracts.sonic.osVault.abi,
+        functionName: 'withdrawalQueueMetadata',
+        chainId: contracts.sonic.osVault.chainId,
+      },
+      {
+        address: tokens.sonic.wS.address,
+        abi: tokens.sonic.wS.abi,
+        functionName: 'balanceOf',
+        chainId: tokens.sonic.wS.chainId,
+        args: [contracts.sonic.osVault.address],
+      },
+      {
+        address: contracts.sonic.osVault.address,
+        abi: contracts.sonic.osVault.abi,
+        functionName: 'withdrawalClaimDelay',
+        chainId: contracts.sonic.osVault.chainId,
+      },
+    ],
+    query: {
+      select: (data) => {
+        const claimable = [
+          pathOr(0n, [0, 'result', 1], data),
+          tokens.sonic.OS.decimals,
+        ] as Dnum;
+        const claimed = [
+          pathOr(0n, [0, 'result', 2], data),
+          tokens.sonic.OS.decimals,
+        ] as Dnum;
+
+        return {
+          queued: [
+            pathOr(0n, [0, 'result', 0], data),
+            tokens.sonic.OS.decimals,
+          ] as Dnum,
+          claimable,
+          claimed,
+          pending: sub(claimable, claimed),
+          vaultWSBalance: [
+            pathOr(0n, [1, 'result'], data),
+            tokens.sonic.wS.decimals,
+          ] as Dnum,
+          secondsDelay: Number(pathOr(0, [2, 'result'], data)),
+        };
+      },
+    },
+  });
+};
