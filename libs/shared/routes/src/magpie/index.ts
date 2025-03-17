@@ -1,0 +1,221 @@
+import { axiosInstance } from '@origin/defi/shared';
+import { contracts } from '@origin/shared/contracts';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  getAccount,
+  getPublicClient,
+  readContract,
+  sendTransaction,
+  simulateContract,
+  writeContract,
+} from '@wagmi/core';
+import { path } from 'ramda';
+import { erc20Abi, formatUnits, maxUint256 } from 'viem';
+
+import { defaultRoute } from '../defaultRoute';
+
+import type { Token } from '@origin/shared/contracts';
+import type {
+  Allowance,
+  Approve,
+  EstimateApprovalGas,
+  EstimateRoute,
+  IsRouteAvailable,
+  Swap,
+  SwapClient,
+} from '@origin/shared/providers';
+
+import type { MagpieQuoteResponse, MagpieTransaction } from './types';
+
+const getQuote = async (
+  { config, queryClient }: SwapClient,
+  tokenIn: Token,
+  tokenOut: Token,
+  amountIn: bigint,
+  slippage: number,
+) => {
+  const { address } = getAccount(config);
+
+  return await queryClient.fetchQuery({
+    queryKey: [
+      'magpie-routing',
+      tokenIn.id,
+      tokenOut.id,
+      amountIn,
+      slippage,
+      address,
+    ],
+    queryFn: async () => {
+      const url = new URL('http://api.magpiefi.xyz/aggregator/quote');
+      url.searchParams.set('network', 'sonic');
+      url.searchParams.set('fromTokenAddress', tokenIn.address ?? ZERO_ADDRESS);
+      url.searchParams.set('toTokenAddress', tokenOut.address ?? ZERO_ADDRESS);
+      url.searchParams.set('fromAddress', address ?? ZERO_ADDRESS);
+      url.searchParams.set('toAddress', address ?? ZERO_ADDRESS);
+      url.searchParams.set('sellAmount', amountIn.toString());
+      url.searchParams.set('slippage', slippage.toString());
+      url.searchParams.set('gasless', 'false');
+
+      const res = await axiosInstance.get<MagpieQuoteResponse>(url.toString());
+
+      return res.data;
+    },
+  });
+};
+
+const isRouteAvailable: IsRouteAvailable = async (
+  client,
+  { tokenIn, tokenOut, amountIn },
+) => {
+  const quote = await getQuote(client, tokenIn, tokenOut, amountIn, 0.01);
+
+  return !!quote?.id;
+};
+
+const estimateRoute: EstimateRoute = async (
+  client,
+  { tokenIn, tokenOut, amountIn, route, slippage },
+) => {
+  if (amountIn === 0n) {
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      allowanceAmount: 0n,
+      approvalGas: 0n,
+    };
+  }
+
+  const [quote, allowanceAmount, approvalGas] = await Promise.all([
+    getQuote(client, tokenIn, tokenOut, amountIn, slippage),
+    allowance(client, { tokenIn, tokenOut }),
+    estimateApprovalGas(client, { amountIn, tokenIn, tokenOut }),
+  ]);
+  const estimatedAmount = BigInt(quote?.amountOut ?? 0);
+  const gas = BigInt(quote?.resourceEstimate?.gasLimit ?? 0);
+
+  return {
+    ...route,
+    estimatedAmount,
+    gas,
+    approvalGas,
+    allowanceAmount,
+    rate:
+      +formatUnits(estimatedAmount, tokenOut.decimals) /
+      +formatUnits(amountIn, tokenIn.decimals),
+    meta: {
+      ...route?.meta,
+      quote,
+    },
+  };
+};
+
+const allowance: Allowance = async ({ config }, { tokenIn }) => {
+  const { address } = getAccount(config);
+
+  if (!address || !tokenIn.address) {
+    return maxUint256;
+  }
+
+  const allowance = await readContract(config, {
+    address: tokenIn.address,
+    abi: erc20Abi,
+    functionName: 'allowance',
+    args: [address, contracts.sonic.magpieRouter.address],
+    chainId: tokenIn.chainId,
+  });
+
+  return allowance;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
+  let approvalEstimate = 0n;
+  const { address } = getAccount(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
+
+  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
+    return approvalEstimate;
+  }
+
+  try {
+    approvalEstimate = await publicClient.estimateContractGas({
+      address: tokenIn.address,
+      abi: tokenIn.abi,
+      functionName: 'approve',
+      args: [contracts.sonic.magpieRouter.address, amountIn],
+      account: address ?? ZERO_ADDRESS,
+    });
+  } catch {
+    approvalEstimate = 200000n;
+  }
+
+  return approvalEstimate;
+};
+
+const approve: Approve = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
+  const { request } = await simulateContract(config, {
+    address: tokenIn.address,
+    abi: tokenIn.abi,
+    functionName: 'approve',
+    args: [contracts.sonic.magpieRouter.address, amountIn],
+    chainId: tokenIn.chainId,
+  });
+  const hash = await writeContract(config, request);
+
+  return hash;
+};
+
+const swap: Swap = async (
+  { config, queryClient },
+  { amountIn, estimatedRoute },
+) => {
+  const { address } = getAccount(config);
+  const quoteId = path<string>(['meta', 'quote', 'id'], estimatedRoute);
+
+  if (amountIn === 0n || !address || !quoteId) {
+    return null;
+  }
+
+  const tx = await queryClient.fetchQuery({
+    queryKey: ['magpie-transaction', quoteId],
+    queryFn: async () => {
+      const url = new URL('http://api.magpiefi.xyz/aggregator/transaction');
+      url.searchParams.set('quoteId', quoteId);
+      const res = await axiosInstance.get<MagpieTransaction>(url.toString());
+
+      return res.data;
+    },
+  });
+
+  const hash = await sendTransaction(config, {
+    to: tx.to,
+    data: tx.data,
+    chainId: tx.chainId,
+    maxFeePerGas: BigInt(tx.maxFeePerGas),
+    maxPriorityFeePerGas: BigInt(tx.maxPriorityFeePerGas),
+    value: BigInt(tx.value),
+  });
+
+  return hash;
+};
+
+export const magpie = {
+  ...defaultRoute,
+  isRouteAvailable,
+  estimateApprovalGas,
+  allowance,
+  estimateRoute,
+  approve,
+  swap,
+};

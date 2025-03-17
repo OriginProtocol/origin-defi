@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryClient } from '@tanstack/react-query';
@@ -10,7 +9,7 @@ export type TokenSource = 'tokenIn' | 'tokenOut';
 
 export type SwapAction = string;
 
-type Args = {
+export type SwapArgs = {
   tokenIn: Token;
   tokenOut: Token;
   amountIn: bigint;
@@ -20,56 +19,56 @@ type Args = {
   estimatedRoute: EstimatedSwapRoute;
 };
 
-type Client = {
+export type SwapClient = {
   config: Config;
   queryClient: QueryClient;
 };
 
 export type IsRouteAvailable = (
-  client: Client,
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  client: SwapClient,
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<boolean>;
 
 export type EstimateAmount = (
-  client: Client,
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  client: SwapClient,
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
-  client: Client,
+  client: SwapClient,
   args: Pick<
-    Args,
+    SwapArgs,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage'
   >,
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
-  client: Client,
+  client: SwapClient,
   args: Pick<
-    Args,
+    SwapArgs,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'route'
   >,
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
-  client: Client,
-  args: Pick<Args, 'tokenIn' | 'tokenOut'>,
+  client: SwapClient,
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
-  client: Client,
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  client: SwapClient,
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type Approve = (
-  client: Client,
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  client: SwapClient,
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<HexAddress | null>;
 
 export type Swap = (
-  client: Client,
+  client: SwapClient,
   args: Pick<
-    Args,
+    SwapArgs,
     | 'tokenIn'
     | 'tokenOut'
     | 'amountIn'

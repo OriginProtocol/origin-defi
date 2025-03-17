@@ -23,8 +23,10 @@ export type SuperOethbRoute =
 export type OSRoute =
   | 'mint-vault-os'
   | 'mint-zapper-os'
+  | 'swap-magpie-os'
   | 'swap-metropolis-os'
   | 'swap-swapx-os'
+  | 'swap-shadow-os'
   | 'redeem-vault-async-os'
   | 'unwrap-wos-os'
   | 'wrap-os-wos';

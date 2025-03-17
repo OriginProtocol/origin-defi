@@ -2,20 +2,23 @@ import { defineMessage } from 'react-intl';
 
 import type { SwapApi } from '@origin/shared/providers';
 
+const message = (value: string) =>
+  `'${value}' is using default implementation, you should not see this message.`;
+
 export const defaultRoute: SwapApi = {
   isRouteAvailable: async () => true,
   estimateAmount: async (config, { amountIn }) => {
-    console.log('Amount estimation not implemented');
+    console.log(message('Amount estimation'));
 
     return amountIn;
   },
   estimateGas: async () => {
-    console.log('Gas estimation not implemented');
+    console.log(message('Gas estimation'));
 
     return 0n;
   },
   estimateRoute: async (config, { amountIn, route }) => {
-    console.log('Route estimation not implemented');
+    console.log(message('Route estimation'));
 
     return {
       ...route,
@@ -27,21 +30,23 @@ export const defaultRoute: SwapApi = {
     };
   },
   allowance: async () => {
-    console.log('Allowance not implemented');
+    console.log(message('Allowance'));
 
     return 0n;
   },
   estimateApprovalGas: async () => {
-    console.log('Gas approval estimation not implemented');
+    console.log(message('Gas approval estimation'));
 
     return 0n;
   },
   approve: async () => {
-    console.log('Approve operation not implemented');
+    console.log(message('Approve operation'));
+
     return null;
   },
   swap: async () => {
-    console.log('Route swap operation not implemented');
+    console.log(message('Route swap operation'));
+
     return null;
   },
   buttonLabel: defineMessage({ defaultMessage: 'Swap' }),

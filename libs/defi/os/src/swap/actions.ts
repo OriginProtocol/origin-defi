@@ -1,6 +1,8 @@
 import {
+  magpie,
   mintOtoken,
   osMetropolis,
+  osShadow,
   osSwapx,
   osZapper,
   wrapOtoken,
@@ -39,6 +41,16 @@ export const osSwapActions: Partial<Record<OSRoute, SwapApi>> = {
   'swap-swapx-os': {
     ...osSwapx,
     routeLabel: defineMessage({ defaultMessage: 'Swap with Swapx' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-shadow-os': {
+    ...osShadow,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Shadow' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-magpie-os': {
+    ...magpie,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Magpie' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
 };
