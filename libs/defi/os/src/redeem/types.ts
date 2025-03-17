@@ -1,5 +1,5 @@
 import type { SvgIconProps } from '@mui/material';
-import type { OSTokenRoute } from '@origin/shared/routes';
+import type { OSRoute } from '@origin/shared/routes';
 import type { ComponentType } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 
@@ -10,10 +10,7 @@ export type Meta = {
   comingSoon?: boolean;
 };
 
-export type OSTokenRedeemAction = Extract<
-  OSTokenRoute,
-  'redeem-vault-async-os'
->;
+export type OSTokenRedeemAction = Extract<OSRoute, 'redeem-vault-async-os'>;
 
 export type WithdrawalRequest = {
   id: string;

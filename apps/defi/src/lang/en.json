@@ -327,6 +327,12 @@
       "value": "The variable APY currently being earned on staked xOGN."
     }
   ],
+  "3THvfQ": [
+    {
+      "type": 0,
+      "value": "Swap with Swapx"
+    }
+  ],
   "3a5wL8": [
     {
       "type": 0,
@@ -3271,6 +3277,12 @@
     {
       "type": 1,
       "value": "symbolIn"
+    }
+  ],
+  "ppAhoU": [
+    {
+      "type": 0,
+      "value": "Swap with Metropolis"
     }
   ],
   "q1h7mQ": [
