@@ -16,7 +16,7 @@ export type SwapArgs = {
   amountOut?: bigint;
   slippage: number;
   route: SwapRoute;
-  estimatedRoute: EstimatedSwapRoute;
+  estimatedRoute?: EstimatedSwapRoute;
 };
 
 export type SwapClient = {
