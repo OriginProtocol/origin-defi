@@ -110,4 +110,14 @@ export const osSwapRoutes: SwapRoute<OSRoute, Meta>[] = [
     tokenOut: tokens.sonic.OS,
     action: 'swap-magpie-os',
   },
+  {
+    tokenIn: tokens.sonic.S,
+    tokenOut: tokens.sonic.wOS,
+    action: 'swap-magpie-os',
+  },
+  {
+    tokenIn: tokens.sonic.wOS,
+    tokenOut: tokens.sonic.S,
+    action: 'swap-magpie-os',
+  },
 ];
