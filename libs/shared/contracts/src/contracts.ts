@@ -16,6 +16,7 @@ import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { ConvexEthMetaStrategyABI } from './abis/ConvexEthMetaStrategy';
 import { ConvexStrategyABI } from './abis/ConvexStrategy';
+import { CurveAmoPoolABI } from './abis/CurveAmoPool';
 import { CurveAMOStrategyABI } from './abis/CurveAMOStrategy';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
@@ -444,6 +445,13 @@ export const contracts = {
       chainId: base.id,
       abi: AerodromePoolABI,
       name: 'aerodromeWethSuperOethbPool',
+    },
+    // Curve pool
+    curvePoolWethSuperOethb: {
+      address: '0x302A94E3C28c290EAF2a4605FC52e11Eb915f378',
+      chainId: base.id,
+      abi: CurveAmoPoolABI,
+      name: 'curvePoolWethSuperOethb',
     },
     // Curve Router NG
     CurveRouterNG: {
