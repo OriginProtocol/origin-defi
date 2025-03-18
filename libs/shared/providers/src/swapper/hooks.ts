@@ -468,7 +468,9 @@ export const useIsSwapRouteAvailable = (
   });
 };
 
-export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
+export const useSwapRouteAllowance = (
+  route: SwapRoute | EstimatedSwapRoute | undefined | null,
+) => {
   const queryClient = useQueryClient();
   const config = useConfig();
   const [{ swapActions }] = useSwapState();
@@ -491,6 +493,7 @@ export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
           {
             tokenIn: route.tokenIn,
             tokenOut: route.tokenOut,
+            estimatedRoute: route as EstimatedSwapRoute,
           },
         );
       } catch {}

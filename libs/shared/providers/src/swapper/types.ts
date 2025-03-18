@@ -52,14 +52,12 @@ export type EstimateRoute = (
 
 export type Allowance = (
   client: SwapClient,
-  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut'> & { spender?: HexAddress },
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'estimatedRoute'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
   client: SwapClient,
-  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn'> & {
-    spender?: HexAddress;
-  },
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn' | 'estimatedRoute'>,
 ) => Promise<bigint>;
 
 export type Approve = (

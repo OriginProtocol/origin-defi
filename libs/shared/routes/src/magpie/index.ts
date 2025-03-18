@@ -88,37 +88,51 @@ const estimateRoute: EstimateRoute = async (
   }
 
   const quote = await getQuote(client, tokenIn, tokenOut, amountIn, slippage);
-  const [allowanceAmount, approvalGas] = await Promise.all([
-    allowance(client, { tokenIn, tokenOut, spender: quote.targetAddress }),
-    estimateApprovalGas(client, {
-      amountIn,
-      tokenIn,
-      tokenOut,
-      spender: quote.targetAddress,
-    }),
-  ]);
-  const estimatedAmount = BigInt(quote?.amountOut ?? 0);
-  const gas = BigInt(quote?.resourceEstimate?.gasLimit ?? 0);
-
-  return {
+  const estimatedRoute = {
     ...route,
-    estimatedAmount,
-    gas,
-    approvalGas,
-    allowanceAmount,
+    estimatedAmount: BigInt(quote?.amountOut ?? 0),
+    gas: BigInt(quote?.resourceEstimate?.gasLimit ?? 0),
+    approvalGas: 0n,
+    allowanceAmount: 0n,
     rate:
-      +formatUnits(estimatedAmount, tokenOut.decimals) /
+      +formatUnits(BigInt(quote?.amountOut ?? 0), tokenOut.decimals) /
       +formatUnits(amountIn, tokenIn.decimals),
     meta: {
       ...route?.meta,
       quote,
     },
   };
+
+  const [allowanceAmount, approvalGas] = await Promise.all([
+    allowance(client, {
+      tokenIn,
+      tokenOut,
+      estimatedRoute,
+    }),
+    estimateApprovalGas(client, {
+      amountIn,
+      tokenIn,
+      tokenOut,
+      estimatedRoute,
+    }),
+  ]);
+
+  return {
+    ...estimatedRoute,
+    allowanceAmount,
+    approvalGas,
+  };
 };
 
-const allowance: Allowance = async ({ config }, { tokenIn, spender }) => {
+const allowance: Allowance = async (
+  { config },
+  { tokenIn, estimatedRoute },
+) => {
   const { address } = getAccount(config);
-
+  const spender = path<HexAddress>(
+    ['meta', 'quote', 'targetAddress'],
+    estimatedRoute,
+  );
   if (!address || !tokenIn.address || !spender) {
     return maxUint256;
   }
@@ -136,10 +150,14 @@ const allowance: Allowance = async ({ config }, { tokenIn, spender }) => {
 
 const estimateApprovalGas: EstimateApprovalGas = async (
   { config },
-  { tokenIn, tokenOut, amountIn, spender },
+  { amountIn, tokenIn, estimatedRoute },
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const spender = path<HexAddress>(
+    ['meta', 'quote', 'targetAddress'],
+    estimatedRoute,
+  );
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (
