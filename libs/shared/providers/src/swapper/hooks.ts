@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useMemo } from 'react';
 
 import {
@@ -398,7 +399,6 @@ export const useHandleTokenFlip = () => {
       onTokenFlip?.(state);
       trackEvent?.({ name: 'change_input_output' });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     amountIn,
     amountOut,
@@ -432,7 +432,6 @@ export const useHandleSelectSwapRoute = () => {
         change_route_to: route.action,
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onSwapRouteChange, setSwapState, trackEvent],
   );
 };
@@ -547,6 +546,7 @@ export const useHandleApprove = () => {
           tokenIn,
           tokenOut,
           amountIn,
+          estimatedRoute: selectedSwapRoute,
         },
       );
       notifId = onApproveSigned?.({ ...state, trackId });
@@ -610,7 +610,6 @@ export const useHandleApprove = () => {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
     amountIn,
@@ -754,7 +753,6 @@ export const useHandleSwap = () => {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
     amountIn,

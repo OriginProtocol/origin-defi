@@ -40,7 +40,7 @@ export type MagpieResourceEstimate = {
 export type MagpieQuoteResponse = {
   id: string;
   amountOut: string;
-  targetAddress: string;
+  targetAddress: Hex;
   fees: MagpieFee[];
   resourceEstimate: MagpieResourceEstimate;
   typedData: MagpieSwapTypedData;

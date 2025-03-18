@@ -1,5 +1,4 @@
 import { axiosInstance } from '@origin/defi/shared';
-import { contracts } from '@origin/shared/contracts';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
@@ -24,6 +23,7 @@ import type {
   Swap,
   SwapClient,
 } from '@origin/shared/providers';
+import type { HexAddress } from '@origin/shared/utils';
 
 import type { MagpieQuoteResponse, MagpieTransaction } from './types';
 
@@ -87,10 +87,15 @@ const estimateRoute: EstimateRoute = async (
     };
   }
 
-  const [quote, allowanceAmount, approvalGas] = await Promise.all([
-    getQuote(client, tokenIn, tokenOut, amountIn, slippage),
-    allowance(client, { tokenIn, tokenOut }),
-    estimateApprovalGas(client, { amountIn, tokenIn, tokenOut }),
+  const quote = await getQuote(client, tokenIn, tokenOut, amountIn, slippage);
+  const [allowanceAmount, approvalGas] = await Promise.all([
+    allowance(client, { tokenIn, tokenOut, spender: quote.targetAddress }),
+    estimateApprovalGas(client, {
+      amountIn,
+      tokenIn,
+      tokenOut,
+      spender: quote.targetAddress,
+    }),
   ]);
   const estimatedAmount = BigInt(quote?.amountOut ?? 0);
   const gas = BigInt(quote?.resourceEstimate?.gasLimit ?? 0);
@@ -111,10 +116,10 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async ({ config }, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn, spender }) => {
   const { address } = getAccount(config);
 
-  if (!address || !tokenIn.address) {
+  if (!address || !tokenIn.address || !spender) {
     return maxUint256;
   }
 
@@ -122,7 +127,7 @@ const allowance: Allowance = async ({ config }, { tokenIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address, contracts.sonic.magpieRouter.address],
+    args: [address, spender],
     chainId: tokenIn.chainId,
   });
 
@@ -131,13 +136,19 @@ const allowance: Allowance = async ({ config }, { tokenIn }) => {
 
 const estimateApprovalGas: EstimateApprovalGas = async (
   { config },
-  { tokenIn, tokenOut, amountIn },
+  { tokenIn, tokenOut, amountIn, spender },
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
+  if (
+    amountIn === 0n ||
+    !address ||
+    !publicClient ||
+    !tokenIn?.address ||
+    !spender
+  ) {
     return approvalEstimate;
   }
 
@@ -146,7 +157,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.sonic.magpieRouter.address, amountIn],
+      args: [spender, amountIn],
       account: address ?? ZERO_ADDRESS,
     });
   } catch {
@@ -158,9 +169,13 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 
 const approve: Approve = async (
   { config },
-  { tokenIn, tokenOut, amountIn },
+  { tokenIn, tokenOut, amountIn, estimatedRoute },
 ) => {
-  if (!tokenIn?.address) {
+  const spender = path<HexAddress>(
+    ['meta', 'quote', 'targetAddress'],
+    estimatedRoute,
+  );
+  if (!tokenIn?.address || !spender) {
     return null;
   }
 
@@ -168,7 +183,7 @@ const approve: Approve = async (
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.sonic.magpieRouter.address, amountIn],
+    args: [spender, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);

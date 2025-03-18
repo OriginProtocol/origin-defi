@@ -65,11 +65,11 @@ export const osSwapRoutes: SwapRoute<OSRoute, Meta>[] = [
     tokenOut: tokens.sonic.OS,
     action: 'swap-swapx-os',
   },
-  // {
-  //   tokenIn: tokens.sonic.S,
-  //   tokenOut: tokens.sonic.OS,
-  //   action: 'swap-swapx-os',
-  // },
+  {
+    tokenIn: tokens.sonic.S,
+    tokenOut: tokens.sonic.OS,
+    action: 'swap-swapx-os',
+  },
   // {
   //   tokenIn: tokens.sonic.OS,
   //   tokenOut: tokens.sonic.S,
@@ -85,11 +85,11 @@ export const osSwapRoutes: SwapRoute<OSRoute, Meta>[] = [
   //   tokenOut: tokens.sonic.OS,
   //   action: 'swap-shadow-os',
   // },
-  {
-    tokenIn: tokens.sonic.S,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-shadow-os',
-  },
+  // {
+  //   tokenIn: tokens.sonic.S,
+  //   tokenOut: tokens.sonic.OS,
+  //   action: 'swap-shadow-os',
+  // },
   {
     tokenIn: tokens.sonic.OS,
     tokenOut: tokens.sonic.S,

@@ -40,7 +40,7 @@ export const osSwapActions: Partial<Record<OSRoute, SwapApi>> = {
   },
   'swap-swapx-os': {
     ...osSwapx,
-    routeLabel: defineMessage({ defaultMessage: 'Swap with Swapx' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap with SwapX' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-shadow-os': {
