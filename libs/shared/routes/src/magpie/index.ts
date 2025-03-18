@@ -46,7 +46,7 @@ const getQuote = async (
       address,
     ],
     queryFn: async () => {
-      const url = new URL('http://api.magpiefi.xyz/aggregator/quote');
+      const url = new URL('https://api.magpiefi.xyz/aggregator/quote');
       url.searchParams.set('network', 'sonic');
       url.searchParams.set('fromTokenAddress', tokenIn.address ?? ZERO_ADDRESS);
       url.searchParams.set('toTokenAddress', tokenOut.address ?? ZERO_ADDRESS);
@@ -205,7 +205,7 @@ const swap: Swap = async (
   const tx = await queryClient.fetchQuery({
     queryKey: ['magpie-transaction', quoteId],
     queryFn: async () => {
-      const url = new URL('http://api.magpiefi.xyz/aggregator/transaction');
+      const url = new URL('https://api.magpiefi.xyz/aggregator/transaction');
       url.searchParams.set('quoteId', quoteId);
       const res = await axiosInstance.get<MagpieTransaction>(url.toString());
 
