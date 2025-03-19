@@ -333,7 +333,6 @@ export const useHandleTokenFlip = () => {
                         tokenIn: route.tokenIn,
                         tokenOut: route.tokenOut,
                         amountIn: state.amountIn,
-                        amountOut: state.amountOut,
                         route,
                         slippage,
                       },
@@ -347,6 +346,7 @@ export const useHandleTokenFlip = () => {
                       approvalGas: 0n,
                       gas: 0n,
                       rate: 0,
+                      refreshInterval: route.refreshInterval,
                     }),
                   ]);
                 } catch (error) {
@@ -362,6 +362,7 @@ export const useHandleTokenFlip = () => {
                     approvalGas: 0n,
                     gas: 0n,
                     rate: 0,
+                    refreshInterval: route.refreshInterval,
                   };
                 }
 

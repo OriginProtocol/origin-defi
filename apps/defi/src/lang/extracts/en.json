@@ -152,9 +152,6 @@
   "3PhHPe": {
     "defaultMessage": "The variable APY currently being earned on staked xOGN."
   },
-  "3THvfQ": {
-    "defaultMessage": "Swap with Swapx"
-  },
   "3a5wL8": {
     "defaultMessage": "Active"
   },
@@ -1100,6 +1097,9 @@
   "eKEL/g": {
     "defaultMessage": "Pending"
   },
+  "edTGcS": {
+    "defaultMessage": "Swap with SwapX"
+  },
   "egoEtz": {
     "defaultMessage": "instant"
   },
@@ -1330,6 +1330,9 @@
   },
   "ok8VIA": {
     "defaultMessage": "Shape the future of Origin's products"
+  },
+  "oxHc4l": {
+    "defaultMessage": "Swap with Magpie"
   },
   "oy7udF": {
     "defaultMessage": "Approval cancelled"

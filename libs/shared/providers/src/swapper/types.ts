@@ -14,7 +14,7 @@ export type SwapArgs = {
   tokenOut: Token;
   amountIn: bigint;
   amountOut?: bigint;
-  slippage: number;
+  slippage?: number;
   route: SwapRoute;
   estimatedRoute?: EstimatedSwapRoute;
 };
@@ -31,7 +31,7 @@ export type IsRouteAvailable = (
 
 export type EstimateAmount = (
   client: SwapClient,
-  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  args: Pick<SwapArgs, 'tokenIn' | 'tokenOut' | 'amountIn' | 'slippage'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
@@ -46,7 +46,7 @@ export type EstimateRoute = (
   client: SwapClient,
   args: Pick<
     SwapArgs,
-    'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'route'
+    'tokenIn' | 'tokenOut' | 'amountIn' | 'slippage' | 'route'
   >,
 ) => Promise<EstimatedSwapRoute>;
 
@@ -99,6 +99,7 @@ export type SwapRoute<S = SwapAction, M = object> = {
   action: S;
   meta?: M;
   noSlippage?: boolean;
+  refreshInterval?: number;
 };
 
 export type EstimatedSwapRoute = {

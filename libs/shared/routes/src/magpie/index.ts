@@ -17,6 +17,7 @@ import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
   Approve,
+  EstimateAmount,
   EstimateApprovalGas,
   EstimateRoute,
   IsRouteAvailable,
@@ -27,16 +28,20 @@ import type { HexAddress } from '@origin/shared/utils';
 
 import type { MagpieQuoteResponse, MagpieTransaction } from './types';
 
+const MAGPIE_API_URL = 'https://api.magpiefi.xyz';
+
 const getQuote = async (
   { config, queryClient }: SwapClient,
   tokenIn: Token,
   tokenOut: Token,
   amountIn: bigint,
-  slippage: number,
+  slippage = 0.001,
+  staleTime = 0,
 ) => {
   const { address } = getAccount(config);
 
   return await queryClient.fetchQuery({
+    staleTime,
     queryKey: [
       'magpie-routing',
       tokenIn.id,
@@ -46,7 +51,7 @@ const getQuote = async (
       address,
     ],
     queryFn: async () => {
-      const url = new URL('https://api.magpiefi.xyz/aggregator/quote');
+      const url = new URL(`${MAGPIE_API_URL}/aggregator/quote`);
       url.searchParams.set('network', 'sonic');
       url.searchParams.set('fromTokenAddress', tokenIn.address ?? ZERO_ADDRESS);
       url.searchParams.set('toTokenAddress', tokenOut.address ?? ZERO_ADDRESS);
@@ -67,9 +72,21 @@ const isRouteAvailable: IsRouteAvailable = async (
   client,
   { tokenIn, tokenOut, amountIn },
 ) => {
-  const quote = await getQuote(client, tokenIn, tokenOut, amountIn, 0.01);
+  const quote = await getQuote(client, tokenIn, tokenOut, amountIn, 0.001);
 
   return !!quote?.id;
+};
+
+const estimateAmount: EstimateAmount = async (
+  client,
+  { tokenIn, tokenOut, amountIn, slippage },
+) => {
+  try {
+    const quote = await getQuote(client, tokenIn, tokenOut, amountIn, slippage);
+
+    return BigInt(quote?.amountOut ?? 0);
+  } catch {}
+  return 0n;
 };
 
 const estimateRoute: EstimateRoute = async (
@@ -87,7 +104,14 @@ const estimateRoute: EstimateRoute = async (
     };
   }
 
-  const quote = await getQuote(client, tokenIn, tokenOut, amountIn, slippage);
+  const quote = await getQuote(
+    client,
+    tokenIn,
+    tokenOut,
+    amountIn,
+    slippage,
+    (route?.refreshInterval ?? 1) - 1000,
+  );
   const estimatedRoute = {
     ...route,
     estimatedAmount: BigInt(quote?.amountOut ?? 0),
@@ -223,7 +247,7 @@ const swap: Swap = async (
   const tx = await queryClient.fetchQuery({
     queryKey: ['magpie-transaction', quoteId],
     queryFn: async () => {
-      const url = new URL('https://api.magpiefi.xyz/aggregator/transaction');
+      const url = new URL(`${MAGPIE_API_URL}/aggregator/transaction`);
       url.searchParams.set('quoteId', quoteId);
       const res = await axiosInstance.get<MagpieTransaction>(url.toString());
 
@@ -246,6 +270,7 @@ const swap: Swap = async (
 export const magpie = {
   ...defaultRoute,
   isRouteAvailable,
+  estimateAmount,
   estimateApprovalGas,
   allowance,
   estimateRoute,

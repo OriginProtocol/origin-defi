@@ -26,7 +26,7 @@ export type OSRoute =
   | 'swap-magpie-os'
   | 'swap-metropolis-os'
   | 'swap-swapx-os'
-  | 'swap-shadow-os'
+  // | 'swap-shadow-os'
   | 'redeem-vault-async-os'
   | 'unwrap-wos-os'
   | 'wrap-os-wos';
