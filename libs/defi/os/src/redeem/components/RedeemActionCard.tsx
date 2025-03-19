@@ -160,6 +160,9 @@ export const RedeemActionCard = ({
             label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
             value={delayLabel}
             isLoading={isSwapRoutesLoading || isQueueStateLoading}
+            labelInfoTooltip={intl.formatMessage({
+              defaultMessage: `Withdrawals may take up to 15 days due to Sonic validators' 14-day unstaking period, but funds could be available sooner.`,
+            })}
             valueProps={{
               ...valueLabelProps.valueProps,
               ...(route?.meta &&
