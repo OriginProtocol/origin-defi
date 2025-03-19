@@ -94,9 +94,7 @@ export const priceOptions = {
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
-    mapResult: ([, oeth_eth]: [bigint, bigint]) => {
-      return [oeth_eth, 18];
-    },
+    mapResult: chainLinkEthMapper,
   },
   '1:OETH_USD': {
     type: 'derived',
