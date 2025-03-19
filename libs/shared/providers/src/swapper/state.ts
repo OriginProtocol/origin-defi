@@ -9,7 +9,7 @@ import {
 } from '@origin/shared/utils';
 import { useDebouncedEffect, useIntervalEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
-import { update } from 'ramda';
+import { mergeDeepRight, update } from 'ramda';
 import { createContainer } from 'react-tracked';
 import { mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
@@ -157,14 +157,15 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           );
 
           if (refreshed && idx > -1) {
+            const merged = mergeDeepRight(route, refreshed);
             setState((prev) => ({
               ...prev,
               estimatedSwapRoutes: update(
                 idx,
-                { ...route, ...refreshed },
+                merged,
                 prev.estimatedSwapRoutes,
               ),
-              selectedSwapRoute: { ...route, ...refreshed },
+              selectedSwapRoute: merged,
             }));
           }
         }
