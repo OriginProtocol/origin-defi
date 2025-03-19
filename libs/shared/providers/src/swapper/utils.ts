@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { mergeDeepRight, uniq } from 'ramda';
 import { mainnet } from 'viem/chains';

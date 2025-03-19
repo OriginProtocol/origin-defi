@@ -7,7 +7,11 @@ import {
   useSwapState,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import dayjs from 'dayjs';
+import { add, gt, sub } from 'dnum';
 import { useIntl } from 'react-intl';
+
+import { useQueueState } from '../hooks';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -37,6 +41,7 @@ export const RedeemActionCard = ({
     },
   ] = useSwapState();
   const handleSelectSwapRoute = useHandleSelectSwapRoute();
+  const { data: queueState, isLoading: isQueueStateLoading } = useQueueState();
 
   const route = swapRoutes.find((r) =>
     routeEq({ tokenIn, tokenOut, action }, r),
@@ -47,6 +52,23 @@ export const RedeemActionCard = ({
     (route as SwapRoute<OSTokenRedeemAction, Meta>)?.meta?.comingSoon ?? false;
   const routeLabel = swapActions[action].routeLabel;
   const isDisabled = isComingSoon;
+  const delayLabel =
+    isQueueStateLoading || !queueState
+      ? '-'
+      : gt(
+            sub(
+              queueState?.vaultWSBalance,
+              add(queueState?.pending, [amountIn, tokenIn.decimals]),
+            ),
+            0,
+          )
+        ? intl.formatMessage(
+            {
+              defaultMessage: '{value}d',
+            },
+            { value: dayjs.duration(queueState?.secondsDelay).asDays() },
+          )
+        : intl.formatMessage({ defaultMessage: '1-15d' });
 
   return (
     <Card
@@ -136,11 +158,8 @@ export const RedeemActionCard = ({
           <ValueLabel
             {...valueLabelProps}
             label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
-            value={intl.formatMessage(
-              route?.meta?.waitTime ?? {
-                defaultMessage: '~1 min',
-              },
-            )}
+            value={delayLabel}
+            isLoading={isSwapRoutesLoading || isQueueStateLoading}
             valueProps={{
               ...valueLabelProps.valueProps,
               ...(route?.meta &&
@@ -149,7 +168,6 @@ export const RedeemActionCard = ({
                   color: route.meta.waitTimeColor as string,
                 }),
             }}
-            isLoading={isSwapRoutesLoading}
           />
           <ValueLabel
             {...valueLabelProps}

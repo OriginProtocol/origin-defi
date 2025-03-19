@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useMemo } from 'react';
 
 import {
@@ -332,7 +333,6 @@ export const useHandleTokenFlip = () => {
                         tokenIn: route.tokenIn,
                         tokenOut: route.tokenOut,
                         amountIn: state.amountIn,
-                        amountOut: state.amountOut,
                         route,
                         slippage,
                       },
@@ -346,6 +346,7 @@ export const useHandleTokenFlip = () => {
                       approvalGas: 0n,
                       gas: 0n,
                       rate: 0,
+                      refreshInterval: route.refreshInterval,
                     }),
                   ]);
                 } catch (error) {
@@ -361,6 +362,7 @@ export const useHandleTokenFlip = () => {
                     approvalGas: 0n,
                     gas: 0n,
                     rate: 0,
+                    refreshInterval: route.refreshInterval,
                   };
                 }
 
@@ -398,7 +400,6 @@ export const useHandleTokenFlip = () => {
       onTokenFlip?.(state);
       trackEvent?.({ name: 'change_input_output' });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     amountIn,
     amountOut,
@@ -432,7 +433,6 @@ export const useHandleSelectSwapRoute = () => {
         change_route_to: route.action,
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onSwapRouteChange, setSwapState, trackEvent],
   );
 };
@@ -469,7 +469,9 @@ export const useIsSwapRouteAvailable = (
   });
 };
 
-export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
+export const useSwapRouteAllowance = (
+  route: SwapRoute | EstimatedSwapRoute | undefined | null,
+) => {
   const queryClient = useQueryClient();
   const config = useConfig();
   const [{ swapActions }] = useSwapState();
@@ -492,6 +494,7 @@ export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
           {
             tokenIn: route.tokenIn,
             tokenOut: route.tokenOut,
+            estimatedRoute: route as EstimatedSwapRoute,
           },
         );
       } catch {}
@@ -547,6 +550,7 @@ export const useHandleApprove = () => {
           tokenIn,
           tokenOut,
           amountIn,
+          estimatedRoute: selectedSwapRoute,
         },
       );
       notifId = onApproveSigned?.({ ...state, trackId });
@@ -610,7 +614,6 @@ export const useHandleApprove = () => {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
     amountIn,
@@ -754,7 +757,6 @@ export const useHandleSwap = () => {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
     amountIn,

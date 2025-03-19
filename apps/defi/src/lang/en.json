@@ -121,6 +121,38 @@
       "value": " OGN"
     }
   ],
+  "/ur1be": [
+    {
+      "type": 0,
+      "value": "Security delay of "
+    },
+    {
+      "type": 1,
+      "value": "delay"
+    },
+    {
+      "type": 0,
+      "value": "s"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Remaining time: "
+    },
+    {
+      "type": 1,
+      "value": "timeRemaining"
+    },
+    {
+      "type": 0,
+      "value": "s"
+    }
+  ],
   "/xvR4F": [
     {
       "type": 0,
@@ -325,12 +357,6 @@
     {
       "type": 0,
       "value": "The variable APY currently being earned on staked xOGN."
-    }
-  ],
-  "3THvfQ": [
-    {
-      "type": 0,
-      "value": "Swap with Swapx"
     }
   ],
   "3a5wL8": [
@@ -773,12 +799,6 @@
     {
       "type": 0,
       "value": "The amount to deposit"
-    }
-  ],
-  "AMBM0T": [
-    {
-      "type": 0,
-      "value": "1-15 days"
     }
   ],
   "ASNc/h": [
@@ -1229,6 +1249,50 @@
       "value": "delegateTo"
     }
   ],
+  "HTDErc": [
+    {
+      "type": 0,
+      "value": "Your claim is queued, the vault still"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "needs to process "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "queueDiff"
+        },
+        {
+          "type": 0,
+          "value": " wS"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " before"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "your claim is ready"
+    }
+  ],
   "HaksWf": [
     {
       "type": 0,
@@ -1611,6 +1675,12 @@
       "value": "symbolIn"
     }
   ],
+  "NzqaRF": [
+    {
+      "type": 0,
+      "value": "1-15d"
+    }
+  ],
   "OBfWz0": [
     {
       "type": 0,
@@ -1689,6 +1759,16 @@
       "value": "Mint with Vault"
     }
   ],
+  "P47mG0": [
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "d"
+    }
+  ],
   "P63Xe+": [
     {
       "type": 0,
@@ -1723,6 +1803,12 @@
     {
       "type": 0,
       "value": "Withdraw"
+    }
+  ],
+  "PZ3oDl": [
+    {
+      "type": 0,
+      "value": "Swap with Shadow"
     }
   ],
   "PdEKuc": [
@@ -2565,6 +2651,12 @@
       "value": "Processing Transaction"
     }
   ],
+  "dZd8H/": [
+    {
+      "type": 0,
+      "value": "Waiting"
+    }
+  ],
   "da1ebU": [
     {
       "type": 0,
@@ -2673,6 +2765,12 @@
     {
       "type": 0,
       "value": "Pending"
+    }
+  ],
+  "edTGcS": [
+    {
+      "type": 0,
+      "value": "Swap with SwapX"
     }
   ],
   "egoEtz": [
@@ -3211,6 +3309,12 @@
     {
       "type": 0,
       "value": "Shape the future of Origin's products"
+    }
+  ],
+  "oxHc4l": [
+    {
+      "type": 0,
+      "value": "Swap with Magpie"
     }
   ],
   "oy7udF": [

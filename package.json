@@ -39,7 +39,7 @@
     "@visx/voronoi": "^3.12.0",
     "@wagmi/core": "2.16.5",
     "analytics": "0.8.16",
-    "axios": "^1.8.2",
+    "axios": "^1.8.3",
     "buffer": "^6.0.3",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
@@ -61,7 +61,7 @@
     "wagmi": "2.14.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.9",
+    "@babel/core": "^7.26.10",
     "@babel/preset-react": "^7.26.3",
     "@emotion/babel-plugin": "11.13.5",
     "@eslint/eslintrc": "^3.3.0",
@@ -91,9 +91,9 @@
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "@types/react-transition-group": "^4.4.12",
-    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@vitejs/plugin-react": "4.3.4",
-    "@vitest/ui": "^3.0.8",
+    "@vitest/ui": "^3.0.9",
     "babel-plugin-formatjs": "^10.5.35",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
@@ -110,19 +110,19 @@
     "husky": "^9.1.7",
     "jiti": "2.4.2",
     "jsdom": "~26.0.0",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.0",
     "nx": "20.5.0",
     "prettier": "^3.5.3",
     "ts-node": "10.9.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.26.0",
+    "typescript-eslint": "^8.26.1",
     "vite": "6.2.1",
     "vite-plugin-dts": "4.5.3",
     "vite-plugin-static-copy": "^2.3.0",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "~5.1.4",
-    "vitest": "^3.0.8"
+    "vitest": "^3.0.9"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

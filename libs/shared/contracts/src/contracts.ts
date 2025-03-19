@@ -16,6 +16,7 @@ import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { ConvexEthMetaStrategyABI } from './abis/ConvexEthMetaStrategy';
 import { ConvexStrategyABI } from './abis/ConvexStrategy';
+import { CurveAmoPoolABI } from './abis/CurveAmoPool';
 import { CurveAMOStrategyABI } from './abis/CurveAMOStrategy';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
@@ -31,6 +32,7 @@ import { LidoWithdrawStrategyABI } from './abis/LidoWithdrawStrategy';
 import { LrtConfigABI } from './abis/LrtConfig';
 import { LrtDepositPoolABI } from './abis/LrtDepositPool';
 import { LrtOracleABI } from './abis/LrtOracle';
+import { magpieRouterABI } from './abis/MagpieRouter';
 import { metropolisQuoterABI } from './abis/MetropolisQuoter';
 import { metropolisRouterAbi } from './abis/MetropolisRouter';
 import { MigratorABI } from './abis/Migrator';
@@ -50,6 +52,9 @@ import { OUSDStrategyFluxABI } from './abis/OUSDStrategyFlux';
 import { OUSDStrategyMakerABI } from './abis/OUSDStrategyMaker';
 import { OUSDStrategyMetaMorphoABI } from './abis/OUSDStrategyMetaMorpho';
 import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
+import { shadowPoolABI } from './abis/ShadowPool';
+import { shadowQuoterABI } from './abis/ShadowQuoter';
+import { ShadowRouterABI } from './abis/ShadowRouter';
 import { SuperOETHbABI } from './abis/SuperOETHbABI';
 import { SuperOETHbStrategyAeroABI } from './abis/SuperOETHbStrategyAero';
 import { SuperOETHbStrategyBridgeABI } from './abis/SuperOETHbStrategyBridge';
@@ -445,6 +450,13 @@ export const contracts = {
       abi: AerodromePoolABI,
       name: 'aerodromeWethSuperOethbPool',
     },
+    // Curve pool
+    curvePoolWethSuperOethb: {
+      address: '0x302A94E3C28c290EAF2a4605FC52e11Eb915f378',
+      chainId: base.id,
+      abi: CurveAmoPoolABI,
+      name: 'curvePoolWethSuperOethb',
+    },
     // Curve Router NG
     CurveRouterNG: {
       address: '0x4f37A9d177470499A2dD084621020b023fcffc1F',
@@ -490,6 +502,13 @@ export const contracts = {
     },
   },
   sonic: {
+    //Magpie
+    magpieRouter: {
+      address: '0xba7bAC71a8Ee550d89B827FE6d67bc3dCA07b104',
+      chainId: sonic.id,
+      abi: magpieRouterABI,
+      name: 'magpieRouter',
+    },
     // Metropolis
     metropolisQuoter: {
       address: '0x56eaa884F29620fD6914827AaAE9Ee6a5C383149',
@@ -521,6 +540,25 @@ export const contracts = {
       chainId: sonic.id,
       abi: superOETHbZapperABI,
       name: 'osZapper',
+    },
+    // Shadow
+    shadowWSOSPool: {
+      address: '0x0C9a698ED5422eaE47cE0B4096496b1FA7771d7d',
+      chainId: sonic.id,
+      abi: shadowPoolABI,
+      name: 'shadowWSOSPool',
+    },
+    shadowQuoter: {
+      address: '0x219b7ADebc0935a3eC889a148c6924D51A07535A',
+      chainId: sonic.id,
+      abi: shadowQuoterABI,
+      name: 'shadowQuoter',
+    },
+    shadowRouter: {
+      address: '0x5543c6176feb9b4b179078205d7c29eea2e2d695',
+      chainId: sonic.id,
+      abi: ShadowRouterABI,
+      name: 'shadowRouter',
     },
     // SwapX
     swapxQuoter: {

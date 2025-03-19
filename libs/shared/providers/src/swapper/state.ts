@@ -7,14 +7,15 @@ import {
   timeoutRejectPromise,
   timeoutResolvePromise,
 } from '@origin/shared/utils';
-import { useDebouncedEffect } from '@react-hookz/web';
+import { useDebouncedEffect, useIntervalEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
+import { update } from 'ramda';
 import { createContainer } from 'react-tracked';
 import { mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useSlippage } from '../slippage';
-import { getAvailableRoutes, getFilteredSwapRoutes } from './utils';
+import { getAvailableRoutes, getFilteredSwapRoutes, routeEq } from './utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -136,6 +137,39 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         }));
       }, [chain, state.tokenIn, state.tokenOut, swapRoutes]);
 
+      useIntervalEffect(async () => {
+        const route = state?.selectedSwapRoute;
+
+        if (route && route?.refreshInterval && route?.refreshInterval > 0) {
+          const refreshed = await swapActions[route.action].estimateRoute(
+            { config, queryClient },
+            {
+              tokenIn: route.tokenIn,
+              tokenOut: route.tokenOut,
+              amountIn: state.amountIn,
+              route,
+              slippage,
+            },
+          );
+
+          const idx = state?.estimatedSwapRoutes?.findIndex((r) =>
+            routeEq(r, route),
+          );
+
+          if (refreshed && idx > -1) {
+            setState((prev) => ({
+              ...prev,
+              estimatedSwapRoutes: update(
+                idx,
+                { ...route, ...refreshed },
+                prev.estimatedSwapRoutes,
+              ),
+              selectedSwapRoute: { ...route, ...refreshed },
+            }));
+          }
+        }
+      }, state?.selectedSwapRoute?.refreshInterval);
+
       useDebouncedEffect(
         async () => {
           if (state.amountIn === 0n) {
@@ -214,7 +248,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                         tokenIn: route.tokenIn,
                         tokenOut: route.tokenOut,
                         amountIn: state.amountIn,
-                        amountOut: state.amountOut,
                         route,
                         slippage,
                       },
@@ -228,6 +261,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                       approvalGas: 0n,
                       gas: 0n,
                       rate: 0,
+                      refreshInterval: route.refreshInterval,
                     }),
                   ]);
                 },

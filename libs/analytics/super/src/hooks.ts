@@ -3,7 +3,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { Curve, ETH, wOETH } from '@origin/shared/icons';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { add, from, gt, sub, toNumber } from 'dnum';
+import { add, div, from, gt, mul, sub, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
@@ -52,6 +52,12 @@ export const useSuperCollaterals = () => {
             functionName: 'checkBalance',
             args: [tokens.base.WETH.address],
           },
+          {
+            address: contracts.base.curvePoolWethSuperOethb.address,
+            abi: contracts.base.curvePoolWethSuperOethb.abi,
+            chainId: contracts.base.curvePoolWethSuperOethb.chainId,
+            functionName: 'get_balances',
+          },
         ],
       });
 
@@ -75,20 +81,32 @@ export const useSuperCollaterals = () => {
         data?.[3]?.status === 'success'
           ? ([data[3].result, tokens.base.WETH.decimals] as Dnum)
           : from(0);
-      const curveAmoSuper =
+      const curveAmo =
         data?.[4]?.status === 'success'
           ? ([data[4].result, tokens.base.WETH.decimals] as Dnum)
           : from(0);
+      const curveBalances =
+        data?.[5]?.status === 'success'
+          ? [
+              [data[5].result?.[0], tokens.base.WETH.decimals] as Dnum,
+              [data[5].result?.[1], tokens.base.superOETHb.decimals] as Dnum,
+            ]
+          : [from(0), from(0)];
 
       const balanceAmo = [balanceAmoWeth, pendingAmoWeth].reduce(
         (acc, curr) => add(acc, curr),
         from(0, tokens.base.WETH.decimals),
       );
+      const curveRatio = div(
+        curveBalances[0],
+        add(curveBalances[0], curveBalances[1]),
+      );
+      const curveAmoWethAmount = mul(curveAmo, curveRatio);
       const fullAmoBalanceWeth = [
         balanceAmoWeth,
         balanceAmoSuper,
         pendingAmoWeth,
-        curveAmoSuper,
+        curveAmoWethAmount,
       ].reduce(
         (acc, curr) => add(acc, curr),
         from(0, tokens.base.WETH.decimals),
@@ -106,7 +124,7 @@ export const useSuperCollaterals = () => {
       const computedTotal = [
         balanceAmo,
         balanceBridge,
-        curveAmoSuper,
+        curveAmoWethAmount,
         unallocatedBalance,
       ].reduce((acc, curr) => add(acc, curr), from(0, 18));
 
@@ -138,7 +156,7 @@ export const useSuperCollaterals = () => {
             defaultMessage: 'Curve AMO',
           }),
           icon: Curve,
-          value: toNumber(curveAmoSuper),
+          value: toNumber(curveAmoWethAmount),
           color: theme.palette.chart5,
           token: tokens.mainnet.ETH,
           total: toNumber(computedTotal),

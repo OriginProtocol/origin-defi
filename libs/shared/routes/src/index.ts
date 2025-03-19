@@ -1,5 +1,6 @@
 export * from './arm';
 export * from './curve';
+export * from './magpie';
 export * from './oeth';
 export * from './os';
 export * from './otoken';
