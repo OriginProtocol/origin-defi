@@ -56,6 +56,9 @@
   "/sIoQc": {
     "defaultMessage": "1 OGV = {rate} OGN"
   },
+  "/ur1be": {
+    "defaultMessage": "Security delay of {delay}s<br></br>Remaining time: {timeRemaining}s"
+  },
   "/xvR4F": {
     "defaultMessage": "Opt in"
   },
@@ -148,9 +151,6 @@
   },
   "3PhHPe": {
     "defaultMessage": "The variable APY currently being earned on staked xOGN."
-  },
-  "3THvfQ": {
-    "defaultMessage": "Swap with Swapx"
   },
   "3a5wL8": {
     "defaultMessage": "Active"
@@ -325,9 +325,6 @@
   },
   "ABavuV": {
     "defaultMessage": "The amount to deposit"
-  },
-  "AMBM0T": {
-    "defaultMessage": "1-15 days"
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
@@ -521,6 +518,9 @@
   "HPegJm": {
     "defaultMessage": "Delegate {votingPower} {symbolIn} to {delegateTo}"
   },
+  "HTDErc": {
+    "defaultMessage": "Your claim is queued, the vault still<br></br>needs to process <b>{queueDiff} wS</b> before<br></br>your claim is ready"
+  },
   "HaksWf": {
     "defaultMessage": "xOGN Received"
   },
@@ -683,6 +683,9 @@
   "NlA37n": {
     "defaultMessage": "{amount} {symbolIn}"
   },
+  "NzqaRF": {
+    "defaultMessage": "1-15d"
+  },
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
@@ -704,6 +707,9 @@
   "Ozw3aL": {
     "defaultMessage": "Mint with Vault"
   },
+  "P47mG0": {
+    "defaultMessage": "{value}d"
+  },
   "P63Xe+": {
     "defaultMessage": "Use wOETH on Arbitrum to earn ARB rewards!"
   },
@@ -721,6 +727,9 @@
   },
   "PXAur5": {
     "defaultMessage": "Withdraw"
+  },
+  "PZ3oDl": {
+    "defaultMessage": "Swap with Shadow"
   },
   "PdEKuc": {
     "defaultMessage": "{amtIn} {symbolIn} for {amtOut} {symbolOut}"
@@ -1043,6 +1052,9 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "dZd8H/": {
+    "defaultMessage": "Waiting"
+  },
   "da1ebU": {
     "defaultMessage": "Product type"
   },
@@ -1084,6 +1096,9 @@
   },
   "eKEL/g": {
     "defaultMessage": "Pending"
+  },
+  "edTGcS": {
+    "defaultMessage": "Swap with SwapX"
   },
   "egoEtz": {
     "defaultMessage": "instant"
@@ -1315,6 +1330,9 @@
   },
   "ok8VIA": {
     "defaultMessage": "Shape the future of Origin's products"
+  },
+  "oxHc4l": {
+    "defaultMessage": "Swap with Magpie"
   },
   "oy7udF": {
     "defaultMessage": "Approval cancelled"
