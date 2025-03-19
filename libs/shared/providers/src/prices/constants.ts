@@ -42,6 +42,7 @@ export const chainlinkOraclesMainnet = {
   frxETH_ETH: '0xc58f3385fbc1c8ad2c0c9a061d7c13b141d7a5df',
   stETH_ETH: '0x86392dc19c0b719886221c78ab11eb8cf5c52812',
   rETH_ETH: '0x536218f9e9eb48863970252233c8f271f554c2d0',
+  OETH_ETH: '0x703118C4CbccCBF2AB31913e0f8075fbbb15f563',
 } as const;
 
 export const chainlinkOraclesArbitrum = {
@@ -84,17 +85,21 @@ export const priceOptions = {
     },
     mapResult: chainLinkUsdMapper,
   },
-  '1:OETH_USD': {
+  '1:OETH_ETH': {
     type: 'wagmi',
-    id: '1:OETH_USD',
+    id: '1:OETH_ETH',
     config: {
-      address: contracts.mainnet.DIAOracle.address,
-      abi: contracts.mainnet.DIAOracle.abi,
-      functionName: 'getValue',
-      args: ['OETH/USD'],
+      address: chainlinkOraclesMainnet.OETH_ETH,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
-    mapResult: diaOracleUsdMapper,
+    mapResult: chainLinkEthMapper,
+  },
+  '1:OETH_USD': {
+    type: 'derived',
+    id: '1:OETH_USD',
+    dependsOn: ['1:OETH_ETH', '1:ETH_USD'],
   },
   '1:OUSD_USD': {
     type: 'wagmi',
