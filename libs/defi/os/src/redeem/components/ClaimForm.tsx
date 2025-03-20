@@ -266,9 +266,7 @@ type ClaimChipProps = {
 const ClaimChip = ({ request, ...rest }: ClaimChipProps) => {
   const intl = useIntl();
   const theme = useTheme();
-  const { claimable, delay, timeRemaining, queueDiff, balanceDiff } = request;
-
-  console.log(request);
+  const { claimable, delay, timeRemaining, queueDiff } = request;
 
   const icon = claimable ? (
     <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
