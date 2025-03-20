@@ -728,9 +728,6 @@
   "PXAur5": {
     "defaultMessage": "Withdraw"
   },
-  "PZ3oDl": {
-    "defaultMessage": "Swap with Shadow"
-  },
   "PdEKuc": {
     "defaultMessage": "{amtIn} {symbolIn} for {amtOut} {symbolOut}"
   },
@@ -1393,6 +1390,9 @@
   },
   "r7kiOG": {
     "defaultMessage": "Wrap"
+  },
+  "rCsGzH": {
+    "defaultMessage": "Withdrawals may take up to 15 days due to Sonic validators' 14-day unstaking period, but funds could be available sooner."
   },
   "rV8ryh": {
     "defaultMessage": "Swap via the ARM"

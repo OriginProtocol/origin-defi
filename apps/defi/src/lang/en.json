@@ -1805,12 +1805,6 @@
       "value": "Withdraw"
     }
   ],
-  "PZ3oDl": [
-    {
-      "type": 0,
-      "value": "Swap with Shadow"
-    }
-  ],
   "PdEKuc": [
     {
       "type": 1,
@@ -3461,6 +3455,12 @@
     {
       "type": 0,
       "value": "Wrap"
+    }
+  ],
+  "rCsGzH": [
+    {
+      "type": 0,
+      "value": "Withdrawals may take up to 15 days due to Sonic validators' 14-day unstaking period, but funds could be available sooner."
     }
   ],
   "rV8ryh": [
