@@ -12,6 +12,7 @@ import { path } from 'ramda';
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
 import { defaultRoute } from '../defaultRoute';
+import { MAGPIE_API_URL, magpieNetworks } from './constants';
 
 import type { Token } from '@origin/shared/contracts';
 import type {
@@ -27,8 +28,6 @@ import type {
 import type { HexAddress } from '@origin/shared/utils';
 
 import type { MagpieQuoteResponse, MagpieTransaction } from './types';
-
-const MAGPIE_API_URL = 'https://api.magpiefi.xyz';
 
 const getQuote = async (
   { config, queryClient }: SwapClient,
@@ -52,7 +51,7 @@ const getQuote = async (
     ],
     queryFn: async () => {
       const url = new URL(`${MAGPIE_API_URL}/aggregator/quote`);
-      url.searchParams.set('network', 'sonic');
+      url.searchParams.set('network', magpieNetworks[tokenIn.chainId]);
       url.searchParams.set('fromTokenAddress', tokenIn.address ?? ZERO_ADDRESS);
       url.searchParams.set('toTokenAddress', tokenOut.address ?? ZERO_ADDRESS);
       url.searchParams.set('fromAddress', address ?? ZERO_ADDRESS);
