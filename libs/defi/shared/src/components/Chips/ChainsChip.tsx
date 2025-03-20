@@ -10,11 +10,13 @@ import type { SupportedChain } from '@origin/shared/components';
 type ChainsChipProps = {
   chainIds: readonly number[];
   iconSize?: number;
+  onChainClick?: (chainId: number) => void;
 } & StackProps;
 
 export const ChainsChip = ({
   chainIds,
   iconSize = 24,
+  onChainClick,
   ...rest
 }: ChainsChipProps) => {
   const intl = useIntl();
@@ -41,6 +43,18 @@ export const ChainsChip = ({
             key={id}
             chainId={id as SupportedChain}
             size={iconSize}
+            {...(onChainClick && {
+              onClick: () => {
+                onChainClick(id);
+              },
+              role: 'button',
+              sx: {
+                cursor: 'pointer',
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
+              },
+            })}
           />
         ))}
       </Stack>
