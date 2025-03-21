@@ -18,6 +18,12 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     noSlippage: true,
   },
   {
+    tokenIn: tokens.mainnet.ETH,
+    tokenOut: tokens.mainnet.OETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
     tokenIn: tokens.mainnet.WETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'mint-vault-oeth',
@@ -27,6 +33,12 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenIn: tokens.mainnet.WETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'swap-curve-oeth',
+  },
+  {
+    tokenIn: tokens.mainnet.WETH,
+    tokenOut: tokens.mainnet.OETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
   },
   // Redeem
   {
@@ -44,6 +56,18 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenOut: tokens.mainnet.ETH,
     action: 'swap-curve-oeth',
   },
+  {
+    tokenIn: tokens.mainnet.OETH,
+    tokenOut: tokens.mainnet.ETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.OETH,
+    tokenOut: tokens.mainnet.WETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
   // Wrap
   {
     tokenIn: tokens.mainnet.OETH,
@@ -59,6 +83,7 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     noSlippage: true,
   },
   // Arbitrum
+  // Balancer
   {
     tokenIn: tokens.arbitrum.ETH,
     tokenOut: tokens.arbitrum.wOETH,
@@ -78,5 +103,26 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenIn: tokens.arbitrum.wOETH,
     tokenOut: tokens.arbitrum.WETH,
     action: 'swap-balancer-oeth',
+  },
+  // Magpie
+  {
+    tokenIn: tokens.arbitrum.ETH,
+    tokenOut: tokens.arbitrum.wOETH,
+    action: 'swap-magpie-oeth',
+  },
+  {
+    tokenIn: tokens.arbitrum.WETH,
+    tokenOut: tokens.arbitrum.wOETH,
+    action: 'swap-magpie-oeth',
+  },
+  {
+    tokenIn: tokens.arbitrum.wOETH,
+    tokenOut: tokens.arbitrum.ETH,
+    action: 'swap-magpie-oeth',
+  },
+  {
+    tokenIn: tokens.arbitrum.wOETH,
+    tokenOut: tokens.arbitrum.WETH,
+    action: 'swap-magpie-oeth',
   },
 ];

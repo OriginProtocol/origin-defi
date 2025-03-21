@@ -1,4 +1,5 @@
 import {
+  magpie,
   mintOtoken,
   swapCurve,
   swapFlipperOusd,
@@ -30,6 +31,10 @@ export const ousdSwapActions: Record<OusdSwapAction, SwapApi> = {
   'swap-curve-ousd': {
     ...swapCurve,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
+  },
+  'swap-magpie-ousd': {
+    ...magpie,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Magpie' }),
   },
   'swap-uniswap-v2-ousd': {
     ...swapUniswapV2Ousd,

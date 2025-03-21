@@ -1,4 +1,5 @@
 import {
+  magpie,
   mintOtoken,
   swapAerodromeSuperOethb,
   swapCurve,
@@ -40,5 +41,10 @@ export const oethSwapActions: Partial<Record<SuperOethbRoute, SwapApi>> = {
     ...wrapOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
+  },
+  'swap-magpie-superOethb': {
+    ...magpie,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Magpie' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
 };

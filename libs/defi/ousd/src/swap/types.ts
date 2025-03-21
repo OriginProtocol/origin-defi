@@ -5,6 +5,7 @@ export type OusdSwapAction = Extract<
   | 'mint-vault-ousd'
   | 'swap-flipper-ousd'
   | 'swap-curve-ousd'
+  | 'swap-magpie-ousd'
   | 'swap-sushiswap-ousd'
   | 'swap-uniswap-v2-ousd'
   | 'swap-uniswap-v3-ousd'

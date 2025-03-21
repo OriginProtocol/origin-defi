@@ -1,4 +1,5 @@
 import {
+  magpie,
   mintOtoken,
   redeemArmOeth,
   swapBalancerOeth,
@@ -27,6 +28,11 @@ export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
   'swap-curve-oeth': {
     ...swapCurve,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-magpie-oeth': {
+    ...magpie,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Magpie' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-zapper-oeth-eth': {
