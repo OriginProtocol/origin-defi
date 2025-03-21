@@ -26,6 +26,7 @@ const tokenColors = {
   [tokens.mainnet.OETH.id]: '#0074F0',
   [tokens.mainnet.DAI.id]: '#F9B01E',
   [tokens.mainnet.USDC.id]: '#2775CA',
+  [tokens.mainnet.USDS.id]: '#f5a742',
   [tokens.mainnet.USDT.id]: '#53AE94',
   [tokens.base.WETH.id]: '#618ECE',
 };

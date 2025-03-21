@@ -55,6 +55,7 @@ import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
 import { shadowPoolABI } from './abis/ShadowPool';
 import { shadowQuoterABI } from './abis/ShadowQuoter';
 import { ShadowRouterABI } from './abis/ShadowRouter';
+import { OUSDSSRStrategyABI } from './abis/SSRStrategy';
 import { SuperOETHbABI } from './abis/SuperOETHbABI';
 import { SuperOETHbStrategyAeroABI } from './abis/SuperOETHbStrategyAero';
 import { SuperOETHbStrategyBridgeABI } from './abis/SuperOETHbStrategyBridge';
@@ -288,6 +289,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: OracleRouterABI,
       name: 'OUSDOracleRouter',
+    },
+    OUSDSSRStrategy: {
+      address: '0x5Bd9AF9c2506D29B6d79cB878284A270190EaEAa',
+      chainId: mainnet.id,
+      abi: OUSDSSRStrategyABI,
+      name: 'OUSDSSRStrategy',
     },
     OUSDStrategyAave: {
       address: '0x5e3646a1db86993f73e6b74a57d8640b69f7e259',

@@ -22,6 +22,7 @@ import superOETHbSvg from './superOETHb.svg?react';
 import superOETHoSvg from './superOETHo.svg?react';
 import swETHSvg from './swETH.svg?react';
 import USDCSvg from './USDC.svg?react';
+import USDSSvg from './USDS.svg?react';
 import USDTSvg from './USDT.svg?react';
 import veOGVSvg from './veOGV.svg?react';
 import veOGVOutlinedSvg from './veOGV_outlined.svg?react';
@@ -104,6 +105,9 @@ export const swETH = (props: SvgIconProps) => (
 );
 export const USDC = (props: SvgIconProps) => (
   <SvgIcon {...props} component={USDCSvg} viewBox="0 0 30 30" />
+);
+export const USDS = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={USDSSvg} viewBox="0 0 1000 1000" />
 );
 export const USDT = (props: SvgIconProps) => (
   <SvgIcon {...props} component={USDTSvg} viewBox="0 0 30 30" />

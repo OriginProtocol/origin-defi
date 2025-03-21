@@ -170,6 +170,15 @@ export const tokens = {
       decimals: 6,
       symbol: 'USDC',
     },
+    USDS: {
+      id: '1:USDS',
+      address: '0xdC035D45d973E3EC169d2276DDab16f1e407384F',
+      chainId: mainnet.id,
+      abi: erc20Abi,
+      name: 'USDS Stablecoin',
+      decimals: 18,
+      symbol: 'USDS',
+    },
     USDT: {
       id: '1:USDT',
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
