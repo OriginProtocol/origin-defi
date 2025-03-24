@@ -10,10 +10,7 @@ export type Meta = {
   comingSoon?: boolean;
 };
 
-export type OSTokenRedeemAction = Extract<
-  OSRoute,
-  'redeem-vault-async-os' | 'swap-magpie-os'
->;
+export type OSTokenRedeemAction = Extract<OSRoute, 'redeem-vault-async-os'>;
 
 export type WithdrawalRequest = {
   id: string;
