@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { ascend, pathOr, prop } from 'ramda';
+import { ascend, last, pathOr, prop } from 'ramda';
 
 import type { Dayjs } from 'dayjs';
 
@@ -65,13 +65,24 @@ export const useArmTradingVolume = (limit?: number) => {
           const item = rows.find(findByDay(currentDate));
           const ethPrice = item?.eth_price ?? 0;
 
+          const prevItem = last(result);
+          const tradingVolumeETH: number =
+            item?.cumulative_volume ?? prevItem?.tradingVolumeETH ?? 0;
+          const tradingVolumeUSD: number =
+            (item?.cumulative_volume ?? prevItem?.tradingVolumeUSD ?? 0) *
+            ethPrice;
+          const swapVolumeETH: number =
+            item?.swap_volume ?? prevItem?.swapVolumeETH ?? 0;
+          const swapVolumeUSD: number =
+            (item?.swap_volume ?? prevItem?.swapVolumeUSD ?? 0) * ethPrice;
+
           result.push({
             timestamp: +currentDate,
             day: currentDate.format('YYYY-MM-DD'),
-            tradingVolumeETH: item?.cumulative_volume ?? 0,
-            tradingVolumeUSD: (item?.cumulative_volume ?? 0) * ethPrice,
-            swapVolumeETH: item?.swap_volume ?? 0,
-            swapVolumeUSD: (item?.swap_volume ?? 0) * ethPrice,
+            tradingVolumeETH,
+            tradingVolumeUSD,
+            swapVolumeETH,
+            swapVolumeUSD,
           });
           currentDate = currentDate.add(1, 'day');
         }
