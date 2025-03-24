@@ -149,7 +149,7 @@ useOTokenHistoriesQuery.getKey = (variables: OTokenHistoriesQueryVariables) => [
 useOTokenHistoriesQuery.fetcher = (variables: OTokenHistoriesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenHistoriesQuery, OTokenHistoriesQueryVariables>(OTokenHistoriesDocument, variables, options);
 
 export const OTokenStatsDocument = `
-    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int = 1) {
+    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int = 0) {
   oTokenDailyStats(
     limit: $limit
     offset: $offset

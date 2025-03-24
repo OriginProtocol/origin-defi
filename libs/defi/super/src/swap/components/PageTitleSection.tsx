@@ -20,7 +20,6 @@ export const PageTitleSection = (props: StackProps) => {
     {
       token: tokens.base.superOETHb.address.toLowerCase(),
       chainId: tokens.base.superOETHb.chainId,
-      offset: 1,
       limit: 1,
     },
     {

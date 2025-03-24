@@ -16,7 +16,6 @@ export const PageTitleSection = (props: StackProps) => {
     {
       token: tokens.mainnet.OUSD.address.toLowerCase(),
       chainId: tokens.mainnet.OUSD.chainId,
-      offset: 1,
       limit: 1,
     },
     {

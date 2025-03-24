@@ -55,7 +55,6 @@ export const TokenRow = ({
       chainId: token.chainId,
       token: token.address?.toLowerCase() ?? '',
       limit: 1,
-      offset: 1,
       orderBy: OTokenDailyStatOrderByInput.TimestampDesc,
     },
     {

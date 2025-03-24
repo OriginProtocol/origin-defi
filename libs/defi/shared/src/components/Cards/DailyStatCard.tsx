@@ -60,6 +60,7 @@ export const DailyStatCard = ({
         }),
     },
   );
+
   const statItems = useMemo(() => {
     const res = [];
     for (const stat of stats) {
