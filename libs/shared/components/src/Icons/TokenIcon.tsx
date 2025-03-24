@@ -75,6 +75,7 @@ const supportedSymbols = [
   'superOETHo',
   'swETH',
   'USDC',
+  'USDS',
   'USDT',
   'veOGV',
   'WETH',
