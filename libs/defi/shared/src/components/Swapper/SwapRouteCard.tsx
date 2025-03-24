@@ -9,7 +9,7 @@ import {
   useSwapState,
 } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { add, format, from, mul } from 'dnum';
+import { add, format, from, lt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
@@ -72,6 +72,9 @@ export function SwapRouteCard({
       ? (approvalGasPrice?.gasCostUsd ?? from(0))
       : from(0),
   );
+  const gasLabel = lt(gasPrice, from(0.01, 18))
+    ? `<$0.01`
+    : `~$${format(gasPrice, 2)}`;
   const routeLabel = swapActions[route.action].routeLabel;
 
   return (
@@ -181,10 +184,7 @@ export function SwapRouteCard({
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-          value={intl.formatMessage(
-            { defaultMessage: '~{value}' },
-            { value: `$${format(gasPrice, 2)}` },
-          )}
+          value={gasLabel}
           isLoading={isGasLoading}
         />
       </Stack>

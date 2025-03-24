@@ -9,7 +9,7 @@ import {
   useSwapState,
 } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { add, format, from, mul } from 'dnum';
+import { add, format, from, lt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -67,6 +67,9 @@ export function SwapRouteAccordionItem({
       ? (approvalGasPrice?.gasCostUsd ?? from(0))
       : from(0),
   );
+  const gasLabel = lt(gasPrice, from(0.01, 18))
+    ? `<$0.01`
+    : `~$${format(gasPrice, 2)}`;
   const routeLabel = swapActions[route.action].routeLabel;
 
   return (
@@ -151,10 +154,7 @@ export function SwapRouteAccordionItem({
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-          value={intl.formatMessage(
-            { defaultMessage: '~{value}' },
-            { value: `$${format(gasPrice, 2)}` },
-          )}
+          value={gasLabel}
           isLoading={isGasLoading}
         />
       </Stack>
