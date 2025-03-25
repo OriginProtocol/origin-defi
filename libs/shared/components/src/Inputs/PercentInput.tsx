@@ -72,7 +72,7 @@ export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
 
         try {
           const num = Number(cleanValue) / 100;
-          if (num <= 1 && onChange && num !== value) {
+          if (onChange && num !== value) {
             onChange(num);
           }
         } catch {}
