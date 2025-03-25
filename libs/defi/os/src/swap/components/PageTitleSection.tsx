@@ -21,6 +21,7 @@ export const PageTitleSection = (props: StackProps) => {
       token: tokens.sonic.OS.address.toLowerCase(),
       chainId: tokens.sonic.OS.chainId,
       limit: 1,
+      offset: 1,
     },
     {
       select: (data) =>

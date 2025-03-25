@@ -5,43 +5,12 @@ import type { SwapRoute } from '@origin/shared/providers';
 import type { OusdSwapAction } from './types';
 
 export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
-  // Mint DAI -> OUSD
+  // Default route
   {
-    tokenIn: tokens.mainnet.DAI,
+    tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
     action: 'swap-flipper-ousd',
     noSlippage: true,
-  },
-  {
-    tokenIn: tokens.mainnet.DAI,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-curve-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.DAI,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-uniswap-v2-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.DAI,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-uniswap-v3-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.DAI,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'mint-vault-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.DAI,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-sushiswap-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.DAI,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-magpie-ousd',
-    refreshInterval: 10000,
   },
   // Mint USDT -> OUSD
   {
@@ -77,6 +46,18 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
   },
   {
     tokenIn: tokens.mainnet.USDT,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint USDS -> OUSD
+  {
+    tokenIn: tokens.mainnet.USDS,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'swap-curve-ousd',
+  },
+  {
+    tokenIn: tokens.mainnet.USDS,
     tokenOut: tokens.mainnet.OUSD,
     action: 'swap-magpie-ousd',
     refreshInterval: 10000,
@@ -119,39 +100,6 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     action: 'swap-magpie-ousd',
     refreshInterval: 10000,
   },
-  // Redeem OUSD -> DAI
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'swap-flipper-ousd',
-    noSlippage: true,
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'swap-sushiswap-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'swap-uniswap-v2-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'swap-uniswap-v3-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'swap-curve-ousd',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'swap-magpie-ousd',
-    refreshInterval: 10000,
-  },
   // Redeem OUSD -> USDT
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -182,6 +130,18 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Redeem OUSD -> USDS
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.USDS,
+    action: 'swap-curve-ousd',
+  },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.USDS,
     action: 'swap-magpie-ousd',
     refreshInterval: 10000,
   },

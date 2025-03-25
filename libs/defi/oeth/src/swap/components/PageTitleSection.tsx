@@ -21,6 +21,7 @@ export const PageTitleSection = (props: StackProps) => {
       token: tokens.mainnet.OETH.address.toLowerCase(),
       chainId: tokens.mainnet.OETH.chainId,
       limit: 1,
+      offset: 1,
     },
     {
       select: (data) =>

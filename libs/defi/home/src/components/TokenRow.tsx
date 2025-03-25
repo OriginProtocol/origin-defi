@@ -56,6 +56,7 @@ export const TokenRow = ({
       token: token.address?.toLowerCase() ?? '',
       limit: 1,
       orderBy: OTokenDailyStatOrderByInput.TimestampDesc,
+      offset: 1,
     },
     {
       enabled: !!token.address,

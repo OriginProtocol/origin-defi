@@ -21,6 +21,7 @@ export const PageTitleSection = (props: StackProps) => {
       token: tokens.base.superOETHb.address.toLowerCase(),
       chainId: tokens.base.superOETHb.chainId,
       limit: 1,
+      offset: 1,
     },
     {
       select: (data) =>
