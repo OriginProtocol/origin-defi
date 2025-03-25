@@ -11,6 +11,7 @@ import ArrowRightFromBracketSvg from './arrow-right-from-bracket.svg?react';
 import ArrowUpSvg from './arrow-up.svg?react';
 import ArrowUpArrowDownSvg from './arrow-up-arrow-down.svg?react';
 import ArrowUpRightSvg from './arrow-up-right.svg?react';
+import ExpandAlt from './arrow-up-right-and-arrow-down-left-from-center.svg?react';
 import ArrowUpRightFromSquareSvg from './arrow-up-right-from-square.svg?react';
 import ArrowsRotateSvg from './arrows-rotate.svg?react';
 import BarsSvg from './bars.svg?react';
@@ -332,6 +333,9 @@ export const FaExclamationRegular = (props: SvgIconProps) => (
 );
 export const FaExpandRegular = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ExpandSvg} inheritViewBox />
+);
+export const FaExpandAltRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ExpandAlt} inheritViewBox />
 );
 export const FaFileLinesRegular = (props: SvgIconProps) => (
   <SvgIcon

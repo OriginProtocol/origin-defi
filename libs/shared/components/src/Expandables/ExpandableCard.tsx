@@ -1,36 +1,39 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Button,
+  Card,
+  CardHeader,
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { FaExpandRegular, FaXmarkRegular } from '@origin/shared/icons';
+import { FaExpandAltRegular } from '@origin/shared/icons';
+import { FaXmarkRegular } from '@origin/shared/icons';
 import { useMeasure } from '@react-hookz/web';
 
-import type { BoxProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
 import type { Measurements } from './types';
 
-export type ExpandablePanelProps = {
+export type ExpandableCardProps = {
+  title?: ReactNode;
   height: number;
-  title?: string;
   children: (measurements: Measurements) => ReactNode;
-} & Omit<BoxProps, 'children'>;
+} & Omit<CardProps, 'title'>;
 
-export const ExpandablePanel = ({
+export const ExpandableCard = ({
+  children,
   height,
   title,
-  children,
   ...rest
-}: ExpandablePanelProps) => {
+}: ExpandableCardProps) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
@@ -52,36 +55,18 @@ export const ExpandablePanel = ({
 
   return (
     <>
-      <Box
-        {...rest}
-        sx={[
-          { position: 'relative', height },
-          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
-        ]}
-        ref={initialRef}
-        onMouseEnter={() => setVisible(true)}
-        onMouseLeave={() => setVisible(false)}
-      >
+      <Card {...rest} ref={initialRef}>
+        <CardHeader
+          title={title}
+          action={
+            <Button onClick={() => setOpen(true)}>
+              <FaExpandAltRegular />
+            </Button>
+          }
+        />
+        <Divider />
         {children(initial)}
-        <Button
-          color="secondary"
-          onClick={() => setOpen(true)}
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 20,
-            display: visible ? 'flex' : 'none',
-            p: 0.75,
-            minWidth: 0,
-            minHeight: 0,
-            borderRadius: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <FaExpandRegular sx={{ fontSize: 14 }} />
-        </Button>
-      </Box>
+      </Card>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -102,6 +87,7 @@ export const ExpandablePanel = ({
             <FaXmarkRegular sx={{ fontSize: 14 }} />
           </IconButton>
         </DialogTitle>
+        <Divider />
         <DialogContent sx={{ height: '80vh' }} ref={expandedRef}>
           {children(expanded)}
         </DialogContent>
