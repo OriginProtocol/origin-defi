@@ -1,4 +1,3 @@
-import { axiosInstance } from '@origin/defi/shared';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
@@ -8,6 +7,7 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
+import axios from 'axios';
 import { path } from 'ramda';
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
@@ -60,7 +60,7 @@ const getQuote = async (
       url.searchParams.set('slippage', slippage.toString());
       url.searchParams.set('gasless', 'false');
 
-      const res = await axiosInstance.get<MagpieQuoteResponse>(url.toString());
+      const res = await axios.get<MagpieQuoteResponse>(url.toString());
 
       return res.data;
     },
@@ -248,7 +248,7 @@ const swap: Swap = async (
     queryFn: async () => {
       const url = new URL(`${MAGPIE_API_URL}/aggregator/transaction`);
       url.searchParams.set('quoteId', quoteId);
-      const res = await axiosInstance.get<MagpieTransaction>(url.toString());
+      const res = await axios.get<MagpieTransaction>(url.toString());
 
       return res.data;
     },
