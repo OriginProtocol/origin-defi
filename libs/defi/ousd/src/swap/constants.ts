@@ -100,6 +100,55 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     action: 'swap-magpie-ousd',
     refreshInterval: 10000,
   },
+  // Mint OETH -> OUSD
+  {
+    tokenIn: tokens.mainnet.OETH,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint USDT -> wOUSD
+  {
+    tokenIn: tokens.mainnet.USDT,
+    tokenOut: tokens.mainnet.wOUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint USDS -> wOUSD
+  {
+    tokenIn: tokens.mainnet.USDS,
+    tokenOut: tokens.mainnet.wOUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint USDC -> wOUSD
+  {
+    tokenIn: tokens.mainnet.USDC,
+    tokenOut: tokens.mainnet.wOUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint OETH -> wOUSD
+  {
+    tokenIn: tokens.mainnet.OETH,
+    tokenOut: tokens.mainnet.wOUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint ETH -> OUSD
+  {
+    tokenIn: tokens.mainnet.ETH,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Mint ETH -> wOUSD
+  {
+    tokenIn: tokens.mainnet.ETH,
+    tokenOut: tokens.mainnet.wOUSD,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
   // Redeem OUSD -> USDT
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -175,6 +224,41 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Redeem OUSD -> OETH
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.OETH,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Redeem wOUSD -> USDT
+  {
+    tokenIn: tokens.mainnet.wOUSD,
+    tokenOut: tokens.mainnet.USDT,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Redeem wOUSD -> USDS
+  {
+    tokenIn: tokens.mainnet.wOUSD,
+    tokenOut: tokens.mainnet.USDS,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Redeem wOUSD -> USDC
+  {
+    tokenIn: tokens.mainnet.wOUSD,
+    tokenOut: tokens.mainnet.USDC,
+    action: 'swap-magpie-ousd',
+    refreshInterval: 10000,
+  },
+  // Redeem wOUSD -> OETH
+  {
+    tokenIn: tokens.mainnet.wOUSD,
+    tokenOut: tokens.mainnet.OETH,
     action: 'swap-magpie-ousd',
     refreshInterval: 10000,
   },

@@ -40,6 +40,30 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     action: 'swap-magpie-oeth',
     refreshInterval: 10000,
   },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.OETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.ETH,
+    tokenOut: tokens.mainnet.wOETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.WETH,
+    tokenOut: tokens.mainnet.wOETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.wOETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
   // Redeem
   {
     tokenIn: tokens.mainnet.OETH,
@@ -65,6 +89,30 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.OETH,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.wOETH,
+    tokenOut: tokens.mainnet.ETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.wOETH,
+    tokenOut: tokens.mainnet.WETH,
+    action: 'swap-magpie-oeth',
+    refreshInterval: 10000,
+  },
+  {
+    tokenIn: tokens.mainnet.wOETH,
+    tokenOut: tokens.mainnet.OUSD,
     action: 'swap-magpie-oeth',
     refreshInterval: 10000,
   },
