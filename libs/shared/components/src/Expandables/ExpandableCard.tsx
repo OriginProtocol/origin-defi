@@ -13,8 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { FaExpandAltRegular } from '@origin/shared/icons';
-import { FaXmarkRegular } from '@origin/shared/icons';
+import { FaExpandAltRegular, FaXmarkRegular } from '@origin/shared/icons';
 import { useMeasure } from '@react-hookz/web';
 
 import type { CardProps } from '@mui/material';
