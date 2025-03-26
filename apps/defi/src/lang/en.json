@@ -11,6 +11,12 @@
       "value": "1 day"
     }
   ],
+  "+FzVCl": [
+    {
+      "type": 0,
+      "value": "Swap now"
+    }
+  ],
   "+LhIwA": [
     {
       "type": 0,
@@ -1411,6 +1417,12 @@
       "value": "No one voted for this choice"
     }
   ],
+  "Jz/17g": [
+    {
+      "type": 0,
+      "value": "Don’t want to wait? Swap instead."
+    }
+  ],
   "K/psnI": [
     {
       "type": 0,
@@ -2413,6 +2425,12 @@
       "value": "Discord Forum"
     }
   ],
+  "ZHzCT2": [
+    {
+      "type": 0,
+      "value": "Skip the queue by just swapping OS for wS."
+    }
+  ],
   "ZK8Bth": [
     {
       "type": 0,
@@ -2807,6 +2825,12 @@
     {
       "type": 0,
       "value": "Penalty"
+    }
+  ],
+  "fn/f+8": [
+    {
+      "type": 0,
+      "value": "Swap via Magpie"
     }
   ],
   "fuV7zb": [

@@ -5,6 +5,9 @@
   "+7PjfV": {
     "defaultMessage": "1 day"
   },
+  "+FzVCl": {
+    "defaultMessage": "Swap now"
+  },
   "+LhIwA": {
     "defaultMessage": "The share of total Origin DAO voting power earned by your OGN lockups"
   },
@@ -578,6 +581,9 @@
   "JyPAH1": {
     "defaultMessage": "No one voted for this choice"
   },
+  "Jz/17g": {
+    "defaultMessage": "Don’t want to wait? Swap instead."
+  },
   "K/psnI": {
     "defaultMessage": "Lockup Duration"
   },
@@ -947,6 +953,9 @@
   "Z6ohOJ": {
     "defaultMessage": "Discord Forum"
   },
+  "ZHzCT2": {
+    "defaultMessage": "Skip the queue by just swapping OS for wS."
+  },
   "ZK8Bth": {
     "defaultMessage": "Impossible to execute transaction"
   },
@@ -1117,6 +1126,9 @@
   },
   "ffxzE3": {
     "defaultMessage": "Penalty"
+  },
+  "fn/f+8": {
+    "defaultMessage": "Swap via Magpie"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"

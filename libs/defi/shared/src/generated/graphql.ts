@@ -27153,6 +27153,7 @@ export type OTokenYieldForwarded = {
   blockNumber: Scalars['Int']['output'];
   chainId: Scalars['Int']['output'];
   from: Scalars['String']['output'];
+  fromBalance: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   otoken: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
@@ -27184,6 +27185,12 @@ export enum OTokenYieldForwardedOrderByInput {
   ChainIdDesc = 'chainId_DESC',
   ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
   ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  FromBalanceAsc = 'fromBalance_ASC',
+  FromBalanceAscNullsFirst = 'fromBalance_ASC_NULLS_FIRST',
+  FromBalanceAscNullsLast = 'fromBalance_ASC_NULLS_LAST',
+  FromBalanceDesc = 'fromBalance_DESC',
+  FromBalanceDescNullsFirst = 'fromBalance_DESC_NULLS_FIRST',
+  FromBalanceDescNullsLast = 'fromBalance_DESC_NULLS_LAST',
   FromAsc = 'from_ASC',
   FromAscNullsFirst = 'from_ASC_NULLS_FIRST',
   FromAscNullsLast = 'from_ASC_NULLS_LAST',
@@ -27246,6 +27253,15 @@ export type OTokenYieldForwardedWhereInput = {
   chainId_lte?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  fromBalance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  fromBalance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  fromBalance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   from_contains?: InputMaybe<Scalars['String']['input']>;
   from_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   from_endsWith?: InputMaybe<Scalars['String']['input']>;
