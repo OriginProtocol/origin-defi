@@ -52,8 +52,9 @@ export const RedeemActionCard = ({
     (route as SwapRoute<OSTokenRedeemAction, Meta>)?.meta?.comingSoon ?? false;
   const routeLabel = swapActions[action].routeLabel;
   const isDisabled = isComingSoon;
-  const delayLabel =
-    isQueueStateLoading || !queueState
+  const delayLabel = route?.meta?.waitTime
+    ? intl.formatMessage(route.meta.waitTime)
+    : isQueueStateLoading || !queueState
       ? '-'
       : gt(
             sub(

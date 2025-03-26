@@ -1,4 +1,4 @@
-import { redeemAsyncOtoken } from '@origin/shared/routes';
+import { magpie, redeemAsyncOtoken } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
 
 import type { SwapApi } from '@origin/shared/providers';
@@ -10,5 +10,10 @@ export const redeemActions: Record<OSTokenRedeemAction, SwapApi> = {
     ...redeemAsyncOtoken,
     routeLabel: defineMessage({ defaultMessage: 'Redeem via Origin Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Request withdrawal' }),
+  },
+  'swap-magpie-os': {
+    ...magpie,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Magpie' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap now' }),
   },
 };

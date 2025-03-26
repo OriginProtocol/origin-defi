@@ -22,6 +22,7 @@ import {
   LoadingLabel,
   ValueLabel,
 } from '@origin/shared/components';
+import { FaCircleInfoRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   getTokenPriceKey,
@@ -359,6 +360,7 @@ function SwapperWrapped({
           }}
         >
           <RedeemActionCard action="redeem-vault-async-os" sx={{ width: 1 }} />
+          <RedeemActionCard action="swap-magpie-os" sx={{ width: 1 }} />
         </Stack>
         <Typography
           sx={{
@@ -368,6 +370,7 @@ function SwapperWrapped({
         >
           {intl.formatMessage({ defaultMessage: 'Receive amount' })}
         </Typography>
+
         <Stack
           direction="row"
           sx={{
@@ -424,7 +427,11 @@ function SwapperWrapped({
             <TokenButton token={tokenOut} disabled />
           </Stack>
         </Stack>
+
         <Collapse in={amountOut > 0n}>
+          {selectedSwapRoute?.action === 'redeem-vault-async-os' && (
+            <DelayDisclaimer sx={{ mb: 3 }} />
+          )}
           <ValueLabel
             label={intl.formatMessage({
               defaultMessage: 'Approximate gas cost:',
@@ -541,6 +548,48 @@ const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
       >
         {`+ $${format(claim, { digits: 3, decimalsRounding: 'ROUND_UP' })}`}
       </InfoTooltipLabel>
+    </Stack>
+  );
+};
+
+const DelayDisclaimer = (props: StackProps) => {
+  const intl = useIntl();
+
+  return (
+    <Stack
+      direction="row"
+      spacing={1}
+      {...props}
+      sx={[
+        {
+          backgroundColor: 'primary.faded',
+          border: '1px solid',
+          borderColor: 'primary.main',
+          borderRadius: 3,
+          p: 2,
+        },
+        ...(Array.isArray(props?.sx) ? props.sx : [props?.sx]),
+      ]}
+    >
+      <FaCircleInfoRegular
+        sx={{
+          color: 'primary.main',
+          fontSize: 16,
+          transform: 'translateY(2px)',
+        }}
+      />
+      <Stack>
+        <Typography sx={{ fontWeight: 'medium' }} gutterBottom>
+          {intl.formatMessage({
+            defaultMessage: 'Don’t want to wait? Swap instead.',
+          })}
+        </Typography>
+        <Typography sx={{ color: 'text.secondary' }}>
+          {intl.formatMessage({
+            defaultMessage: 'Skip the queue by just swapping OS for wS.',
+          })}
+        </Typography>
+      </Stack>
     </Stack>
   );
 };

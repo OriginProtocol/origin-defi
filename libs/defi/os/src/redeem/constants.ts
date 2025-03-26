@@ -1,5 +1,6 @@
 import { tokens } from '@origin/shared/contracts';
 import { OS } from '@origin/shared/icons';
+import { defineMessage } from 'react-intl';
 
 import type { SwapRoute } from '@origin/shared/providers';
 
@@ -15,6 +16,15 @@ export const redeemRoutes: SwapRoute<OSTokenRedeemAction, Meta>[] = [
     meta: {
       icon: OS,
       waitTimeColor: 'warning.dark',
+    },
+  },
+  {
+    tokenIn: tokens.sonic.OS,
+    tokenOut: tokens.sonic.wS,
+    action: 'swap-magpie-os',
+    meta: {
+      icon: OS,
+      waitTime: defineMessage({ defaultMessage: 'Instant' }),
     },
   },
 ];
