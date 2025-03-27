@@ -2,6 +2,7 @@ export * from './arm';
 export * from './curve';
 export * from './magpie';
 export * from './oeth';
+export * from './openOcean';
 export * from './os';
 export * from './otoken';
 export * from './ousd';
