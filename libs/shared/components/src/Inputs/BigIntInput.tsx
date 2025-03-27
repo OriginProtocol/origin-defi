@@ -52,9 +52,11 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
         const fullValue = formatUnits(value, decimals);
         const dotIndex = fullValue.indexOf('.');
         const formattedValue =
-          dotIndex === -1
-            ? fullValue
-            : fullValue.slice(0, dotIndex + displayPrecision + 1);
+          value === 0n
+            ? ''
+            : dotIndex === -1
+              ? fullValue
+              : fullValue.slice(0, dotIndex + displayPrecision + 1);
         setDisplayValue(formattedValue);
         updateSourceRef.current = 'prop';
       }

@@ -32,7 +32,8 @@ export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
         updateSourceRef.current !== 'user' &&
         value !== prevValueRef.current
       ) {
-        const formattedValue = formatPercent(value, precision);
+        const formattedValue =
+          value === 0 ? '' : formatPercent(value, precision);
         setDisplayValue(formattedValue);
         updateSourceRef.current = 'prop';
       }

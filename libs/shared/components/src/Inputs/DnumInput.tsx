@@ -40,10 +40,12 @@ export const DnumInput = forwardRef<HTMLInputElement, DnumInputProps>(
         updateSourceRef.current !== 'user' &&
         !eq(value, prevValueRef.current)
       ) {
-        const formattedValue = format(value, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: precision,
-        });
+        const formattedValue = eq(value, 0)
+          ? ''
+          : format(value, {
+              decimalsRounding: 'ROUND_DOWN',
+              digits: precision,
+            });
         setDisplayValue(formattedValue);
         updateSourceRef.current = 'prop';
       }
