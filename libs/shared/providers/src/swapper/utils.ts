@@ -1,5 +1,5 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { mergeDeepRight, uniq } from 'ramda';
+import { mergeDeepRight, uniq, uniqWith } from 'ramda';
 import { mainnet } from 'viem/chains';
 
 import type { Token } from '@origin/shared/contracts';
@@ -113,9 +113,9 @@ export const getTokenMeta = (
   return isNilOrEmpty(meta) ? undefined : meta;
 };
 
-export const routeEq = (
-  a: SwapRoute | undefined | null,
-  b: SwapRoute | undefined | null,
+export const routeEq = <S = SwapAction, M = object>(
+  a: SwapRoute<S, M> | undefined | null,
+  b: SwapRoute<S, M> | undefined | null,
 ) => {
   if (!a || !b) {
     return false;
@@ -126,4 +126,48 @@ export const routeEq = (
     a.tokenOut.id === b.tokenOut.id &&
     a.action === b.action
   );
+};
+
+type GenerateSwapRoutesArgs<S = SwapAction, M = object> = {
+  tokensIn: Token[];
+  tokensOut: Token[];
+  swapRoute: Omit<SwapRoute<S, M>, 'tokenIn' | 'tokenOut'>;
+  includeReturn?: boolean;
+};
+
+export const generateSwapRoutes = <S = SwapAction, M = object>({
+  tokensIn,
+  tokensOut,
+  swapRoute,
+  includeReturn = false,
+}: GenerateSwapRoutesArgs<S, M>): SwapRoute<S, M>[] => {
+  if (!tokensIn.length || !tokensOut.length) {
+    return [];
+  }
+
+  const forwardRoutes = tokensIn.flatMap((tokenIn) =>
+    tokensOut
+      .filter((tokenOut) => tokenIn.id !== tokenOut.id)
+      .map((tokenOut) => ({
+        ...swapRoute,
+        tokenIn,
+        tokenOut,
+      })),
+  );
+
+  if (!includeReturn) {
+    return forwardRoutes;
+  }
+
+  const returnRoutes = tokensOut.flatMap((tokenIn) =>
+    tokensIn
+      .filter((tokenOut) => tokenIn.id !== tokenOut.id)
+      .map((tokenOut) => ({
+        ...swapRoute,
+        tokenIn,
+        tokenOut,
+      })),
+  );
+
+  return uniqWith(routeEq<S, M>, [...forwardRoutes, ...returnRoutes]);
 };
