@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom/client';
 
 import {
   queryClient,
+  registerPlausible,
   registerSentry,
   wagmiConfig,
 } from '@origin/analytics/shared';
@@ -29,6 +30,8 @@ import { routes } from './routes';
 setAutoFreeze(false);
 
 logWelcomeMessage('Analytics');
+
+registerPlausible();
 
 registerSentry();
 

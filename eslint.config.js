@@ -6,7 +6,6 @@ const eslintPluginUnusedImports = require('eslint-plugin-unused-imports');
 const eslintPluginSimpleImportSort = require('eslint-plugin-simple-import-sort');
 const eslintPluginImport = require('eslint-plugin-import');
 const eslintPluginPrettier = require('eslint-plugin-prettier');
-const reactHooks = require('eslint-plugin-react-hooks');
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -14,7 +13,6 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
-  reactHooks.configs['recommended-latest'],
   {
     plugins: {
       '@nx': nxEslintPlugin,
@@ -23,6 +21,13 @@ module.exports = [
       'simple-import-sort': eslintPluginSimpleImportSort,
       import: eslintPluginImport,
       prettier: eslintPluginPrettier,
+    },
+  },
+  {
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
   ...compat

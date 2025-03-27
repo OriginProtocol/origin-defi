@@ -1,6 +1,5 @@
-import googleTagManager from '@analytics/google-tag-manager';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { Analytics } from 'analytics';
+import Plausible from 'plausible-tracker';
 import { map } from 'ramda';
 import { formatEther } from 'viem';
 
@@ -19,45 +18,30 @@ export type TrackEvent =
   | { name: 'connect_click' }
   | { name: 'open_activity' };
 
-const analytics = Analytics({
-  app: 'defi-dapp',
-  plugins: [
-    ...(isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
-      ? []
-      : [
-          googleTagManager({
-            containerId: import.meta.env.VITE_GTM_CONTAINER_ID,
-          }),
-        ]),
-  ],
+const plausible = Plausible({
+  domain: 'app.originprotocol.com',
+  hashMode: true,
 });
 
-export const registerGoogleTagManager = () => {
-  if (
-    import.meta.env.PROD &&
-    !isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
-  ) {
-    analytics.ready(() => {
-      console.log('Analytics enabled');
-    });
+export const registerPlausible = () => {
+  if (import.meta.env.PROD) {
+    const { enableAutoPageviews, enableAutoOutboundTracking } = plausible;
+
+    enableAutoPageviews();
+    enableAutoOutboundTracking();
   }
 };
 
 export const trackEvent = ({ name, ...rest }: TrackEvent) => {
-  if (
-    import.meta.env.PROD &&
-    !isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
-  ) {
-    analytics.track(name, map(formatParams, rest));
+  if (import.meta.env.PROD) {
+    plausible.trackEvent(name, map(formatParams, rest));
   }
 };
 
+// Should not be needed
 export const trackPage = () => {
-  if (
-    import.meta.env.PROD &&
-    !isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
-  ) {
-    analytics.page();
+  if (import.meta.env.PROD) {
+    plausible.trackPageview();
   }
 };
 

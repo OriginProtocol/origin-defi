@@ -8,7 +8,7 @@ import {
   ActivityProvider,
   NotificationsProvider,
   queryClient,
-  registerGoogleTagManager,
+  registerPlausible,
   registerSentry,
   wagmiConfig,
 } from '@origin/defi/shared';
@@ -35,7 +35,7 @@ setAutoFreeze(false);
 
 logWelcomeMessage('DeFi');
 
-registerGoogleTagManager();
+registerPlausible();
 
 registerSentry();
 

@@ -1,10 +1,5 @@
 import { Stack } from '@mui/material';
-import {
-  Topnav,
-  trackEvent,
-  trackPage,
-  trackSentryError,
-} from '@origin/defi/shared';
+import { Topnav, trackEvent, trackSentryError } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router';
@@ -18,7 +13,6 @@ export const App = () => {
       onError={trackSentryError}
     >
       <TrackingProvider
-        onPageChange={trackPage}
         onWalletConnect={(connect_address, connect_wallet) => {
           trackEvent({ name: 'connect', connect_address, connect_wallet });
         }}
