@@ -1,7 +1,6 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
 import Plausible from 'plausible-tracker';
 import { map } from 'ramda';
-import { formatEther } from 'viem';
 
 import type {
   RedeemTrackEvent,
@@ -34,7 +33,7 @@ export const registerPlausible = () => {
 
 export const trackEvent = ({ name, ...rest }: TrackEvent) => {
   if (import.meta.env.PROD) {
-    plausible.trackEvent(name, map(formatParams, rest));
+    plausible.trackEvent(name, { props: map(formatParams, rest) });
   }
 };
 
@@ -53,9 +52,7 @@ function formatParams(param: string | number | bigint | HexAddress) {
   if (typeof param === 'number') {
     return param.toString();
   } else if (typeof param === 'bigint') {
-    return formatEther(param);
-  } else if (typeof param === 'string' && /0x.*/.test(param)) {
-    return param.substring(2);
+    return param.toString();
   } else {
     return param;
   }
