@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { tokens } from '@origin/shared/contracts';
+import { tokenList } from '@origin/shared/contracts';
 import {
   formatError,
   scale,
@@ -71,7 +71,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         setState(
           produce((draft) => {
             draft.split = (splitAddresses as HexAddress[]).map((a) => {
-              const token = Object.values(tokens.mainnet).find((t) =>
+              const token = tokenList.find((t) =>
                 isAddressEqual(a, t?.address ?? ZERO_ADDRESS),
               );
 

@@ -31,7 +31,7 @@ const isRouteAvailable: IsRouteAvailable = async (
     getQuoteOptions(tokenIn, tokenOut, amountIn),
   );
 
-  return quote.code === 200;
+  return quote.code === 200 && !!quote.data;
 };
 
 const estimateAmount: EstimateAmount = async (

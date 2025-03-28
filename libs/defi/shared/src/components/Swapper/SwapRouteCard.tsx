@@ -176,7 +176,15 @@ export function SwapRouteCard({
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
           value={intl.formatMessage(
             { defaultMessage: '1:{value}' },
-            { value: format(from(route?.rate ?? 0), 3) },
+            {
+              value:
+                route.rate < 0.001
+                  ? '<0.001'
+                  : intl.formatNumber(route.rate, {
+                      maximumFractionDigits: 3,
+                      minimumFractionDigits: 3,
+                    }),
+            },
           )}
           isLoading={isSwapRoutesLoading}
           sx={{ ...valueLabelProps.sx, mb: 0.5 }}
