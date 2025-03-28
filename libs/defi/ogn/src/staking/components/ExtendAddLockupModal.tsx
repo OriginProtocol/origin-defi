@@ -110,7 +110,7 @@ export const ExtendAddLockupModal = ({
     duration,
   );
   const durationSeconds = BigInt(
-    Math.min(duration * 60 * 60 * 24 * (365 / 12), 31_536_000),
+    Math.min((duration + 1) * 60 * 60 * 24 * (365 / 12), 31_536_000),
   );
   const {
     allowance,
