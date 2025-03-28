@@ -431,6 +431,9 @@
   "E57VkO": {
     "defaultMessage": "Error while unlocking"
   },
+  "E7YGax": {
+    "defaultMessage": "Swap via OpenOcean"
+  },
   "EMU/OA": {
     "defaultMessage": "The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn."
   },
@@ -1234,6 +1237,9 @@
   },
   "jngAIm": {
     "defaultMessage": "Extend Stake"
+  },
+  "jq2cdc": {
+    "defaultMessage": "Swap with OpenOcean"
   },
   "jvnqxK": {
     "defaultMessage": "Bridging"

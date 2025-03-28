@@ -1043,6 +1043,12 @@
       "value": "Error while unlocking"
     }
   ],
+  "E7YGax": [
+    {
+      "type": 0,
+      "value": "Swap via OpenOcean"
+    }
+  ],
   "EMU/OA": [
     {
       "type": 0,
@@ -3077,6 +3083,12 @@
     {
       "type": 0,
       "value": "Extend Stake"
+    }
+  ],
+  "jq2cdc": [
+    {
+      "type": 0,
+      "value": "Swap with OpenOcean"
     }
   ],
   "jvnqxK": [
