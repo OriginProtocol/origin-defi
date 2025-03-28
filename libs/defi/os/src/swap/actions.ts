@@ -1,6 +1,7 @@
 import {
   magpie,
   mintOtoken,
+  openOcean,
   osMetropolis,
   osSwapx,
   osZapper,
@@ -50,6 +51,11 @@ export const osSwapActions: Partial<Record<OSRoute, SwapApi>> = {
   'swap-magpie-os': {
     ...magpie,
     routeLabel: defineMessage({ defaultMessage: 'Swap with Magpie' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-openOcean-os': {
+    ...openOcean,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with OpenOcean' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
 };

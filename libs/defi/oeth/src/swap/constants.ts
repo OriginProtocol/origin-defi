@@ -1,4 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
+import { generateSwapRoutes } from '@origin/shared/providers';
 
 import type { SwapRoute } from '@origin/shared/providers';
 
@@ -9,112 +10,14 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   {
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve-oeth',
-  },
-  {
-    tokenIn: tokens.mainnet.ETH,
-    tokenOut: tokens.mainnet.OETH,
     action: 'swap-zapper-oeth-eth',
     noSlippage: true,
-  },
-  {
-    tokenIn: tokens.mainnet.ETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.WETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'mint-vault-oeth',
-    noSlippage: true,
-  },
-  {
-    tokenIn: tokens.mainnet.WETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve-oeth',
-  },
-  {
-    tokenIn: tokens.mainnet.WETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.ETH,
-    tokenOut: tokens.mainnet.wOETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.WETH,
-    tokenOut: tokens.mainnet.wOETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.wOETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
   },
   // Redeem
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
     action: 'redeem-arm-oeth',
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.WETH,
-    action: 'swap-curve-oeth',
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.ETH,
-    action: 'swap-curve-oeth',
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.ETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.WETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.wOETH,
-    tokenOut: tokens.mainnet.ETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.wOETH,
-    tokenOut: tokens.mainnet.WETH,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.mainnet.wOETH,
-    tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-magpie-oeth',
-    refreshInterval: 10000,
   },
   // Wrap
   {
@@ -130,47 +33,61 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     action: 'unwrap-oeth-woeth',
     noSlippage: true,
   },
+  // Curve
+  ...generateSwapRoutes<OethSwapAction>({
+    tokensIn: [tokens.mainnet.ETH, tokens.mainnet.WETH],
+    tokensOut: [tokens.mainnet.OETH],
+    swapRoute: {
+      action: 'swap-curve-oeth',
+    },
+    includeReturn: true,
+  }),
+  // Magpie
+  ...generateSwapRoutes<OethSwapAction>({
+    tokensIn: [tokens.mainnet.ETH, tokens.mainnet.WETH, tokens.mainnet.OUSD],
+    tokensOut: [tokens.mainnet.OETH, tokens.mainnet.wOETH],
+    swapRoute: {
+      action: 'swap-magpie-oeth',
+      refreshInterval: 10000,
+    },
+    includeReturn: true,
+  }),
+  // OpenOcean
+  ...generateSwapRoutes<OethSwapAction>({
+    tokensIn: [tokens.mainnet.ETH, tokens.mainnet.WETH, tokens.mainnet.OUSD],
+    tokensOut: [tokens.mainnet.OETH, tokens.mainnet.wOETH],
+    swapRoute: {
+      action: 'swap-openOcean-oeth',
+    },
+    includeReturn: true,
+  }),
   // Arbitrum
   // Balancer
-  {
-    tokenIn: tokens.arbitrum.ETH,
-    tokenOut: tokens.arbitrum.wOETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.WETH,
-    tokenOut: tokens.arbitrum.wOETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.wOETH,
-    tokenOut: tokens.arbitrum.ETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.wOETH,
-    tokenOut: tokens.arbitrum.WETH,
-    action: 'swap-balancer-oeth',
-  },
+  ...generateSwapRoutes<OethSwapAction>({
+    tokensIn: [tokens.arbitrum.ETH, tokens.arbitrum.WETH],
+    tokensOut: [tokens.arbitrum.wOETH],
+    swapRoute: {
+      action: 'swap-balancer-oeth',
+    },
+    includeReturn: true,
+  }),
   // Magpie
-  {
-    tokenIn: tokens.arbitrum.ETH,
-    tokenOut: tokens.arbitrum.wOETH,
-    action: 'swap-magpie-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.WETH,
-    tokenOut: tokens.arbitrum.wOETH,
-    action: 'swap-magpie-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.wOETH,
-    tokenOut: tokens.arbitrum.ETH,
-    action: 'swap-magpie-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.wOETH,
-    tokenOut: tokens.arbitrum.WETH,
-    action: 'swap-magpie-oeth',
-  },
+  ...generateSwapRoutes<OethSwapAction>({
+    tokensIn: [tokens.arbitrum.ETH, tokens.arbitrum.WETH],
+    tokensOut: [tokens.arbitrum.wOETH],
+    swapRoute: {
+      action: 'swap-magpie-oeth',
+      refreshInterval: 10000,
+    },
+    includeReturn: true,
+  }),
+  // OpenOcean
+  ...generateSwapRoutes<OethSwapAction>({
+    tokensIn: [tokens.arbitrum.ETH, tokens.arbitrum.WETH],
+    tokensOut: [tokens.arbitrum.wOETH],
+    swapRoute: {
+      action: 'swap-openOcean-oeth',
+    },
+    includeReturn: true,
+  }),
 ];

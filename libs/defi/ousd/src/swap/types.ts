@@ -6,6 +6,7 @@ export type OusdSwapAction = Extract<
   | 'swap-flipper-ousd'
   | 'swap-curve-ousd'
   | 'swap-magpie-ousd'
+  | 'swap-openOcean-ousd'
   | 'swap-sushiswap-ousd'
   | 'swap-uniswap-v2-ousd'
   | 'swap-uniswap-v3-ousd'

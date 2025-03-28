@@ -7,6 +7,7 @@ export type OethSwapAction = Extract<
   | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
   | 'swap-magpie-oeth'
+  | 'swap-openOcean-oeth'
   | 'swap-zapper-oeth-eth'
   | 'swap-zapper-oeth-sfrxeth'
   | 'unwrap-oeth-woeth'

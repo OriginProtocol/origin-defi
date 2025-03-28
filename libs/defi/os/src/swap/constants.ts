@@ -1,4 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
+import { generateSwapRoutes } from '@origin/shared/providers';
 
 import type { SwapRoute } from '@origin/shared/providers';
 import type { OSRoute } from '@origin/shared/routes';
@@ -30,100 +31,37 @@ export const osSwapRoutes: SwapRoute<OSRoute, Meta>[] = [
     action: 'unwrap-wos-os',
     noSlippage: true,
   },
-  {
-    tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.S,
-    action: 'swap-metropolis-os',
-  },
-  {
-    tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.wS,
-    action: 'swap-metropolis-os',
-  },
-  {
-    tokenIn: tokens.sonic.wS,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-metropolis-os',
-  },
-  {
-    tokenIn: tokens.sonic.S,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-metropolis-os',
-  },
-  {
-    tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.S,
-    action: 'swap-swapx-os',
-  },
-  {
-    tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.wS,
-    action: 'swap-swapx-os',
-  },
-  {
-    tokenIn: tokens.sonic.wS,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-swapx-os',
-  },
-  {
-    tokenIn: tokens.sonic.S,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-swapx-os',
-  },
-  // {
-  //   tokenIn: tokens.sonic.OS,
-  //   tokenOut: tokens.sonic.S,
-  //   action: 'swap-shadow-os',
-  // },
-  // {
-  //   tokenIn: tokens.sonic.OS,
-  //   tokenOut: tokens.sonic.wS,
-  //   action: 'swap-shadow-os',
-  // },
-  // {
-  //   tokenIn: tokens.sonic.wS,
-  //   tokenOut: tokens.sonic.OS,
-  //   action: 'swap-shadow-os',
-  // },
-  // {
-  //   tokenIn: tokens.sonic.S,
-  //   tokenOut: tokens.sonic.OS,
-  //   action: 'swap-shadow-os',
-  // },
-  {
-    tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.S,
-    action: 'swap-magpie-os',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.sonic.OS,
-    tokenOut: tokens.sonic.wS,
-    action: 'swap-magpie-os',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.sonic.wS,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-magpie-os',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.sonic.S,
-    tokenOut: tokens.sonic.OS,
-    action: 'swap-magpie-os',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.sonic.S,
-    tokenOut: tokens.sonic.wOS,
-    action: 'swap-magpie-os',
-    refreshInterval: 10000,
-  },
-  {
-    tokenIn: tokens.sonic.wOS,
-    tokenOut: tokens.sonic.S,
-    action: 'swap-magpie-os',
-    refreshInterval: 10000,
-  },
+  ...generateSwapRoutes<OSRoute, Meta>({
+    tokensIn: [tokens.sonic.OS],
+    tokensOut: [tokens.sonic.S, tokens.sonic.wS],
+    swapRoute: {
+      action: 'swap-metropolis-os',
+    },
+    includeReturn: true,
+  }),
+  ...generateSwapRoutes<OSRoute, Meta>({
+    tokensIn: [tokens.sonic.OS],
+    tokensOut: [tokens.sonic.S, tokens.sonic.wS],
+    swapRoute: {
+      action: 'swap-swapx-os',
+    },
+    includeReturn: true,
+  }),
+  ...generateSwapRoutes<OSRoute, Meta>({
+    tokensIn: [tokens.sonic.OS, tokens.sonic.wOS],
+    tokensOut: [tokens.sonic.S, tokens.sonic.wS],
+    swapRoute: {
+      action: 'swap-magpie-os',
+      refreshInterval: 10000,
+    },
+    includeReturn: true,
+  }),
+  ...generateSwapRoutes<OSRoute, Meta>({
+    tokensIn: [tokens.sonic.OS, tokens.sonic.wOS],
+    tokensOut: [tokens.sonic.S, tokens.sonic.wS],
+    swapRoute: {
+      action: 'swap-openOcean-os',
+    },
+    includeReturn: true,
+  }),
 ];
