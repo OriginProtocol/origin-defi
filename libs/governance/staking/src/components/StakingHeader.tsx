@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid2, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Stack, Typography } from '@mui/material';
 import {
   MergerBanner,
   useGovernanceInfo,
@@ -39,8 +39,8 @@ export const StakingHeader = () => {
           py: { xs: 3, sm: 5 },
         }}
       >
-        <Grid2 container spacing={3}>
-          <Grid2
+        <Grid container spacing={3}>
+          <Grid
             size={{
               xs: 12,
               md: 5,
@@ -68,8 +68,8 @@ export const StakingHeader = () => {
                 <FaArrowUpRightRegular />
               </Button>
             </Stack>
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 12,
               md: 7,
@@ -126,13 +126,13 @@ export const StakingHeader = () => {
                 {...valueLabelProps}
               />
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
       <MergerBanner />
       <Box>
-        <Grid2 container spacing={3}>
-          <Grid2
+        <Grid container spacing={3}>
+          <Grid
             size={{
               xs: 12,
               md: 6,
@@ -214,8 +214,8 @@ export const StakingHeader = () => {
                 }
               />
             </Stack>
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 12,
               md: 6,
@@ -269,8 +269,8 @@ export const StakingHeader = () => {
                 {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
               </ClaimRewardsButton>
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
     </Stack>
   );

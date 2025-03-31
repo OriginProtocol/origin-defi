@@ -1,4 +1,4 @@
-import { Grid2, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import {
   Page,
   PageSection,
@@ -34,16 +34,16 @@ export const StakingView = () => {
           <PageTitleSection />
         </PageTitle>
         <PageSection containerProps={{ maxWidth: 'lg' }}>
-          <Grid2 container spacing={3}>
-            <Grid2 sx={{ order: { xs: 3, md: 1 } }} size={12}>
+          <Grid container spacing={3}>
+            <Grid sx={{ order: { xs: 3, md: 1 } }} size={12}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
                 <LockupsCard />
               </ErrorBoundary>
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               sx={{ order: { xs: 1, md: 2 } }}
               size={{
                 xs: 12,
@@ -56,8 +56,8 @@ export const StakingView = () => {
               >
                 <StatsCard />
               </ErrorBoundary>
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               sx={{ order: { xs: 4, md: 3 } }}
               size={{
                 xs: 12,
@@ -70,8 +70,8 @@ export const StakingView = () => {
               >
                 <StakingForm />
               </ErrorBoundary>
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               sx={{ order: { xs: 2, md: 4 } }}
               size={{
                 xs: 12,
@@ -98,8 +98,8 @@ export const StakingView = () => {
                   <VotingPowerCard />
                 </ErrorBoundary>
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </PageSection>
       </Page>
     </LockupPollingProvider>

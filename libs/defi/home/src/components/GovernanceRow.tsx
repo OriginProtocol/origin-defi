@@ -1,7 +1,7 @@
 import {
   Button,
   Divider,
-  Grid2,
+  Grid,
   Stack,
   Typography,
   useMediaQuery,
@@ -17,7 +17,7 @@ import { useAccount } from 'wagmi';
 
 import { GRID_SIZES } from '../constants';
 
-import type { Grid2Props, StackProps } from '@mui/material';
+import type { GridProps, StackProps } from '@mui/material';
 
 export const GovernanceRow = (props: StackProps) => {
   const intl = useIntl();
@@ -187,8 +187,8 @@ export const GovernanceRow = (props: StackProps) => {
         ...(Array.isArray(props?.sx) ? props.sx : [props?.sx]),
       ]}
     >
-      <Grid2 container spacing={1} sx={{ width: 1 }}>
-        <Grid2 size={GRID_SIZES[0]} {...gridProps}>
+      <Grid container spacing={1} sx={{ width: 1 }}>
+        <Grid size={GRID_SIZES[0]} {...gridProps}>
           <Stack direction="row" spacing={1}>
             <TokenIcon
               token={tokens.mainnet.OGN}
@@ -210,15 +210,15 @@ export const GovernanceRow = (props: StackProps) => {
               </Typography>
             </Stack>
           </Stack>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[1]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[1]} {...gridProps}>
           <Typography sx={{ fontWeight: 'medium' }}>
             {intl.formatMessage({
               defaultMessage: 'Staking',
             })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[2]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[2]} {...gridProps}>
           <Stack
             direction="row"
             spacing={0.75}
@@ -241,8 +241,8 @@ export const GovernanceRow = (props: StackProps) => {
               })}
             </Typography>
           </Stack>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[3]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[3]} {...gridProps}>
           <Stack>
             <LoadingLabel isLoading={isInfoLoading} sx={{ fontWeight: 'bold' }}>
               {intl.formatNumber(toNumber(info?.totalSupply ?? from(0)), {
@@ -268,8 +268,8 @@ export const GovernanceRow = (props: StackProps) => {
               })}
             </LoadingLabel>
           </Stack>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[4]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[4]} {...gridProps}>
           <LoadingLabel isLoading={isInfoLoading} sx={{ fontWeight: 'medium' }}>
             {isConnected
               ? intl.formatNumber(toNumber(info?.balance ?? from(0)), {
@@ -279,8 +279,8 @@ export const GovernanceRow = (props: StackProps) => {
                 })
               : '-'}
           </LoadingLabel>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[6]} offset={GRID_SIZES[5]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[6]} offset={GRID_SIZES[5]} {...gridProps}>
           <Button
             component={Link}
             to="ogn"
@@ -293,13 +293,13 @@ export const GovernanceRow = (props: StackProps) => {
           <Button component={Link} to="ogn/staking" fullWidth>
             {intl.formatMessage({ defaultMessage: 'Stake' })}
           </Button>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 };
 
-const gridProps: Partial<Grid2Props> = {
+const gridProps: Partial<GridProps> = {
   sx: {
     display: 'flex',
     justifyContent: 'flex-start',

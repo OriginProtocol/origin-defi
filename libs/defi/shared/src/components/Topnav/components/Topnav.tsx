@@ -6,7 +6,7 @@ import {
   Button,
   CircularProgress,
   Drawer,
-  Grid2,
+  Grid,
   Stack,
   Typography,
   useMediaQuery,
@@ -116,14 +116,14 @@ export const Topnav = ({ routes }: TopnavProps) => {
           },
         })}
       >
-        <Grid2
+        <Grid
           container
           sx={{
             height: 1,
             width: 1,
           }}
         >
-          <Grid2
+          <Grid
             sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -143,8 +143,8 @@ export const Topnav = ({ routes }: TopnavProps) => {
             >
               <OriginLabel />
             </Box>
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 0,
               md: 7,
@@ -154,8 +154,8 @@ export const Topnav = ({ routes }: TopnavProps) => {
             }}
           >
             {!isSm && <HoverMenu routes={routes} />}
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -290,8 +290,8 @@ export const Topnav = ({ routes }: TopnavProps) => {
                 <FaBarsRegular />
               </Button>
             )}
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
       <Drawer
         keepMounted

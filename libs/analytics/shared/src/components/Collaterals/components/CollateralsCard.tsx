@@ -3,7 +3,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  Grid2,
+  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -76,8 +76,8 @@ export const CollateralsCard = ({
             </Typography>
           </Stack>
         ) : (
-          <Grid2 container spacing={3}>
-            <Grid2 size={{ xs: 12, md: isDrawerOpen ? 7 : 6, lg: 6 }}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: isDrawerOpen ? 7 : 6, lg: 6 }}>
               <Stack
                 direction="column"
                 sx={{
@@ -125,8 +125,8 @@ export const CollateralsCard = ({
                   </Stack>
                 </Stack>
               </Stack>
-            </Grid2>
-            <Grid2 size={{ xs: 12, md: isDrawerOpen ? 5 : 6, lg: 6 }} ref={ref}>
+            </Grid>
+            <Grid size={{ xs: 12, md: isDrawerOpen ? 5 : 6, lg: 6 }} ref={ref}>
               <Stack
                 sx={{
                   justifyContent: 'center',
@@ -148,8 +148,8 @@ export const CollateralsCard = ({
                   hideLabels
                 />
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         )}
       </CardContent>
     </Card>

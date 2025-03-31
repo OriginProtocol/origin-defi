@@ -1,4 +1,4 @@
-import { Box, Grid2, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { MergerBanner, trackSentryError } from '@origin/governance/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 
@@ -15,8 +15,8 @@ export const ProposalListView = () => {
       </ErrorBoundary>
       <MergerBanner />
       <Box>
-        <Grid2 container spacing={3}>
-          <Grid2
+        <Grid container spacing={3}>
+          <Grid
             size={{
               xs: 12,
               md: 8,
@@ -36,8 +36,8 @@ export const ProposalListView = () => {
                 <ProposalListCard />
               </ErrorBoundary>
             </Stack>
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 12,
               md: 4,
@@ -49,8 +49,8 @@ export const ProposalListView = () => {
             >
               <MyVotingHistoryCard />
             </ErrorBoundary>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
     </Stack>
   );

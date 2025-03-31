@@ -1,5 +1,5 @@
 import {
-  Grid2,
+  Grid,
   Stack,
   Typography,
   useMediaQuery,
@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 
 import { GRID_SIZES } from '../constants';
 
-import type { Grid2Props, StackProps, TypographyProps } from '@mui/material';
+import type { GridProps, StackProps, TypographyProps } from '@mui/material';
 
 export const HeaderRow = (props: StackProps) => {
   const intl = useIntl();
@@ -31,38 +31,38 @@ export const HeaderRow = (props: StackProps) => {
         ...(Array.isArray(props?.sx) ? props.sx : [props?.sx]),
       ]}
     >
-      <Grid2 container spacing={1} sx={{ width: 1 }}>
-        <Grid2 size={GRID_SIZES[0]} {...gridProps}>
+      <Grid container spacing={1} sx={{ width: 1 }}>
+        <Grid size={GRID_SIZES[0]} {...gridProps}>
           <Typography {...headerProps}>
             {intl.formatMessage({ defaultMessage: 'Product name' })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[1]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[1]} {...gridProps}>
           <Typography {...headerProps}>
             {intl.formatMessage({ defaultMessage: 'Product type' })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[2]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[2]} {...gridProps}>
           <Typography {...headerProps}>
             {intl.formatMessage({ defaultMessage: 'APY' })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[3]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[3]} {...gridProps}>
           <Typography {...headerProps}>
             {intl.formatMessage({ defaultMessage: 'TVL' })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[4]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[4]} {...gridProps}>
           <Typography {...headerProps}>
             {intl.formatMessage({ defaultMessage: 'Balance' })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[5]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[5]} {...gridProps}>
           <Typography {...headerProps}>
             {intl.formatMessage({ defaultMessage: 'Yield earned' })}
           </Typography>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 };
@@ -74,7 +74,7 @@ const headerProps: Partial<TypographyProps> = {
   },
 };
 
-const gridProps: Partial<Grid2Props> = {
+const gridProps: Partial<GridProps> = {
   sx: {
     display: 'flex',
     justifyContent: 'flex-start',

@@ -1,4 +1,4 @@
-import { Grid2, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 
 import { BonusCard } from '../components/BonusCard';
 import { ChartCard } from '../components/ChartCard';
@@ -19,18 +19,18 @@ export const PoYView = ({ token, ...rest }: PoYViewProps) => {
       <Stack spacing={2} {...rest}>
         <ControlsCard />
         <ChartCard height={300} />
-        <Grid2 container spacing={2}>
-          <Grid2 size={{ xs: 12, md: 8 }}>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 8 }}>
             <Stack spacing={2}>
               <DailyYieldCard />
               <YieldEventsCard />
               <DripperCard />
             </Stack>
-          </Grid2>
-          <Grid2 size={{ xs: 12, md: 4 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }}>
             <BonusCard />
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Stack>
     </PoYProvider>
   );

@@ -1,4 +1,4 @@
-import { Grid2, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { Page, PageSection, PageTitle } from '@origin/defi/shared';
 import { ARM } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -30,8 +30,8 @@ export const OverviewView = () => {
         <PageTitleSection />
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
-        <Grid2 container spacing={3}>
-          <Grid2 size={{ xs: 12, md: 7 }} order={{ xs: 1, md: 0 }}>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, md: 7 }} order={{ xs: 1, md: 0 }}>
             <Stack spacing={3}>
               <Stack
                 direction="row"
@@ -47,14 +47,14 @@ export const OverviewView = () => {
               <OwnershipChart height={200} />
               <ContractInfoCard />
             </Stack>
-          </Grid2>
-          <Grid2 size={{ xs: 12, md: 5 }} order={{ xs: 0, md: 1 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 5 }} order={{ xs: 0, md: 1 }}>
             <Stack spacing={3}>
               <OperationPanel />
               <VaultBalanceCard />
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </PageSection>
     </Page>
   );

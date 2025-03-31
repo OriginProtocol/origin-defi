@@ -1,4 +1,4 @@
-import { Button, Grid2, Stack, Typography } from '@mui/material';
+import { Button, Grid, Stack, Typography } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
@@ -17,13 +17,13 @@ export const PauseBanner = () => {
         color: 'common.white',
       }}
     >
-      <Grid2
+      <Grid
         container
         sx={{
           rowGap: 2,
         }}
       >
-        <Grid2
+        <Grid
           sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -38,8 +38,8 @@ export const PauseBanner = () => {
             token={tokens.mainnet.ETH}
             sx={{ width: { xs: 32, md: 48 }, height: { xs: 36, md: 54 } }}
           />
-        </Grid2>
-        <Grid2
+        </Grid>
+        <Grid
           size={{
             xs: 12,
             md: 8,
@@ -71,8 +71,8 @@ export const PauseBanner = () => {
               })}
             </Typography>
           </Stack>
-        </Grid2>
-        <Grid2
+        </Grid>
+        <Grid
           sx={{
             display: 'flex',
             justifyContent: { xs: 'center', md: 'flex-end' },
@@ -106,8 +106,8 @@ export const PauseBanner = () => {
               sx={{ fontSize: 16, color: 'primary.main' }}
             />
           </Button>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 };

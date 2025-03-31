@@ -10,7 +10,7 @@ import {
   CardHeader,
   CircularProgress,
   Divider,
-  Grid2,
+  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -264,27 +264,27 @@ function Actions({ proposal, ...rest }: ActionsProps) {
                 sx={{ px: 2, py: 2 }}
                 expandIcon={<FaChevronDownRegular />}
               >
-                <Grid2
+                <Grid
                   container
                   spacing={2}
                   sx={{
                     width: 1,
                   }}
                 >
-                  <Grid2 size={4}>
+                  <Grid size={4}>
                     <ExternalLink
                       href={`https://etherscan.io/address/${a.address}`}
                       sx={{ maxWidth: 150, color: 'text.secondary' }}
                     >
                       <MiddleTruncatedLabel>{a.address}</MiddleTruncatedLabel>
                     </ExternalLink>
-                  </Grid2>
-                  <Grid2 size={4}>
+                  </Grid>
+                  <Grid size={4}>
                     <TooltipLabel maxChars={23} noWrap>
                       {a.functionName}
                     </TooltipLabel>
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
               </AccordionSummary>
               <AccordionDetails>
                 <Divider />

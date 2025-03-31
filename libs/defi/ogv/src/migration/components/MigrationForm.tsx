@@ -7,7 +7,7 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
-  Grid2,
+  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -113,8 +113,8 @@ export const MigrationForm = (props: StackProps) => {
 
   return (
     <Stack {...props}>
-      <Grid2 container spacing={5}>
-        <Grid2
+      <Grid container spacing={5}>
+        <Grid
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
           size={{
             xs: 12,
@@ -231,8 +231,8 @@ export const MigrationForm = (props: StackProps) => {
               onSelectLockup={handleLockupSelect}
             />
           </Stack>
-        </Grid2>
-        <Grid2
+        </Grid>
+        <Grid
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
           size={{
             xs: 12,
@@ -248,8 +248,8 @@ export const MigrationForm = (props: StackProps) => {
               disabled: isConvertDisabled,
             }}
           />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 };

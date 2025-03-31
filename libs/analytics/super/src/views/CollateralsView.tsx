@@ -4,7 +4,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
-  Grid2,
+  Grid,
   Stack,
   SvgIcon,
   Typography,
@@ -68,8 +68,8 @@ export const CollateralsView = () => {
               </Typography>
             </Stack>
           ) : (
-            <Grid2 container spacing={3}>
-              <Grid2 size={{ xs: 12, md: isDrawerOpen ? 7 : 6, lg: 6 }}>
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12, md: isDrawerOpen ? 7 : 6, lg: 6 }}>
                 <Stack
                   direction="column"
                   sx={{
@@ -128,8 +128,8 @@ export const CollateralsView = () => {
                     </Stack>
                   </Stack>
                 </Stack>
-              </Grid2>
-              <Grid2
+              </Grid>
+              <Grid
                 size={{ xs: 12, md: isDrawerOpen ? 5 : 6, lg: 6 }}
                 ref={ref}
               >
@@ -142,8 +142,8 @@ export const CollateralsView = () => {
                 >
                   <PieChart data={data} width={width} height={400} hideLabels />
                 </Stack>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
           )}
         </CardContent>
       </Card>

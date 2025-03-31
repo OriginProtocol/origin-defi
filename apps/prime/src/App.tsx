@@ -1,4 +1,4 @@
-import { Box, Grid2, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import {
   AdCards,
   GlobalStatsCard,
@@ -30,8 +30,8 @@ export const App = () => {
             px: { xs: 2, md: 4 },
           }}
         >
-          <Grid2 container spacing={4}>
-            <Grid2
+          <Grid container spacing={4}>
+            <Grid
               sx={{ order: { xs: 2, md: 1 } }}
               size={{
                 xs: 12,
@@ -45,8 +45,8 @@ export const App = () => {
                   flexDirection: { xs: 'column', sm: 'row', md: 'column' },
                 }}
               />
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               sx={{ order: { xs: 1, md: 2 } }}
               size={{
                 xs: 12,
@@ -54,8 +54,8 @@ export const App = () => {
               }}
             >
               <Outlet />
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               sx={{ order: 3 }}
               size={{
                 xs: 12,
@@ -76,8 +76,8 @@ export const App = () => {
                   />
                 </ErrorBoundary>
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Box>
       </Stack>
     </ErrorBoundary>

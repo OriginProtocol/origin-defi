@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid2, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Stack, Typography } from '@mui/material';
 import { Spinner, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { compare, div, format, from, gt, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -49,9 +49,9 @@ export const StrategyAllocationsCard = ({
           </Typography>
         </Stack>
       ) : (
-        <Grid2 container spacing={3}>
+        <Grid container spacing={3}>
           {strategies?.map((s) => (
-            <Grid2
+            <Grid
               key={s.id}
               size={{
                 xs: 12,
@@ -133,9 +133,9 @@ export const StrategyAllocationsCard = ({
                   </Stack>
                 </CardContent>
               </Card>
-            </Grid2>
+            </Grid>
           ))}
-        </Grid2>
+        </Grid>
       )}
     </Stack>
   );

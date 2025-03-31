@@ -5,7 +5,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import svgr from 'vite-plugin-svgr';
-import { sentryVitePlugin } from "@sentry/vite-plugin";
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 
 export default defineConfig({
   root: __dirname,
@@ -68,14 +68,16 @@ export default defineConfig({
       ],
     }),
     sentryVitePlugin({
-      org: "origin-protocol",
-      project: "origin-unified-defi",
+      org: 'origin-protocol',
+      project: 'origin-unified-defi',
       authToken: process.env.SENTRY_AUTH_TOKEN,
       telemetry: false,
       silent: true,
       sourcemaps: {
-        filesToDeleteAfterUpload: [path.resolve(__dirname, '../../dist/apps/defi/assets/*.map')]
-      }
+        filesToDeleteAfterUpload: [
+          path.resolve(__dirname, '../../dist/apps/defi/assets/*.map'),
+        ],
+      },
     }),
   ],
 
@@ -84,5 +86,6 @@ export default defineConfig({
       '@formatjs/icu-messageformat-parser':
         '@formatjs/icu-messageformat-parser/no-parser',
     },
+    conditions: ['mui-modern', 'module', 'browser', 'development|production'],
   },
 });

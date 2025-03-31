@@ -72,5 +72,6 @@ export default defineConfig({
       '@formatjs/icu-messageformat-parser':
         '@formatjs/icu-messageformat-parser/no-parser',
     },
+    conditions: ['mui-modern', 'module', 'browser', 'development|production'],
   },
 });

@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid2, Stack } from '@mui/material';
+import { Card, CardContent, Grid, Stack } from '@mui/material';
 import { OverviewView as GenericOverview } from '@origin/analytics/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -34,7 +34,7 @@ export const OverviewView = () => {
 
   return (
     <GenericOverview token={tokens.mainnet.OETH}>
-      <Grid2 size={12}>
+      <Grid size={12}>
         <Stack
           sx={{
             border: '1px solid',
@@ -103,7 +103,7 @@ export const OverviewView = () => {
             <OethDistributionCard height={300} />
           </Stack>
         </Stack>
-      </Grid2>
+      </Grid>
     </GenericOverview>
   );
 };

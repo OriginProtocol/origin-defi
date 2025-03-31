@@ -1,7 +1,7 @@
 import {
   Button,
   Divider,
-  Grid2,
+  Grid,
   Stack,
   Typography,
   useMediaQuery,
@@ -35,7 +35,7 @@ import { useAccount } from 'wagmi';
 
 import { GRID_SIZES } from '../constants';
 
-import type { Grid2Props, StackProps } from '@mui/material';
+import type { GridProps, StackProps } from '@mui/material';
 import type { Dnum } from 'dnum';
 
 const APY_TRAILING = 30;
@@ -224,8 +224,8 @@ export const ARMRow = (props: StackProps) => {
         ...(Array.isArray(props?.sx) ? props.sx : [props?.sx]),
       ]}
     >
-      <Grid2 container spacing={1} sx={{ width: 1 }}>
-        <Grid2 size={GRID_SIZES[0]} {...gridProps}>
+      <Grid container spacing={1} sx={{ width: 1 }}>
+        <Grid size={GRID_SIZES[0]} {...gridProps}>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
             <BadgeIcon
               badgeContent={<NetworkIcon chainId={mainnet.id} size={14} />}
@@ -240,15 +240,15 @@ export const ARMRow = (props: StackProps) => {
               })}
             </Typography>
           </Stack>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[1]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[1]} {...gridProps}>
           <Typography sx={{ fontWeight: 'medium' }}>
             {intl.formatMessage({
               defaultMessage: 'ETH Vault',
             })}
           </Typography>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[2]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[2]} {...gridProps}>
           <Stack direction="row" spacing={0.75} sx={{ alignItems: 'baseline' }}>
             <LoadingLabel
               variant="featured2"
@@ -273,8 +273,8 @@ export const ARMRow = (props: StackProps) => {
               )}
             />
           </Stack>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[3]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[3]} {...gridProps}>
           <Stack>
             <LoadingLabel isLoading={isStatLoading} sx={{ fontWeight: 'bold' }}>
               <CurrencyLabel currency="ETH">
@@ -298,8 +298,8 @@ export const ARMRow = (props: StackProps) => {
               })}
             </LoadingLabel>
           </Stack>
-        </Grid2>
-        <Grid2 size={GRID_SIZES[4]} {...gridProps}>
+        </Grid>
+        <Grid size={GRID_SIZES[4]} {...gridProps}>
           <LoadingLabel isLoading={isStatLoading || isBalanceLoading}>
             {isConnected
               ? intl.formatNumber(toNumber(wethBalance), {
@@ -309,8 +309,8 @@ export const ARMRow = (props: StackProps) => {
                 })
               : '-'}
           </LoadingLabel>
-        </Grid2>
-        <Grid2
+        </Grid>
+        <Grid
           size={GRID_SIZES[6]}
           offset={GRID_SIZES[5]}
           sx={{
@@ -322,13 +322,13 @@ export const ARMRow = (props: StackProps) => {
           <Button component={Link} to="arm/steth-redemption-vault" fullWidth>
             {intl.formatMessage({ defaultMessage: 'Deposit' })}
           </Button>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 };
 
-const gridProps: Partial<Grid2Props> = {
+const gridProps: Partial<GridProps> = {
   sx: {
     display: 'flex',
     justifyContent: 'flex-start',

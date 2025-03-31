@@ -9,7 +9,7 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-  Grid2,
+  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -270,32 +270,32 @@ function Actions(props: StackProps) {
               disableGutters
             >
               <AccordionSummary sx={{ px: 0 }}>
-                <Grid2
+                <Grid
                   container
                   spacing={2}
                   sx={{
                     width: 1,
                   }}
                 >
-                  <Grid2 size={3}>
+                  <Grid size={3}>
                     <ExternalLink
                       href={`https://etherscan.io/address/${a.address}`}
                       sx={{ maxWidth: 120, color: 'secondary.main' }}
                     >
                       <MiddleTruncatedLabel>{a.address}</MiddleTruncatedLabel>
                     </ExternalLink>
-                  </Grid2>
-                  <Grid2 size={4}>
+                  </Grid>
+                  <Grid size={4}>
                     <TooltipLabel maxChars={23} noWrap>
                       {a.functionName}
                     </TooltipLabel>
-                  </Grid2>
-                  <Grid2 size={4}>
+                  </Grid>
+                  <Grid size={4}>
                     <TooltipLabel maxChars={30} noWrap>
                       {a.argumentType}
                     </TooltipLabel>
-                  </Grid2>
-                  <Grid2
+                  </Grid>
+                  <Grid
                     sx={{ display: 'flex', justifyContent: 'flex-end' }}
                     size={1}
                   >
@@ -303,8 +303,8 @@ function Actions(props: StackProps) {
                       isExpanded={expanded.includes(getKey(a.address, i))}
                       sx={{ width: 12 }}
                     />
-                  </Grid2>
-                </Grid2>
+                  </Grid>
+                </Grid>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography

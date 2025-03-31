@@ -6,7 +6,7 @@ import {
   CardHeader,
   CircularProgress,
   Divider,
-  Grid2,
+  Grid,
   LinearProgress,
   Stack,
   Typography,
@@ -192,8 +192,8 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <Grid2 container spacing={2}>
-        <Grid2
+      <Grid container spacing={2}>
+        <Grid
           size={{
             xs: 12,
             sm: 8,
@@ -266,8 +266,8 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               </Typography>
             </Stack>
           </Stack>
-        </Grid2>
-        <Grid2
+        </Grid>
+        <Grid
           size={{
             xs: 12,
             sm: 4,
@@ -279,8 +279,8 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             scores={proposal?.scores ?? []}
             type={proposal?.type}
           />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 }

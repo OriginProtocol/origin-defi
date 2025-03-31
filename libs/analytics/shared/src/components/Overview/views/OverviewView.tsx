@@ -1,4 +1,4 @@
-import { Grid2, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 
 import { useLayout } from '../../Layout';
 import { ApyCard } from '../components/ApyCard';
@@ -25,24 +25,24 @@ export const OverviewView = ({
 
   return (
     <Stack {...rest} key={token.id}>
-      <Grid2 container spacing={2}>
-        <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <ApyCard token={token} height={300} />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <TotalSupplyCard token={token} height={300} />
-        </Grid2>
+        </Grid>
         {children}
-        <Grid2 size={12}>
+        <Grid size={12}>
           <ProtocolRevenueCard token={token} height={300} />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <PriceCard token={token} height={300} />
-        </Grid2>
-        <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <PercentWrappedCard token={token} height={300} />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </Stack>
   );
 };

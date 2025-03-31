@@ -1,4 +1,4 @@
-import { Grid2, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import {
   Page,
   PageSection,
@@ -30,8 +30,8 @@ export const OverviewView = () => {
         <PageTitleSection />
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
-        <Grid2 container spacing={5}>
-          <Grid2
+        <Grid container spacing={5}>
+          <Grid
             size={{
               xs: 12,
               md: 8,
@@ -51,8 +51,8 @@ export const OverviewView = () => {
                 <ProposalListCard />
               </ErrorBoundary>
             </Stack>
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 12,
               md: 4,
@@ -72,8 +72,8 @@ export const OverviewView = () => {
                 <MyVotingHistoryCard />
               </ErrorBoundary>
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </PageSection>
     </Page>
   );

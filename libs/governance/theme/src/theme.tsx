@@ -1,5 +1,4 @@
 import { alpha, createTheme, lighten } from '@mui/material';
-import shadows from '@mui/material/styles/shadows';
 import {
   Checkbox,
   CheckboxEmpty,
@@ -150,13 +149,6 @@ export const theme = createTheme({
   shape: {
     borderRadius: 4,
   },
-  shadows: [
-    // @ts-expect-error remove one box shadow
-    ...shadows.slice(0, -2),
-    '0px 6px 12px 0px rgba(0, 0, 0, 0.20)',
-    'rgba(0, 0, 0, 0.25) 0px 4px 4px 0px',
-    '0px 1.7955275774002075px 5.32008171081543px 0px rgba(0, 0, 0, 0.03), 0px 6.030803203582764px 17.869047164916992px 0px rgba(0, 0, 0, 0.04), 0px 27px 80px 0px rgba(0, 0, 0, 0.07)',
-  ],
   components: {
     MuiAccordion: {
       styleOverrides: {

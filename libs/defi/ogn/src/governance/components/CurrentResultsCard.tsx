@@ -4,7 +4,7 @@ import {
   Card,
   CardHeader,
   Divider,
-  Grid2,
+  Grid,
   LinearProgress,
   Stack,
   useTheme,
@@ -70,7 +70,7 @@ export const CurrentResultsCard = (props: CardProps) => {
       />
       <Divider />
       <Box>
-        <Grid2 container>
+        <Grid container>
           {governanceChoices.map((choice, i) => {
             const idx =
               proposal?.choices?.findIndex(
@@ -79,7 +79,7 @@ export const CurrentResultsCard = (props: CardProps) => {
             const score = idx > -1 ? (proposal?.scores?.at?.(idx) ?? 0) : 0;
 
             return (
-              <Grid2
+              <Grid
                 key={choice}
                 size={{
                   xs: 12,
@@ -100,10 +100,10 @@ export const CurrentResultsCard = (props: CardProps) => {
                       })),
                   ]}
                 />
-              </Grid2>
+              </Grid>
             );
           })}
-        </Grid2>
+        </Grid>
       </Box>
     </Card>
   );

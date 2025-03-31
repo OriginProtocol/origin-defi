@@ -2,7 +2,7 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Grid2,
+  Grid,
   Stack,
   Typography,
 } from '@mui/material';
@@ -47,9 +47,9 @@ export const AssetDepositedCard = (props: CardProps) => {
         title={intl.formatMessage({ defaultMessage: 'Assets Deposited' })}
       />
       <CardContent>
-        <Grid2 container spacing={3}>
+        <Grid container spacing={3}>
           {assets.map((a, i) => (
-            <Grid2 key={a.symbol} size={6}>
+            <Grid key={a.symbol} size={6}>
               <Stack spacing={0.5}>
                 <Stack
                   direction="row"
@@ -83,9 +83,9 @@ export const AssetDepositedCard = (props: CardProps) => {
                   {formatAmount(data?.[i]?.result as unknown as bigint)}
                 </LoadingLabel>
               </Stack>
-            </Grid2>
+            </Grid>
           ))}
-        </Grid2>
+        </Grid>
       </CardContent>
     </Card>
   );

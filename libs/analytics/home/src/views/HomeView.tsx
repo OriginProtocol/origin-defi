@@ -1,4 +1,4 @@
-import { Box, Grid2, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { trackSentryError, useLayout } from '@origin/analytics/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
@@ -20,8 +20,8 @@ export const HomeView = () => {
   const [{ isDrawerOpen }] = useLayout();
 
   return (
-    <Grid2 container spacing={2}>
-      <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 8, lg: 8 }}>
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 8, lg: 8 }}>
         <Stack spacing={2}>
           <Stack spacing={2}>
             <Stack
@@ -54,43 +54,43 @@ export const HomeView = () => {
             </Stack>
             <Controls />
           </Stack>
-          <Grid2 container spacing={2}>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
                 <NetAssetsCard height={CHART_HEIGHT} />
               </ErrorBoundary>
-            </Grid2>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
                 <ProtocolRevenueCard height={CHART_HEIGHT} />
               </ErrorBoundary>
-            </Grid2>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
                 <TokenSupplyCard height={CHART_HEIGHT} />
               </ErrorBoundary>
-            </Grid2>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
                 <TvlCard height={CHART_HEIGHT} />
               </ErrorBoundary>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Stack>
-      </Grid2>
-      <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 4, lg: 4 }}>
+      </Grid>
+      <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 4, lg: 4 }}>
         <Stack spacing={2}>
           <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
             {intl.formatMessage({ defaultMessage: 'OGN Token Metrics' })}
@@ -120,7 +120,7 @@ export const HomeView = () => {
           </Stack>
           <OgnPerformanceCard />
         </Stack>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };

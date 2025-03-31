@@ -1,4 +1,4 @@
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import {
   routeEq,
   useHandleSelectSwapRoute,
@@ -7,20 +7,20 @@ import {
 
 import { SwapRouteCard } from './SwapRouteCard';
 
-import type { Grid2Props } from '@mui/material';
+import type { GridProps } from '@mui/material';
 
-export type BestRoutesProps = { isLoading: boolean } & Grid2Props;
+export type BestRoutesProps = { isLoading: boolean } & GridProps;
 
-export function BestRoutes(props: Grid2Props) {
+export function BestRoutes(props: GridProps) {
   const [{ estimatedSwapRoutes, selectedSwapRoute }] = useSwapState();
   const handleSelectSwapRoute = useHandleSelectSwapRoute();
 
   const isOnlyRoute = estimatedSwapRoutes.length === 1;
 
   return (
-    <Grid2 spacing={1} {...props} container>
+    <Grid spacing={1} {...props} container>
       {estimatedSwapRoutes.slice(0, 2).map((route, index) => (
-        <Grid2 key={route.action} size={isOnlyRoute ? 12 : 6}>
+        <Grid key={route.action} size={isOnlyRoute ? 12 : 6}>
           <SwapRouteCard
             key={`bestRoute-${index}`}
             isSelected={routeEq(selectedSwapRoute, route)}
@@ -28,8 +28,8 @@ export function BestRoutes(props: Grid2Props) {
             onSelect={handleSelectSwapRoute}
             route={route}
           />
-        </Grid2>
+        </Grid>
       ))}
-    </Grid2>
+    </Grid>
   );
 }

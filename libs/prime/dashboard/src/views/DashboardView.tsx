@@ -1,4 +1,4 @@
-import { Button, Card, Grid2, Stack, Tooltip, Typography } from '@mui/material';
+import { Button, Card, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { usePoints } from '@origin/prime/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -12,7 +12,7 @@ import { useAccount } from 'wagmi';
 
 import { useUserPointsQuery } from '../queries.generated';
 
-import type { Grid2Props } from '@mui/material';
+import type { GridProps } from '@mui/material';
 
 export const DashboardView = () => {
   const intl = useIntl();
@@ -58,14 +58,14 @@ export const DashboardView = () => {
         {intl.formatMessage({ defaultMessage: 'Your Balance' })}
       </Typography>
       <Card sx={{ backgroundColor: 'common.white' }}>
-        <Grid2 {...gridContainerProps}>
-          <Grid2 {...gridItemProps}>
+        <Grid {...gridContainerProps}>
+          <Grid {...gridItemProps}>
             <TokenIcon
               token={tokens.mainnet.primeETH}
               sx={{ width: 48, height: 48 }}
             />
-          </Grid2>
-          <Grid2 {...gridItemProps}>
+          </Grid>
+          <Grid {...gridItemProps}>
             <Stack
               spacing={1}
               sx={{
@@ -93,13 +93,13 @@ export const DashboardView = () => {
                 '-'
               )}
             </Stack>
-          </Grid2>
-          <Grid2 {...gridItemProps}>
+          </Grid>
+          <Grid {...gridItemProps}>
             <Button component={Link} to="/">
               {intl.formatMessage({ defaultMessage: 'Withdraw/Migrate' })}
             </Button>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Card>
       <Typography
         variant="h5"
@@ -112,11 +112,11 @@ export const DashboardView = () => {
       </Typography>
       <Stack spacing={2}>
         <Card sx={{ backgroundColor: 'common.white' }}>
-          <Grid2 {...gridContainerProps}>
-            <Grid2 {...gridItemProps}>
+          <Grid {...gridContainerProps}>
+            <Grid {...gridItemProps}>
               <PrimePoints sx={{ width: 48, height: 48 }} />
-            </Grid2>
-            <Grid2 {...gridItemProps}>
+            </Grid>
+            <Grid {...gridItemProps}>
               <Stack
                 spacing={1}
                 sx={{
@@ -146,9 +146,9 @@ export const DashboardView = () => {
                   '-'
                 )}
               </Stack>
-            </Grid2>
+            </Grid>
 
-            <Grid2 {...gridItemProps}>
+            <Grid {...gridItemProps}>
               <Stack
                 spacing={1}
                 sx={{
@@ -177,15 +177,15 @@ export const DashboardView = () => {
                   '-'
                 )}
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Card>
         <Card sx={{ backgroundColor: 'common.white' }}>
-          <Grid2 {...gridContainerProps}>
-            <Grid2 {...gridItemProps}>
+          <Grid {...gridContainerProps}>
+            <Grid {...gridItemProps}>
               <EigenPoints sx={{ width: 48, height: 48 }} />
-            </Grid2>
-            <Grid2 {...gridItemProps}>
+            </Grid>
+            <Grid {...gridItemProps}>
               <Stack
                 spacing={1}
                 sx={{
@@ -237,8 +237,8 @@ export const DashboardView = () => {
                   '-'
                 )}
               </Stack>
-            </Grid2>
-            <Grid2 {...gridItemProps}>
+            </Grid>
+            <Grid {...gridItemProps}>
               <Stack
                 spacing={1}
                 sx={{
@@ -267,22 +267,22 @@ export const DashboardView = () => {
                   '-'
                 )}
               </Stack>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Card>
       </Stack>
     </Stack>
   );
 };
 
-const gridContainerProps: Grid2Props = {
+const gridContainerProps: GridProps = {
   container: true,
   rowSpacing: 2,
   columnSpacing: 1,
   sx: { py: 3, px: 2 },
 };
 
-const gridItemProps: Grid2Props = {
+const gridItemProps: GridProps = {
   size: { xs: 12, sm: 4 },
   sx: {
     display: 'flex',

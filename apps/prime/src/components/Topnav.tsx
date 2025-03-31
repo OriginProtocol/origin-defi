@@ -6,7 +6,7 @@ import {
   Button,
   Divider,
   Drawer,
-  Grid2,
+  Grid,
   Link,
   Popover,
   Stack,
@@ -70,8 +70,8 @@ export function Topnav(props: BoxProps) {
           backdropFilter: 'blur(15px)',
         })}
       >
-        <Grid2 container sx={{ width: 1 }}>
-          <Grid2 size={6}>
+        <Grid container sx={{ width: 1 }}>
+          <Grid size={6}>
             <Stack
               direction="row"
               spacing={3}
@@ -104,8 +104,8 @@ export function Topnav(props: BoxProps) {
                 />
               )}
             </Stack>
-          </Grid2>
-          <Grid2 size={6}>
+          </Grid>
+          <Grid size={6}>
             <Box
               sx={{
                 display: 'flex',
@@ -136,8 +136,8 @@ export function Topnav(props: BoxProps) {
                 </Button>
               )}
             </Box>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
       {isSm && (
         <Drawer

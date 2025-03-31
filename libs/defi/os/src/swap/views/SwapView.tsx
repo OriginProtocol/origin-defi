@@ -1,4 +1,4 @@
-import { Grid2, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import {
   AnalyticsCard,
   DailyStatCard,
@@ -32,8 +32,8 @@ export const SwapView = () => {
         <PageTitleSection />
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
-        <Grid2 container spacing={5}>
-          <Grid2
+        <Grid container spacing={5}>
+          <Grid
             size={{
               xs: 12,
               md: 6,
@@ -48,8 +48,8 @@ export const SwapView = () => {
               buttonsProps={{ variant: 'action' }}
               trackEvent={trackEvent}
             />
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 12,
               md: 3,
@@ -67,8 +67,8 @@ export const SwapView = () => {
                 href={`${ORIGIN_ANALYTICS_URL}/os`}
               />
             </Stack>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </PageSection>
     </Page>
   );
