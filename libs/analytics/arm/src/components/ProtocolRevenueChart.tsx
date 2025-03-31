@@ -208,11 +208,11 @@ export const ProtocolRevenueChart = ({
                     }[ma]
                   } avg`,
                   value: (d) =>
-                    intl.formatNumber(d[`${ma}${currency}`] / 100, {
-                      style: 'percent',
+                    intl.formatNumber(d[`${ma}${currency}`], {
                       maximumFractionDigits: 2,
                       minimumFractionDigits: 2,
                     }),
+                  currency,
                   color: [theme.palette.chart5, theme.palette.chart2],
                 },
               ]}
