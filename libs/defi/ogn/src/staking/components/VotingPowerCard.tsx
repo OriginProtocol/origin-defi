@@ -171,7 +171,7 @@ export const VotingPowerCard = (props: CardProps) => {
         <Stack useFlexGap>
           <Button
             component={RouterLink}
-            to="/ogn"
+            to="/ogn/governance"
             sx={{ mb: 1 }}
             variant="outlined"
             color="secondary"

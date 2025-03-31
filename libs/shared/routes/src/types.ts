@@ -53,3 +53,5 @@ export type PrimeRoute =
   | 'swap-zapper-prime';
 
 export type ARMRoute = 'deposit-arm-lido' | 'deposit-arm-zapper';
+
+export type OgnRoute = 'swap-magpie-ogn' | 'swap-openOcean-ogn';

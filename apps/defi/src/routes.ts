@@ -183,6 +183,14 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
+            Component: ogn.SwapView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Swap' }),
+              icon: FaArrowRightArrowLeftRegular,
+            },
+          },
+          {
+            path: 'governance',
             Component: ogn.OverviewView,
             handle: {
               title: defineMessage({ defaultMessage: 'Governance' }),
@@ -190,7 +198,7 @@ export const routes: RouteObject[] = [
             },
           },
           {
-            path: ':proposalId',
+            path: 'governance/:proposalId',
             Component: ogn.ProposalDetailView,
           },
           {
