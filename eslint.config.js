@@ -6,7 +6,7 @@ const eslintPluginUnusedImports = require('eslint-plugin-unused-imports');
 const eslintPluginSimpleImportSort = require('eslint-plugin-simple-import-sort');
 const eslintPluginImport = require('eslint-plugin-import');
 const eslintPluginPrettier = require('eslint-plugin-prettier');
-
+const eslintPluginReactHooks = require('eslint-plugin-react-hooks');
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
@@ -17,6 +17,7 @@ module.exports = [
     plugins: {
       '@nx': nxEslintPlugin,
       formatjs: eslintPluginFormatjs,
+      'react-hooks': eslintPluginReactHooks,
       'unused-imports': eslintPluginUnusedImports,
       'simple-import-sort': eslintPluginSimpleImportSort,
       import: eslintPluginImport,

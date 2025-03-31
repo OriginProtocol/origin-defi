@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useMemo } from 'react';
 
 import {
@@ -312,7 +311,7 @@ export const useHandleTokenFlip = () => {
           status: 'swapRoutesLoading',
         }));
         const routes = await Promise.all(
-          newRoutes.map((route) =>
+          filteredRoutes.map((route) =>
             queryClient.fetchQuery({
               queryKey: [
                 'estimateRoute',
