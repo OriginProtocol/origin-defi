@@ -10,14 +10,26 @@ import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router';
 import { sonic } from 'viem/chains';
 
-import { useTokenInfo } from '../../hooks';
+import { OTokenDailyStatOrderByInput } from '../../generated/graphql';
+import { useOTokenStatsQuery } from '../../queries';
+import { dailyStatMapper } from '../../utils';
 
 import type { StackProps } from '@mui/material';
 
 export const SonicBanner = (props: StackProps) => {
   const intl = useIntl();
-  const { data: info, isLoading: isInfoLoading } = useTokenInfo(
-    tokens.sonic.OS,
+  const { data: info, isLoading: isInfoLoading } = useOTokenStatsQuery(
+    {
+      chainId: tokens.sonic.OS.chainId,
+      token: tokens.sonic.OS.address.toLowerCase(),
+      limit: 1,
+      orderBy: OTokenDailyStatOrderByInput.TimestampDesc,
+      offset: 1,
+    },
+    {
+      select: (data) =>
+        dailyStatMapper(data.oTokenDailyStats?.[0], tokens.sonic.OS),
+    },
   );
 
   return (
