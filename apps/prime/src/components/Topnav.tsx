@@ -14,7 +14,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { trackEvent } from '@origin/prime/shared';
 import { usePoints } from '@origin/prime/shared';
 import {
   ExternalLink,
@@ -342,13 +341,6 @@ const AccountPopoverButton = () => {
         onClick={(e) => {
           if (isConnected) {
             setAccountModalAnchor(e.currentTarget);
-            trackEvent({
-              name: 'open_account',
-            });
-          } else {
-            trackEvent({
-              name: 'connect_click',
-            });
           }
         }}
         sx={{

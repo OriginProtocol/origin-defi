@@ -50,25 +50,16 @@ import type { SwapState, TokenSource } from '@origin/shared/providers';
 
 import type { Meta, RestakeAction } from '../types';
 
-export type SwapperProps = Pick<
-  SwapState,
-  'swapActions' | 'swapRoutes' | 'trackEvent'
-> & {
+export type SwapperProps = Pick<SwapState, 'swapActions' | 'swapRoutes'> & {
   onError?: (error: Error) => void;
 } & Omit<StackProps, 'onError'>;
 
-export const Swapper = ({
-  swapActions,
-  swapRoutes,
-  trackEvent,
-  ...rest
-}: SwapperProps) => {
+export const Swapper = ({ swapActions, swapRoutes, ...rest }: SwapperProps) => {
   return (
     <SwapProvider
       swapActions={swapActions}
       swapRoutes={swapRoutes}
       debounceTime={400}
-      trackEvent={trackEvent}
     >
       <SwapperWrapped {...rest} />
     </SwapProvider>

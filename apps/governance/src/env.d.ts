@@ -15,5 +15,3 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
-
-declare module '@analytics/google-tag-manager';

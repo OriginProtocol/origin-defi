@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { ActivityButton, trackEvent } from '@origin/governance/shared';
+import { ActivityButton } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
   AccountPanel,
@@ -153,13 +153,6 @@ export function Topnav(props: BoxProps) {
             onClick={(e) => {
               if (isConnected) {
                 setAccountModalAnchor(e.currentTarget);
-                trackEvent({
-                  name: 'open_account',
-                });
-              } else {
-                trackEvent({
-                  name: 'connect_click',
-                });
               }
             }}
             sx={{
@@ -226,9 +219,6 @@ export function Topnav(props: BoxProps) {
             />
           </Popover>
           <ActivityButton
-            onClick={() => {
-              trackEvent({ name: 'open_activity' });
-            }}
             sx={{
               width: { xs: 36, md: 44 },
               height: { xs: 36, md: 44 },

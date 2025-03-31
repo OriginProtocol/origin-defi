@@ -27369,10 +27369,12 @@ export type Pool = {
   chainId: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
   createdAtBlock: Scalars['Int']['output'];
+  decimals: Array<Scalars['Int']['output']>;
   exchange: Scalars['String']['output'];
   id: Scalars['String']['output'];
   name?: Maybe<Scalars['String']['output']>;
   symbol?: Maybe<Scalars['String']['output']>;
+  symbols: Array<Scalars['String']['output']>;
   tokens: Array<Scalars['String']['output']>;
   type: Scalars['String']['output'];
 };
@@ -27883,6 +27885,10 @@ export type PoolWhereInput = {
   createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
   createdAt_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  decimals_containsAll?: InputMaybe<Array<Scalars['Int']['input']>>;
+  decimals_containsAny?: InputMaybe<Array<Scalars['Int']['input']>>;
+  decimals_containsNone?: InputMaybe<Array<Scalars['Int']['input']>>;
+  decimals_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   exchange_contains?: InputMaybe<Scalars['String']['input']>;
   exchange_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   exchange_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -27951,6 +27957,10 @@ export type PoolWhereInput = {
   symbol_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   symbol_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   symbol_startsWith?: InputMaybe<Scalars['String']['input']>;
+  symbols_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
+  symbols_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
+  symbols_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;
+  symbols_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   tokens_containsAll?: InputMaybe<Array<Scalars['String']['input']>>;
   tokens_containsAny?: InputMaybe<Array<Scalars['String']['input']>>;
   tokens_containsNone?: InputMaybe<Array<Scalars['String']['input']>>;

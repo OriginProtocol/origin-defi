@@ -6,7 +6,6 @@ import * as ReactDOM from 'react-dom/client';
 
 import {
   queryClient,
-  registerGoogleTagManager,
   registerSentry,
   wagmiConfig,
 } from '@origin/governance/shared';
@@ -33,8 +32,6 @@ import { routes } from './routes';
 setAutoFreeze(false);
 
 logWelcomeMessage('Governance');
-
-registerGoogleTagManager();
 
 registerSentry();
 

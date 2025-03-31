@@ -4,12 +4,7 @@ import './polyfills';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import {
-  queryClient,
-  registerGoogleTagManager,
-  registerSentry,
-  wagmiConfig,
-} from '@origin/prime/shared';
+import { queryClient, registerSentry, wagmiConfig } from '@origin/prime/shared';
 import { theme } from '@origin/prime/theme';
 import {
   ActivityProvider,
@@ -30,8 +25,6 @@ import { routes } from './routes';
 
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
-
-registerGoogleTagManager();
 
 registerSentry();
 
