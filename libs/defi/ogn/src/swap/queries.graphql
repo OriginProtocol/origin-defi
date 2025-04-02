@@ -1,0 +1,6 @@
+query OgnStats {
+  ognStats {
+    circulatingSupply
+    totalSupply
+  }
+}
