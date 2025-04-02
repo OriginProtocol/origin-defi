@@ -21,7 +21,7 @@ export const SwapView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Origin Token' })}
         subtitle={intl.formatMessage({
-          defaultMessage: `Govern & share in the success of Origin's products.`,
+          defaultMessage: `Capture value from all of Origin's yield-bearing products.`,
         })}
         icon={OGN}
       >
