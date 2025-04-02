@@ -283,7 +283,7 @@ export const GovernanceRow = (props: StackProps) => {
         <Grid size={GRID_SIZES[6]} offset={GRID_SIZES[5]} {...gridProps}>
           <Button
             component={Link}
-            to="ogn"
+            to="/ogn/governance"
             variant="outlined"
             color="secondary"
             fullWidth

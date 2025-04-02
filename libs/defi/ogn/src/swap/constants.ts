@@ -14,6 +14,9 @@ export const ognSwapRoutes: SwapRoute<OgnSwapAction>[] = [
       tokens.mainnet.OUSD,
       tokens.mainnet.wOUSD,
       tokens.mainnet.OETH,
+      tokens.mainnet.USDC,
+      tokens.mainnet.USDS,
+      tokens.mainnet.USDT,
     ],
     tokensOut: [tokens.mainnet.OGN],
     swapRoute: {
