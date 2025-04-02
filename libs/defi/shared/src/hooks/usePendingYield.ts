@@ -22,6 +22,10 @@ const supportedContracts = {
     vault: contracts.base.superOETHbVault,
     dripper: contracts.base.superOETHbDripper,
   },
+  [tokens.sonic.OS.id]: {
+    vault: contracts.sonic.osVault,
+    dripper: contracts.sonic.osDripper,
+  },
 } as const;
 
 export const usePendingYield = (

@@ -140,6 +140,14 @@ export const routes: RouteObject[] = [
               icon: FaArrowDownFromArcRegular,
             },
           },
+          {
+            path: 'history',
+            Component: os.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'History' }),
+              icon: FaClockRegular,
+            },
+          },
         ],
       },
       {
