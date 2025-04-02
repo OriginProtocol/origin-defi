@@ -541,6 +541,7 @@ export type Space = {
   terms?: Maybe<Scalars['String']['output']>;
   treasuries?: Maybe<Array<Maybe<Treasury>>>;
   turbo?: Maybe<Scalars['Boolean']['output']>;
+  turbo_expiration?: Maybe<Scalars['Int']['output']>;
   twitter?: Maybe<Scalars['String']['output']>;
   validation?: Maybe<Validation>;
   verified?: Maybe<Scalars['Boolean']['output']>;
