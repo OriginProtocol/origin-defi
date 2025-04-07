@@ -1949,6 +1949,12 @@
       "value": "Expired"
     }
   ],
+  "RwXr/1": [
+    {
+      "type": 0,
+      "value": "Circ. Supply"
+    }
+  ],
   "Rwc39n": [
     {
       "type": 0,
@@ -2431,6 +2437,12 @@
       "value": "Discord Forum"
     }
   ],
+  "Z7CwBf": [
+    {
+      "type": 0,
+      "value": "Price of OGN"
+    }
+  ],
   "ZHzCT2": [
     {
       "type": 0,
@@ -2897,6 +2909,12 @@
     {
       "type": 0,
       "value": "Sent"
+    }
+  ],
+  "ge6EzT": [
+    {
+      "type": 0,
+      "value": "Total supply of OGN"
     }
   ],
   "glPoBW": [
@@ -3553,6 +3571,12 @@
       "value": "ETH"
     }
   ],
+  "sHlvMe": [
+    {
+      "type": 0,
+      "value": "Total Supply"
+    }
+  ],
   "sjKCFv": [
     {
       "type": 0,
@@ -3937,6 +3961,12 @@
       "value": "Received"
     }
   ],
+  "z0yV/N": [
+    {
+      "type": 0,
+      "value": "Capture value from all of Origin's yield-bearing products"
+    }
+  ],
   "z1bu+z": [
     {
       "type": 0,
@@ -4079,6 +4109,12 @@
     {
       "type": 0,
       "value": "Beyond liquid staking"
+    }
+  ],
+  "zu5bi9": [
+    {
+      "type": 0,
+      "value": "Circulating supply of OGN"
     }
   ]
 }

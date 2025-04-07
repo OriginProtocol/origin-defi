@@ -1,0 +1,6 @@
+{
+  "name": "Origin Protocol",
+  "description": "The official dapp for our groundbreaking multichain yield ecosystem",
+  "iconPath": "https://raw.githubusercontent.com/OriginProtocol/origin-defi/main/libs/shared/icons/src/origin/origin-logo.svg",
+  "providedBy": { "name": "Origin", "url": "https://www.originprotocol.com/" }
+}

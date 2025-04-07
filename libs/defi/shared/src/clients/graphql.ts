@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { pathOr } from 'ramda';
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SUBSQUID_URL,
 });
 
