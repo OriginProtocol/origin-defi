@@ -2,6 +2,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   binanceWallet,
+  bitgetWallet,
   coinbaseWallet,
   ledgerWallet,
   metaMaskWallet,
@@ -26,6 +27,7 @@ const connectors = connectorsForWallets(
         safeWallet,
         ledgerWallet,
         binanceWallet,
+        bitgetWallet,
         safepalWallet,
         trustWallet,
       ],
