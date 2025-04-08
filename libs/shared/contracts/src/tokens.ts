@@ -1,7 +1,7 @@
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, plume, sonic } from 'viem/chains';
 
 import { ARMstETHWETHPoolABI } from './abis/ARMstETHWETHPool';
 import { DAIABI } from './abis/DAI';
@@ -346,6 +346,17 @@ export const tokens = {
       name: 'Wrapped Super OETH',
       decimals: 18,
       symbol: 'wsuperOETHo',
+    },
+  },
+  plume: {
+    PLUME: {
+      id: '98865:PLUME',
+      address: undefined,
+      chainId: plume.id,
+      abi: erc20Abi,
+      name: 'Plume',
+      decimals: 18,
+      symbol: 'PLUME',
     },
   },
   sonic: {

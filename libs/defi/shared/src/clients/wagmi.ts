@@ -12,7 +12,7 @@ import {
   trustWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, plume, sonic } from 'viem/chains';
 import { createConfig, fallback, http } from 'wagmi';
 
 const connectors = connectorsForWallets(
@@ -44,6 +44,7 @@ export const wagmiConfig = createConfig({
     mainnet,
     arbitrum,
     base,
+    plume,
     sonic,
     ...(import.meta.env.DEV ? [optimism] : []),
   ],
@@ -51,51 +52,91 @@ export const wagmiConfig = createConfig({
   transports: {
     [mainnet.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
       ? fallback([
-          http(
-            `${import.meta.env.VITE_ALCHEMY_RPC}${
-              import.meta.env.VITE_ALCHEMY_ID
-            }`,
-          ),
+          ...(!!import.meta.env.VITE_ALCHEMY_RPC &&
+          !!import.meta.env.VITE_ALCHEMY_ID
+            ? [
+                http(
+                  `${import.meta.env.VITE_ALCHEMY_RPC}${
+                    import.meta.env.VITE_ALCHEMY_ID
+                  }`,
+                ),
+              ]
+            : []),
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_RPC),
     [arbitrum.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_ARBITRUM_RPC)
       ? fallback([
-          http(
-            `${import.meta.env.VITE_ALCHEMY_ARBITRUM_RPC}${
-              import.meta.env.VITE_ALCHEMY_ID
-            }`,
-          ),
+          ...(!!import.meta.env.VITE_ALCHEMY_ARBITRUM_RPC &&
+          !!import.meta.env.VITE_ALCHEMY_ID
+            ? [
+                http(
+                  `${import.meta.env.VITE_ALCHEMY_ARBITRUM_RPC}${
+                    import.meta.env.VITE_ALCHEMY_ID
+                  }`,
+                ),
+              ]
+            : []),
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_ARBITRUM_RPC),
     [base.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_BASE_RPC)
       ? fallback([
-          http(
-            `${import.meta.env.VITE_ALCHEMY_BASE_RPC}${
-              import.meta.env.VITE_ALCHEMY_ID
-            }`,
-          ),
+          ...(!!import.meta.env.VITE_ALCHEMY_BASE_RPC &&
+          !!import.meta.env.VITE_ALCHEMY_ID
+            ? [
+                http(
+                  `${import.meta.env.VITE_ALCHEMY_BASE_RPC}${
+                    import.meta.env.VITE_ALCHEMY_ID
+                  }`,
+                ),
+              ]
+            : []),
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_BASE_RPC),
+    [plume.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_PLUME_RPC)
+      ? fallback([
+          ...(!!import.meta.env.VITE_ALCHEMY_PLUME_RPC &&
+          !!import.meta.env.VITE_ALCHEMY_ID
+            ? [
+                http(
+                  `${import.meta.env.VITE_ALCHEMY_PLUME_RPC}${
+                    import.meta.env.VITE_ALCHEMY_ID
+                  }`,
+                ),
+              ]
+            : []),
+          http(),
+        ])
+      : http(import.meta.env.VITE_CUSTOM_PLUME_RPC),
     [sonic.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_SONIC_RPC)
       ? fallback([
-          http(
-            `${import.meta.env.VITE_ALCHEMY_SONIC_MAINNET_RPC}${
-              import.meta.env.VITE_ALCHEMY_ID
-            }`,
-          ),
+          ...(!!import.meta.env.VITE_ALCHEMY_SONIC_MAINNET_RPC &&
+          !!import.meta.env.VITE_ALCHEMY_ID
+            ? [
+                http(
+                  `${import.meta.env.VITE_ALCHEMY_SONIC_MAINNET_RPC}${
+                    import.meta.env.VITE_ALCHEMY_ID
+                  }`,
+                ),
+              ]
+            : []),
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_SONIC_RPC),
     [optimism.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_OP_MAINNET_RPC)
       ? fallback([
-          http(
-            `${import.meta.env.VITE_ALCHEMY_OP_MAINNET_RPC}${
-              import.meta.env.VITE_ALCHEMY_ID
-            }`,
-          ),
+          ...(!!import.meta.env.VITE_ALCHEMY_OP_MAINNET_RPC &&
+          !!import.meta.env.VITE_ALCHEMY_ID
+            ? [
+                http(
+                  `${import.meta.env.VITE_ALCHEMY_OP_MAINNET_RPC}${
+                    import.meta.env.VITE_ALCHEMY_ID
+                  }`,
+                ),
+              ]
+            : []),
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_OP_MAINNET_RPC),

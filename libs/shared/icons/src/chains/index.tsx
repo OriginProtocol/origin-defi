@@ -6,6 +6,7 @@ import EthIconSvg from './Ethereum.svg?react';
 import GoerliSvg from './Goerli.svg?react';
 import NightfallSvg from './Nightfall.svg?react';
 import OptimismSvg from './Optimism.svg?react';
+import PlumeSvg from './Plume.svg?react';
 import PolygonSvg from './Polygon.svg?react';
 import ZkSvg from './Zk.svg?react';
 
@@ -32,6 +33,9 @@ export const Nightfall = (props: SvgIconProps) => (
 );
 export const Optimism = (props: SvgIconProps) => (
   <SvgIcon {...props} component={OptimismSvg} viewBox="0 0 500 500" />
+);
+export const Plume = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={PlumeSvg} inheritViewBox />
 );
 export const Polygon = (props: SvgIconProps) => (
   <SvgIcon {...props} component={PolygonSvg} viewBox="0 0 100 100" />

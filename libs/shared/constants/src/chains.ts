@@ -1,10 +1,11 @@
 import { from } from 'dnum';
-import { arbitrum, base, mainnet, optimism, sonic } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism, plume, sonic } from 'viem/chains';
 
 export const supportedChains = {
   [mainnet.id.toString()]: mainnet,
   [arbitrum.id.toString()]: arbitrum,
   [optimism.id.toString()]: optimism,
+  [plume.id.toString()]: plume,
   [base.id.toString()]: base,
   [sonic.id.toString()]: sonic,
 } as const;
@@ -21,6 +22,10 @@ export const supportedChainNames = {
   [optimism.id.toString()]: {
     short: 'Optimism',
     long: 'Optimism',
+  },
+  [plume.id.toString()]: {
+    short: 'Plume',
+    long: 'Plume',
   },
   [base.id.toString()]: {
     short: 'Base',
@@ -39,5 +44,6 @@ export const nativeMinimumForGas = {
   [arbitrum.id.toString()]: from(0.0015, arbitrum.nativeCurrency.decimals),
   [optimism.id.toString()]: from(0.0015, optimism.nativeCurrency.decimals),
   [base.id.toString()]: from(0.0015, base.nativeCurrency.decimals),
+  [plume.id.toString()]: from(0.0015, plume.nativeCurrency.decimals),
   [sonic.id.toString()]: from(0.0015, base.nativeCurrency.decimals),
 };
