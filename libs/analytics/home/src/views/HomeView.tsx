@@ -1,6 +1,11 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { trackSentryError, useLayout } from '@origin/analytics/shared';
-import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
+import {
+  ErrorBoundary,
+  ErrorCard,
+  ExternalLink,
+} from '@origin/shared/components';
+import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { useIntl } from 'react-intl';
 
 import { Controls } from '../components/Controls';
@@ -92,9 +97,34 @@ export const HomeView = () => {
       </Grid>
       <Grid size={{ xs: 12, md: isDrawerOpen ? 12 : 4, lg: 4 }}>
         <Stack spacing={2}>
-          <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
-            {intl.formatMessage({ defaultMessage: 'OGN Token Metrics' })}
-          </Typography>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}
+          >
+            <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
+              {intl.formatMessage({ defaultMessage: 'OGN Token Metrics' })}
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ justifyContent: 'space-between', alignItems: 'baseline' }}
+            >
+              <ExternalLink
+                href={`${ORIGIN_DAPP_URL}/#/ogn`}
+                iconType="arrow"
+                color="primary.main"
+              >
+                {intl.formatMessage({ defaultMessage: 'Buy' })}
+              </ExternalLink>
+              <ExternalLink
+                href={`${ORIGIN_DAPP_URL}/#/ogn/staking`}
+                iconType="arrow"
+                color="primary.main"
+              >
+                {intl.formatMessage({ defaultMessage: 'Stake' })}
+              </ExternalLink>
+            </Stack>
+          </Stack>
           <Stack
             direction={{
               xs: 'column',
