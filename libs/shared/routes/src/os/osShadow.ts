@@ -7,8 +7,13 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { path } from 'ramda';
-import { encodeFunctionData, erc20Abi, formatUnits, maxUint256 } from 'viem';
+import {
+  encodeAbiParameters,
+  encodePacked,
+  erc20Abi,
+  formatUnits,
+  maxUint256,
+} from 'viem';
 
 import { defaultRoute } from '../defaultRoute';
 
@@ -16,27 +21,173 @@ import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
   Approve,
+  EstimateAmount,
   EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
+  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
-import type { Config } from 'wagmi';
+import type { HexAddress } from '@origin/shared/utils';
 
-// TODO: WORK IN PROGRESS - not ready for use
+const SENDER_ADRESS_CODE = '0x0000000000000000000000000000000000000001';
+const ROUTER_ADRESS_CODE = '0x0000000000000000000000000000000000000002';
+const POOL_FEE = 1;
+const deadline = 999999999999999999n;
 
-const getQuote = async (
-  config: Config,
+const swapCodes = {
+  V3_SWAP_EXACT_IN: '00',
+  WRAP_ETH: '0b',
+  UNWRAP_WETH: '0c',
+};
+
+const abis = {
+  V3_SWAP_EXACT_IN: [
+    {
+      internalType: 'address',
+      name: 'recipient',
+      type: 'address',
+    },
+    {
+      internalType: 'uint256',
+      name: 'amount',
+      type: 'uint256',
+    },
+    {
+      internalType: 'uint256',
+      name: 'minAmountOut',
+      type: 'uint256',
+    },
+    {
+      internalType: 'bytes',
+      name: 'path',
+      type: 'bytes',
+    },
+    {
+      internalType: 'bool',
+      name: 'payerIsUser',
+      type: 'bool',
+    },
+  ],
+  WRAP_ETH: [
+    {
+      internalType: 'address',
+      name: 'recipient',
+      type: 'address',
+    },
+    {
+      internalType: 'uint256',
+      name: 'amount',
+      type: 'uint256',
+    },
+  ],
+  UNWRAP_WETH: [
+    {
+      internalType: 'address',
+      name: 'recipient',
+      type: 'address',
+    },
+    {
+      internalType: 'uint256',
+      name: 'minAmountOut',
+      type: 'uint256',
+    },
+  ],
+};
+
+const getPath = (addressIn: HexAddress, addressOut: HexAddress) =>
+  encodePacked(
+    ['address', 'uint24', 'address'],
+    [addressIn, POOL_FEE, addressOut],
+  );
+
+const getArgs = (
   tokenIn: Token,
   tokenOut: Token,
   amountIn: bigint,
+  minAmountOut: bigint,
+) =>
+  (
+    ({
+      [`${tokens.sonic.S.id}_${tokens.sonic.OS.id}`]: [
+        `0x${swapCodes.WRAP_ETH}${swapCodes.V3_SWAP_EXACT_IN}`,
+        [
+          encodeAbiParameters(abis.WRAP_ETH, [ROUTER_ADRESS_CODE, amountIn]),
+          encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+            SENDER_ADRESS_CODE,
+            amountIn,
+            minAmountOut,
+            getPath(tokens.sonic.wS.address, tokens.sonic.OS.address),
+            false,
+          ]),
+        ],
+        deadline,
+      ],
+      [`${tokens.sonic.wS.id}_${tokens.sonic.OS.id}`]: [
+        `0x${swapCodes.V3_SWAP_EXACT_IN}`,
+        [
+          encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+            SENDER_ADRESS_CODE,
+            amountIn,
+            minAmountOut,
+            getPath(tokens.sonic.wS.address, tokens.sonic.OS.address),
+            true,
+          ]),
+        ],
+        deadline,
+      ],
+      [`${tokens.sonic.OS.id}_${tokens.sonic.S.id}`]: [
+        `0x${swapCodes.V3_SWAP_EXACT_IN}${swapCodes.UNWRAP_WETH}`,
+        [
+          encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+            ROUTER_ADRESS_CODE,
+            amountIn,
+            minAmountOut,
+            getPath(tokens.sonic.OS.address, tokens.sonic.wS.address),
+            true,
+          ]),
+          encodeAbiParameters(abis.UNWRAP_WETH, [
+            SENDER_ADRESS_CODE,
+            minAmountOut,
+          ]),
+        ],
+        deadline,
+      ],
+      [`${tokens.sonic.OS.id}_${tokens.sonic.wS.id}`]: [
+        `0x${swapCodes.V3_SWAP_EXACT_IN}`,
+        [
+          encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+            SENDER_ADRESS_CODE,
+            amountIn,
+            minAmountOut,
+            getPath(tokens.sonic.OS.address, tokens.sonic.wS.address),
+            true,
+          ]),
+        ],
+        deadline,
+      ],
+    }) as const
+  )[`${tokenIn.id}_${tokenOut.id}`];
+
+const isRouteAvailable: IsRouteAvailable = async (
+  client,
+  { tokenIn, tokenOut },
+) => {
+  const path = getArgs(tokenIn, tokenOut, 1n, 0n);
+
+  return !!path;
+};
+
+const estimateAmount: EstimateAmount = async (
+  { config },
+  { amountIn, tokenIn, tokenOut },
 ) => {
   const publicClient = getPublicClient(config, {
     chainId: tokenIn.chainId,
   });
 
   if (amountIn === 0n || !publicClient) {
-    return null;
+    return 0n;
   }
 
   const { address } = getAccount(config);
@@ -59,10 +210,10 @@ const getQuote = async (
       account: address ?? ZERO_ADDRESS,
     });
 
-    return quote.result;
+    return quote?.result?.[0] ?? 0n;
   } catch {}
 
-  return null;
+  return 0n;
 };
 
 const estimateGas: EstimateGas = async (
@@ -78,60 +229,23 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
-  const { address } = getAccount(config);
-
   const minAmountOut = subPercentage(
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
   );
   try {
-    if (!tokenOut.address) {
-      gasEstimate = await publicClient.estimateContractGas({
-        address: contracts.sonic.swapxRouter.address,
-        abi: contracts.sonic.swapxRouter.abi,
-        functionName: 'multicall',
-        args: [
-          [
-            encodeFunctionData({
-              abi: contracts.sonic.swapxRouter.abi,
-              functionName: 'exactInputSingle',
-              args: [
-                {
-                  amountIn,
-                  amountOutMinimum: minAmountOut[0],
-                  limitSqrtPrice: 0n,
-                  recipient: '0x0000000000000000000000000000000000000002',
-                  tokenIn: tokenIn.address ?? tokens.sonic.wS.address,
-                  tokenOut: tokens.sonic.wS.address,
-                },
-              ],
-            }),
-            encodeFunctionData({
-              abi: contracts.sonic.swapxRouter.abi,
-              functionName: 'unwrapWNativeToken',
-              args: [minAmountOut[0], address ?? ZERO_ADDRESS],
-            }),
-          ],
-        ],
-      });
-    } else {
-      gasEstimate = await publicClient.estimateContractGas({
-        address: contracts.sonic.swapxRouter.address,
-        abi: contracts.sonic.swapxRouter.abi,
-        functionName: 'exactInputSingle',
-        args: [
-          {
-            amountIn,
-            amountOutMinimum: minAmountOut[0],
-            limitSqrtPrice: 0n,
-            recipient: address ?? ZERO_ADDRESS,
-            tokenIn: tokenIn.address ?? tokens.sonic.wS.address,
-            tokenOut: tokenOut.address,
-          },
-        ],
-        ...(!tokenIn.address && { value: amountIn }),
-      });
-    }
+    gasEstimate = await publicClient.estimateContractGas({
+      address: contracts.sonic.shadowRouter.address,
+      abi: contracts.sonic.shadowRouter.abi,
+      functionName: 'execute',
+      args: getArgs(
+        tokenIn,
+        tokenOut,
+        amountIn,
+        minAmountOut[0],
+      ) as unknown as [HexAddress, HexAddress[], bigint],
+      ...(!tokenIn.address && { value: amountIn }),
+    });
   } catch {
     gasEstimate = 400000n;
   }
@@ -154,7 +268,7 @@ const allowance: Allowance = async ({ config }, { tokenIn, tokenOut }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address, contracts.sonic.swapxRouter.address],
+    args: [address, contracts.sonic.shadowRouter.address],
     chainId: tokenIn.chainId,
   });
 
@@ -178,7 +292,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.sonic.swapxRouter.address, amountIn],
+      args: [contracts.sonic.shadowRouter.address, amountIn],
       account: address ?? ZERO_ADDRESS,
     });
   } catch {
@@ -203,12 +317,12 @@ const estimateRoute: EstimateRoute = async (
     };
   }
 
-  const [quote, allowanceAmount, approvalGas] = await Promise.all([
-    getQuote(client.config, tokenIn, tokenOut, amountIn),
+  const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
+    estimateAmount(client, { tokenIn, tokenOut, amountIn }),
     allowance(client, { tokenIn, tokenOut }),
     estimateApprovalGas(client, { amountIn, tokenIn, tokenOut }),
   ]);
-  const estimatedAmount = quote?.[0] ?? 0n;
+
   const gas = await estimateGas(client, {
     tokenIn,
     tokenOut,
@@ -226,10 +340,6 @@ const estimateRoute: EstimateRoute = async (
     rate:
       +formatUnits(estimatedAmount, tokenOut.decimals) /
       +formatUnits(amountIn, tokenIn.decimals),
-    meta: {
-      ...route?.meta,
-      quote,
-    },
   };
 };
 
@@ -245,7 +355,7 @@ const approve: Approve = async (
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.sonic.swapxRouter.address, amountIn],
+    args: [contracts.sonic.shadowRouter.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -258,12 +368,18 @@ const swap: Swap = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut, estimatedRoute },
 ) => {
   const { address } = getAccount(config);
-  const quote = path(['meta', 'quote'], estimatedRoute);
-
-  console.log('swap', quote);
 
   if (amountIn === 0n || !address) {
     return null;
+  }
+
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
+
+  if (approved < amountIn) {
+    throw new Error(`Swap shadow is not approved`);
   }
 
   const minAmountOut = subPercentage(
@@ -271,54 +387,15 @@ const swap: Swap = async (
     slippage,
   );
 
-  if (!tokenOut.address) {
-    const { request } = await simulateContract(config, {
-      address: contracts.sonic.swapxRouter.address,
-      abi: contracts.sonic.swapxRouter.abi,
-      chainId: tokenIn.chainId,
-      functionName: 'multicall',
-      args: [
-        [
-          encodeFunctionData({
-            abi: contracts.sonic.swapxRouter.abi,
-            functionName: 'exactInputSingle',
-            args: [
-              {
-                amountIn,
-                amountOutMinimum: minAmountOut[0],
-                limitSqrtPrice: 0n,
-                recipient: '0x0000000000000000000000000000000000000002',
-                tokenIn: tokenIn.address ?? tokens.sonic.wS.address,
-                tokenOut: tokens.sonic.wS.address,
-              },
-            ],
-          }),
-          encodeFunctionData({
-            abi: contracts.sonic.swapxRouter.abi,
-            functionName: 'unwrapWNativeToken',
-            args: [minAmountOut[0], address],
-          }),
-        ],
-      ],
-    });
-    const hash = await writeContract(config, request);
-
-    return hash;
-  }
-
   const { request } = await simulateContract(config, {
-    address: contracts.sonic.swapxRouter.address,
-    abi: contracts.sonic.swapxRouter.abi,
-    functionName: 'exactInputSingle',
-    args: [
-      {
-        amountIn,
-        amountOutMinimum: minAmountOut[0],
-        limitSqrtPrice: 0n,
-        recipient: address ?? ZERO_ADDRESS,
-        tokenIn: tokenIn.address ?? tokens.sonic.wS.address,
-        tokenOut: tokenOut.address,
-      },
+    address: contracts.sonic.shadowRouter.address,
+    abi: contracts.sonic.shadowRouter.abi,
+    chainId: contracts.sonic.shadowRouter.chainId,
+    functionName: 'execute',
+    args: getArgs(tokenIn, tokenOut, amountIn, minAmountOut[0]) as unknown as [
+      HexAddress,
+      HexAddress[],
+      bigint,
     ],
     ...(!tokenIn.address && { value: amountIn }),
   });
@@ -329,6 +406,7 @@ const swap: Swap = async (
 
 export const osShadow = {
   ...defaultRoute,
+  isRouteAvailable,
   estimateGas,
   estimateRoute,
   allowance,

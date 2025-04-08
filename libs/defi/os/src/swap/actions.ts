@@ -3,6 +3,7 @@ import {
   mintOtoken,
   openOcean,
   osMetropolis,
+  osShadow,
   osSwapx,
   osZapper,
   wrapOtoken,
@@ -43,11 +44,11 @@ export const osSwapActions: Partial<Record<OSRoute, SwapApi>> = {
     routeLabel: defineMessage({ defaultMessage: 'Swap with SwapX' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
-  // 'swap-shadow-os': {
-  //   ...osShadow,
-  //   routeLabel: defineMessage({ defaultMessage: 'Swap with Shadow' }),
-  //   buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
-  // },
+  'swap-shadow-os': {
+    ...osShadow,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Shadow' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
   'swap-magpie-os': {
     ...magpie,
     routeLabel: defineMessage({ defaultMessage: 'Swap with Magpie' }),

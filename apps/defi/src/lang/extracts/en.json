@@ -737,6 +737,9 @@
   "PXAur5": {
     "defaultMessage": "Withdraw"
   },
+  "PZ3oDl": {
+    "defaultMessage": "Swap with Shadow"
+  },
   "PdEKuc": {
     "defaultMessage": "{amtIn} {symbolIn} for {amtOut} {symbolOut}"
   },

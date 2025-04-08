@@ -52,7 +52,6 @@ import { OUSDStrategyFluxABI } from './abis/OUSDStrategyFlux';
 import { OUSDStrategyMakerABI } from './abis/OUSDStrategyMaker';
 import { OUSDStrategyMetaMorphoABI } from './abis/OUSDStrategyMetaMorpho';
 import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
-import { shadowPoolABI } from './abis/ShadowPool';
 import { shadowQuoterABI } from './abis/ShadowQuoter';
 import { ShadowRouterABI } from './abis/ShadowRouter';
 import { OUSDSSRStrategyABI } from './abis/SSRStrategy';
@@ -549,12 +548,6 @@ export const contracts = {
       name: 'osZapper',
     },
     // Shadow
-    shadowWSOSPool: {
-      address: '0x0C9a698ED5422eaE47cE0B4096496b1FA7771d7d',
-      chainId: sonic.id,
-      abi: shadowPoolABI,
-      name: 'shadowWSOSPool',
-    },
     shadowQuoter: {
       address: '0x219b7ADebc0935a3eC889a148c6924D51A07535A',
       chainId: sonic.id,
@@ -562,7 +555,7 @@ export const contracts = {
       name: 'shadowQuoter',
     },
     shadowRouter: {
-      address: '0x5543c6176feb9b4b179078205d7c29eea2e2d695',
+      address: '0x92643Dc4F75C374b689774160CDea09A0704a9c2',
       chainId: sonic.id,
       abi: ShadowRouterABI,
       name: 'shadowRouter',

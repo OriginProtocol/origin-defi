@@ -48,6 +48,14 @@ export const osSwapRoutes: SwapRoute<OSRoute, Meta>[] = [
     includeReturn: true,
   }),
   ...generateSwapRoutes<OSRoute, Meta>({
+    tokensIn: [tokens.sonic.OS],
+    tokensOut: [tokens.sonic.S, tokens.sonic.wS],
+    swapRoute: {
+      action: 'swap-shadow-os',
+    },
+    includeReturn: true,
+  }),
+  ...generateSwapRoutes<OSRoute, Meta>({
     tokensIn: [tokens.sonic.OS, tokens.sonic.wOS],
     tokensOut: [tokens.sonic.S, tokens.sonic.wS],
     swapRoute: {
