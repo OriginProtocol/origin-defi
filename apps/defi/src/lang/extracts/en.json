@@ -782,6 +782,9 @@
   "RahCRH": {
     "defaultMessage": "Expired"
   },
+  "RwXr/1": {
+    "defaultMessage": "Circ. Supply"
+  },
   "Rwc39n": {
     "defaultMessage": "6 days"
   },
@@ -955,6 +958,9 @@
   },
   "Z6ohOJ": {
     "defaultMessage": "Discord Forum"
+  },
+  "Z7CwBf": {
+    "defaultMessage": "Price of OGN"
   },
   "ZHzCT2": {
     "defaultMessage": "Skip the queue by just swapping OS for wS."
@@ -1156,6 +1162,9 @@
   },
   "gcuDcH": {
     "defaultMessage": "Sent"
+  },
+  "ge6EzT": {
+    "defaultMessage": "Total supply of OGN"
   },
   "glPoBW": {
     "defaultMessage": "Mint superOETHb to maximize your ETH position. Super OETH combines Ethereum liquid staking yield with Aerodrome rewards."
@@ -1439,6 +1448,9 @@
   "sGU9Dr": {
     "defaultMessage": "ETH"
   },
+  "sHlvMe": {
+    "defaultMessage": "Total Supply"
+  },
   "sjKCFv": {
     "defaultMessage": "Approximate gas cost:"
   },
@@ -1604,6 +1616,9 @@
   "z/wUXE": {
     "defaultMessage": "Received"
   },
+  "z0yV/N": {
+    "defaultMessage": "Capture value from all of Origin's yield-bearing products"
+  },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
   },
@@ -1636,5 +1651,8 @@
   },
   "zqgS/c": {
     "defaultMessage": "Beyond liquid staking"
+  },
+  "zu5bi9": {
+    "defaultMessage": "Circulating supply of OGN"
   }
 }
