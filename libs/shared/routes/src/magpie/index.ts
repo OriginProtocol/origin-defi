@@ -80,6 +80,10 @@ const estimateAmount: EstimateAmount = async (
   client,
   { tokenIn, tokenOut, amountIn, slippage },
 ) => {
+  if (amountIn === 0n) {
+    return 0n;
+  }
+
   try {
     const quote = await getQuote(client, tokenIn, tokenOut, amountIn, slippage);
 
