@@ -14,7 +14,8 @@ interface IntlProviderProps extends Children {
 }
 
 export const IntlProvider = ({ children, messages }: IntlProviderProps) => {
-  const lang = navigator.language.substring(0, 2).toLowerCase();
+  const language = typeof window !== 'undefined' ? navigator?.language : 'en';
+  const lang = language?.substring(0, 2)?.toLowerCase() ?? 'en';
   const mess = messages[lang] ?? messages['en'];
   const warn = useRef(import.meta.env.DEV);
 
@@ -29,7 +30,7 @@ export const IntlProvider = ({ children, messages }: IntlProviderProps) => {
 
   return (
     <OriginalIntlProvider
-      locale={navigator.language}
+      locale={language}
       messages={mess}
       defaultLocale="en"
       textComponent={Typography}

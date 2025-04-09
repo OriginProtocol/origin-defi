@@ -1,7 +1,6 @@
 import { Box, Skeleton } from '@mui/material';
 import { FaUserRegular } from '@origin/shared/icons';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
-import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 import { mainnet } from 'viem/chains';
 import {
@@ -120,3 +119,10 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
     </Box>
   );
 };
+
+function jsNumberForAddress(address: string) {
+  const addr = address.slice(2, 10);
+  const seed = parseInt(addr, 16);
+
+  return seed;
+}
