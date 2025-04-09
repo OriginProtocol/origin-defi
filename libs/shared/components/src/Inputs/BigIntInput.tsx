@@ -4,7 +4,7 @@ import { InputBase } from '@mui/material';
 import { formatUnits, parseUnits } from 'viem';
 
 import type { InputBaseProps } from '@mui/material';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, FocusEvent } from 'react';
 
 export type BigintInputProps = {
   value: bigint;
@@ -103,8 +103,9 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
       }
     };
 
-    const handleBlur = () => {
+    const handleBlur = (evt: FocusEvent<HTMLInputElement>) => {
       updateSourceRef.current = null;
+      rest?.onBlur?.(evt);
     };
 
     return (

@@ -5,7 +5,7 @@ import { eq, format, from } from 'dnum';
 
 import type { InputBaseProps } from '@mui/material';
 import type { Dnum } from 'dnum';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, FocusEvent } from 'react';
 
 export type DnumInputProps = {
   value: Dnum;
@@ -92,8 +92,9 @@ export const DnumInput = forwardRef<HTMLInputElement, DnumInputProps>(
       }
     };
 
-    const handleBlur = () => {
+    const handleBlur = (evt: FocusEvent<HTMLInputElement>) => {
       updateSourceRef.current = null;
+      rest?.onBlur?.(evt);
     };
 
     return (

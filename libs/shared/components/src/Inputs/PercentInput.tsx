@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useRef, useState } from 'react';
 import { InputBase } from '@mui/material';
 
 import type { InputBaseProps } from '@mui/material';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, FocusEvent } from 'react';
 
 export type PercentInputProps = {
   value: number;
@@ -80,8 +80,9 @@ export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
       }
     };
 
-    const handleBlur = () => {
+    const handleBlur = (evt: FocusEvent<HTMLInputElement>) => {
       updateSourceRef.current = null;
+      rest?.onBlur?.(evt);
     };
 
     return (
