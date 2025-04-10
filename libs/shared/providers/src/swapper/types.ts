@@ -207,6 +207,7 @@ export type SwapTrackEvent =
       swap_token: string;
       swap_to: string;
       swap_amount: bigint;
+      swap_data: string;
     }
   | {
       name: 'swap_failed';

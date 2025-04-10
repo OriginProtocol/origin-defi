@@ -11,6 +11,7 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { uniq } from 'ramda';
+import { formatUnits } from 'viem';
 import { mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -711,6 +712,7 @@ export const useHandleSwap = () => {
           swap_token: tokenIn.symbol,
           swap_to: tokenOut.symbol,
           swap_amount: amountIn,
+          swap_data: `${formatUnits(amountIn, tokenIn.decimals)} ${tokenIn.symbol} -> ${formatUnits(amountOut, tokenOut.decimals)} ${tokenOut.symbol} with ${selectedSwapRoute.action}`,
         });
         queryClient.invalidateQueries();
         setSwapState((state) => ({
