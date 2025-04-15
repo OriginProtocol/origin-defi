@@ -86,7 +86,7 @@ export const superOethSwapRoutes: SwapRoute<SuperOethRoute>[] = [
   // Plume
   // Magpie
   ...generateSwapRoutes<SuperOethRoute>({
-    tokensIn: [tokens.plume.PLUME, tokens.base.WETH],
+    tokensIn: [tokens.plume.PLUME, tokens.plume.WETH],
     tokensOut: [tokens.plume.superOETHp, tokens.plume.wsuperOETHp],
     swapRoute: {
       action: 'swap-magpie-superOeth',
@@ -95,7 +95,7 @@ export const superOethSwapRoutes: SwapRoute<SuperOethRoute>[] = [
   }),
   // OpenOcean
   ...generateSwapRoutes<SuperOethRoute>({
-    tokensIn: [tokens.plume.PLUME, tokens.base.WETH],
+    tokensIn: [tokens.plume.PLUME, tokens.plume.WETH],
     tokensOut: [tokens.plume.superOETHp, tokens.plume.wsuperOETHp],
     swapRoute: {
       action: 'swap-openOcean-superOeth',
@@ -110,8 +110,8 @@ export const superOethSwapRoutes: SwapRoute<SuperOethRoute>[] = [
   },
   // Unwrap
   {
-    tokenIn: tokens.base.wsuperOETHb,
-    tokenOut: tokens.base.superOETHb,
+    tokenIn: tokens.plume.wsuperOETHp,
+    tokenOut: tokens.plume.superOETHp,
     action: 'unwrap-wsuperOeth-superOeth',
     noSlippage: true,
   },
