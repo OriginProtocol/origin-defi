@@ -7,8 +7,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import { addSeconds, isAfter } from 'date-fns';
 import { useSearchParams } from 'react-router';
+import { erc20Abi } from 'viem';
+import { base, plumeMainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
 
+import type { Contract, Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type {
   QueryClient,
@@ -38,48 +41,83 @@ export const useViewSelect = () => {
   );
 };
 
-const getKey = (address: HexAddress | undefined) => [
+export const useSuperOethConfig = () => {
+  const { chainId } = useAccount();
+
+  return useMemo(() => {
+    const token =
+      {
+        [base.id]: tokens.base.superOETHb,
+        [plumeMainnet.id]: tokens.plume.superOETHp,
+      }[chainId ?? base.id] ?? tokens.base.superOETHb;
+    const vault =
+      {
+        [base.id]: contracts.base.superOETHbVault,
+        [plumeMainnet.id]: contracts.plume.superOETHpVault,
+      }[chainId ?? base.id] ?? contracts.base.superOETHbVault;
+    const weth =
+      {
+        [base.id]: tokens.base.WETH,
+        [plumeMainnet.id]: tokens.plume.WETH,
+      }[chainId ?? base.id] ?? tokens.base.WETH;
+
+    return { token, vault, weth };
+  }, [chainId]);
+};
+
+type Key = [
   'useSuperOethbClaimableRequests',
-  address,
+  HexAddress | undefined,
+  Token,
+  Contract,
+  Token,
 ];
+
+const getKey = (
+  address: HexAddress | undefined,
+  token: Token,
+  vault: Contract,
+  weth: Token,
+): Key =>
+  ['useSuperOethbClaimableRequests', address, token, vault, weth] as const;
 
 const fetcher: (
   config: Config,
   queryClient: QueryClient,
-) => QueryFunction<WithdrawalRequest[]> =
+) => QueryFunction<WithdrawalRequest[], Key> =
   (config, queryClient) =>
-  async ({ queryKey: [, address] }) => {
+  async ({ queryKey: [, address, token, vault, weth] }) => {
     const res = await Promise.allSettled([
       readContract(config, {
-        address: contracts.base.superOETHbVault.address,
+        address: vault.address,
         abi: contracts.base.superOETHbVault.abi,
         functionName: 'withdrawalQueueMetadata',
-        chainId: contracts.base.superOETHbVault.chainId,
+        chainId: vault.chainId,
       }),
       queryClient.fetchQuery({
         queryKey: useOTokenWithdrawalRequestsQuery.getKey({
-          token: tokens.base.superOETHb.address.toLowerCase(),
-          chainId: tokens.base.superOETHb.chainId,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
+          chainId: token.chainId,
           withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
         queryFn: useOTokenWithdrawalRequestsQuery.fetcher({
-          token: tokens.base.superOETHb.address.toLowerCase(),
-          chainId: tokens.base.superOETHb.chainId,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
+          chainId: token.chainId,
           withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
       }),
       readContract(config, {
-        address: tokens.base.WETH.address,
-        abi: tokens.base.WETH.abi,
+        address: weth.address ?? ZERO_ADDRESS,
+        abi: erc20Abi,
         functionName: 'balanceOf',
-        chainId: tokens.base.WETH.chainId,
-        args: [contracts.base.superOETHbVault.address],
+        chainId: weth.chainId,
+        args: [vault.address],
       }),
       readContract(config, {
-        address: contracts.base.superOETHbVault.address,
-        abi: contracts.base.superOETHbVault.abi,
+        address: vault.address,
+        abi: vault.abi,
         functionName: 'withdrawalClaimDelay',
-        chainId: contracts.base.superOETHbVault.chainId,
+        chainId: vault.chainId,
       }),
     ]);
     const queueData = isFulfilled(res[0]) ? res[0].value : null;
@@ -121,10 +159,11 @@ export const useWithdrawalRequests = (
   const { address } = useAccount();
   const config = useConfig();
   const queryClient = useQueryClient();
+  const { token, vault, weth } = useSuperOethConfig();
 
   return useQuery({
     ...options,
-    queryKey: getKey(address),
+    queryKey: getKey(address, token, vault, weth),
     queryFn: fetcher(config, queryClient),
   });
 };

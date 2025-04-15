@@ -1,4 +1,5 @@
 import {
+  magpie,
   redeemAsyncOtoken,
   swapAerodromeSuperOeth,
 } from '@origin/shared/routes';
@@ -17,6 +18,11 @@ export const redeemActions: Record<SuperOethRedeemAction, SwapApi> = {
   'swap-aerodrome-superOeth': {
     ...swapAerodromeSuperOeth,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Aerodrome' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+  },
+  'swap-magpie-superOeth': {
+    ...magpie,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Magpie' }),
     buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
   },
 };

@@ -1,4 +1,5 @@
-import { arbitrum, base, mainnet, sonic } from 'viem/chains';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { arbitrum, base, mainnet, plumeMainnet, sonic } from 'viem/chains';
 
 import { AaveStrategyABI } from './abis/AaveStrategy';
 import { AerodromePoolABI } from './abis/AerodromePool';
@@ -572,6 +573,22 @@ export const contracts = {
       chainId: sonic.id,
       abi: SwapxRouterABI,
       name: 'swapxRouter',
+    },
+  },
+  // TODO fill xhen available
+  plume: {
+    // superOETHp
+    superOETHpVault: {
+      address: ZERO_ADDRESS,
+      chainId: plumeMainnet.id,
+      abi: SuperOETHbABI,
+      name: 'superOETHpVault',
+    },
+    superOETHpDripper: {
+      address: ZERO_ADDRESS,
+      chainId: plumeMainnet.id,
+      abi: DripperABI,
+      name: 'superOETHpDripper',
     },
   },
 } as const;

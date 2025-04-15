@@ -12,7 +12,9 @@ export type Meta = {
 
 export type SuperOethRedeemAction = Extract<
   SuperOethRoute,
-  'redeem-vault-async-superOeth' | 'swap-aerodrome-superOeth'
+  | 'redeem-vault-async-superOeth'
+  | 'swap-aerodrome-superOeth'
+  | 'swap-magpie-superOeth'
 >;
 
 export type WithdrawalRequest = {

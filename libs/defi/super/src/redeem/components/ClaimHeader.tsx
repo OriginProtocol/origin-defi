@@ -6,14 +6,13 @@ import {
   useTheme,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { FaCircleCheckRegular, FaClockRegular } from '@origin/shared/icons';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { add, eq, format, from } from 'dnum';
 import { groupBy } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { useWithdrawalRequests } from '../hooks';
+import { useSuperOethConfig, useWithdrawalRequests } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 
@@ -25,6 +24,7 @@ export const ClaimHeader = (props: StackProps) => {
     useWithdrawalRequests({
       select: (data) => data?.filter((r) => !r.claimed),
     });
+  const { weth } = useSuperOethConfig();
 
   const { claimable, pending } = groupBy(
     (r) => (r.claimable ? 'claimable' : 'pending'),
@@ -32,12 +32,12 @@ export const ClaimHeader = (props: StackProps) => {
   );
   const availableToClaim =
     claimable?.reduce(
-      (acc, curr) => add([curr.amount, tokens.base.WETH.decimals], acc),
+      (acc, curr) => add([curr.amount, weth.decimals], acc),
       from(0),
     ) ?? from(0);
   const pendingAmount =
     pending?.reduce(
-      (acc, curr) => add([curr.amount, tokens.base.WETH.decimals], acc),
+      (acc, curr) => add([curr.amount, weth.decimals], acc),
       from(0),
     ) ?? from(0);
 
@@ -84,7 +84,7 @@ export const ClaimHeader = (props: StackProps) => {
               ? '0.0'
               : format(availableToClaim, getFormatPrecision(availableToClaim))}
           </LoadingLabel>
-          <Typography variant="body2">{tokens.base.WETH.symbol}</Typography>
+          <Typography variant="body2">{weth.symbol}</Typography>
         </Stack>
       </Stack>
       <Divider />
@@ -157,7 +157,7 @@ export const ClaimHeader = (props: StackProps) => {
             >
               {format(pendingAmount, getFormatPrecision(pendingAmount))}
             </LoadingLabel>
-            <Typography variant="body2">{tokens.base.WETH.symbol}</Typography>
+            <Typography variant="body2">{weth.symbol}</Typography>
           </Stack>
         </Stack>
       </Stack>

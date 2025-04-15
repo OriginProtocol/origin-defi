@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import {
+  ChainsChip,
   Page,
   PageSection,
   PageTitle,
@@ -8,6 +9,7 @@ import {
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
+import { base, plumeMainnet } from 'viem/chains';
 
 import { ViewSwitch } from '../components/ViewSwitch';
 import { useViewSelect } from '../hooks';
@@ -26,8 +28,13 @@ export const RedeemView = () => {
           defaultMessage: '1:1 WETH redemptions via the Super OETH vault',
         })}
         icon={superOETH}
-      />
-
+      >
+        <ChainsChip
+          chainIds={[base.id, plumeMainnet.id]}
+          minHeight={40}
+          sx={{ mt: 3 }}
+        />
+      </PageTitle>
       <PageSection containerProps={{ maxWidth: 'sm' }}>
         <Stack spacing={6}>
           <ViewSwitch />

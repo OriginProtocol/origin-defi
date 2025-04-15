@@ -16,6 +16,7 @@ import FluxFullSvg from './flux-full.svg?react';
 import FraxSvg from './frax.svg?react';
 import FraxFullSvg from './frax-full.svg?react';
 import LidoFullSvg from './lido-full.svg?react';
+import MagpieSvg from './magpie.svg?react';
 import MakerFullSvg from './maker-full.svg?react';
 import MorphoFullWebp from './morpho-full.webp';
 import OriginSvg from './origin.svg?react';
@@ -88,6 +89,9 @@ export const FraxFull = (props: SvgIconProps) => (
 );
 export const LidoFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={LidoFullSvg} inheritViewBox />
+);
+export const Magpie = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={MagpieSvg} inheritViewBox />
 );
 export const MakerFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={MakerFullSvg} inheritViewBox />
