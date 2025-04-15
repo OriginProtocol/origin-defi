@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { NetworkIcon } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
+import { useSwitchChain } from 'wagmi';
 
 import { ColorChip } from './ColorChip';
 
@@ -10,16 +11,17 @@ import type { SupportedChain } from '@origin/shared/components';
 type ChainsChipProps = {
   chainIds: readonly number[];
   iconSize?: number;
-  onChainClick?: (chainId: number) => void;
+  disableChainSwitch?: boolean;
 } & StackProps;
 
 export const ChainsChip = ({
   chainIds,
   iconSize = 24,
-  onChainClick,
+  disableChainSwitch,
   ...rest
 }: ChainsChipProps) => {
   const intl = useIntl();
+  const { switchChain } = useSwitchChain();
 
   return (
     <ColorChip spacing={1.5} {...rest}>
@@ -43,9 +45,9 @@ export const ChainsChip = ({
             key={id}
             chainId={id as SupportedChain}
             size={iconSize}
-            {...(onChainClick && {
+            {...(!disableChainSwitch && {
               onClick: () => {
-                onChainClick(id);
+                switchChain({ chainId: id });
               },
               role: 'button',
               sx: {
