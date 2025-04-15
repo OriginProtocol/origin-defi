@@ -12,7 +12,14 @@ import {
   trustWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { arbitrum, base, mainnet, optimism, plume, sonic } from 'viem/chains';
+import {
+  arbitrum,
+  base,
+  mainnet,
+  optimism,
+  plumeMainnet,
+  sonic,
+} from 'viem/chains';
 import { createConfig, fallback, http } from 'wagmi';
 
 const connectors = connectorsForWallets(
@@ -44,7 +51,7 @@ export const wagmiConfig = createConfig({
     mainnet,
     arbitrum,
     base,
-    plume,
+    plumeMainnet,
     sonic,
     ...(import.meta.env.DEV ? [optimism] : []),
   ],
@@ -95,7 +102,7 @@ export const wagmiConfig = createConfig({
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_BASE_RPC),
-    [plume.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_PLUME_RPC)
+    [plumeMainnet.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_PLUME_RPC)
       ? fallback([
           ...(!!import.meta.env.VITE_ALCHEMY_PLUME_RPC &&
           !!import.meta.env.VITE_ALCHEMY_ID

@@ -15,7 +15,7 @@ import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
 import { PageTitleSection } from '../components/PageTitleSection';
-import { superOethbSwapRoutes } from '../constants';
+import { superOethSwapRoutes } from '../constants';
 
 export const SwapView = () => {
   const intl = useIntl();
@@ -44,7 +44,7 @@ export const SwapView = () => {
           >
             <Swapper
               swapActions={oethSwapActions}
-              swapRoutes={superOethbSwapRoutes}
+              swapRoutes={superOethSwapRoutes}
               buttonsProps={{ variant: 'action' }}
               trackEvent={trackEvent}
             />

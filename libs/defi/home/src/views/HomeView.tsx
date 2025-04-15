@@ -67,6 +67,14 @@ export const HomeView = () => {
             href="super"
           />
           <TokenRow
+            token={tokens.plume.superOETHp}
+            currency="ETH"
+            productDescription={intl.formatMessage({
+              defaultMessage: 'Supercharged LST',
+            })}
+            href="super"
+          />
+          <TokenRow
             token={tokens.mainnet.OETH}
             currency="ETH"
             productDescription={intl.formatMessage({

@@ -21,6 +21,7 @@ import {
   superOETH,
   superOETHb,
   superOETHo,
+  superOETHp,
   swETH,
   USDC,
   USDS,
@@ -35,6 +36,7 @@ import {
   wsuperOETH,
   wsuperOETHb,
   wsuperOETHo,
+  wsuperOETHp,
   xOGN,
   xOGNOutlined,
 } from '@origin/shared/icons';
@@ -73,6 +75,7 @@ const supportedSymbols = [
   'superOETH',
   'superOETHb',
   'superOETHo',
+  'superOETHp',
   'swETH',
   'USDC',
   'USDS',
@@ -86,6 +89,7 @@ const supportedSymbols = [
   'wsuperOETH',
   'wsuperOETHb',
   'wsuperOETHo',
+  'wsuperOETHp',
   'xOGN',
 ];
 
@@ -111,6 +115,7 @@ const regularMap: Record<
   superOETH: superOETH,
   superOETHb: superOETHb,
   superOETHo: superOETHo,
+  superOETHp: superOETHp,
   swETH: swETH,
   USDC: USDC,
   USDS: USDS,
@@ -124,6 +129,7 @@ const regularMap: Record<
   wsuperOETH: wsuperOETH,
   wsuperOETHb: wsuperOETHb,
   wsuperOETHo: wsuperOETHo,
+  wsuperOETHp: wsuperOETHp,
   xOGN: xOGN,
 };
 
@@ -142,6 +148,8 @@ const networkAlreadyIncludedTokenIds = [
   '8453:wsuperOETHb',
   '10:superOETHo',
   '10:wsuperOETHo',
+  '98865:superOETHp',
+  '98865:wsuperOETHp',
 ];
 
 export const TokenIcon = ({

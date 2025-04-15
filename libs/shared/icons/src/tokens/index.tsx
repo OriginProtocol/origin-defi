@@ -20,6 +20,7 @@ import stETHSvg from './stETH.svg?react';
 import superOETHSvg from './superOETH.svg?react';
 import superOETHbSvg from './superOETHb.svg?react';
 import superOETHoSvg from './superOETHo.svg?react';
+import superOETHpSvg from './superOETHp.svg?react';
 import swETHSvg from './swETH.svg?react';
 import USDCSvg from './USDC.svg?react';
 import USDSSvg from './USDS.svg?react';
@@ -34,6 +35,7 @@ import wSSvg from './wS.svg?react';
 import wsuperOETHSvg from './wsuperOETH.svg?react';
 import wsuperOETHbSvg from './wsuperOETHb.svg?react';
 import wsuperOETHoSvg from './wsuperOETHo.svg?react';
+import wsuperOETHpSvg from './wsuperOETHp.svg?react';
 import xOGNSvg from './xOGN.svg?react';
 import xOGNOutlinedSvg from './xOGN_outlined.svg?react';
 import YNDSvg from './YND.svg?react';
@@ -100,6 +102,9 @@ export const superOETHb = (props: SvgIconProps) => (
 export const superOETHo = (props: SvgIconProps) => (
   <SvgIcon {...props} component={superOETHoSvg} inheritViewBox />
 );
+export const superOETHp = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={superOETHpSvg} inheritViewBox />
+);
 export const swETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={swETHSvg} inheritViewBox />
 );
@@ -141,6 +146,9 @@ export const wsuperOETHb = (props: SvgIconProps) => (
 );
 export const wsuperOETHo = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wsuperOETHoSvg} inheritViewBox />
+);
+export const wsuperOETHp = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={wsuperOETHpSvg} inheritViewBox />
 );
 export const xOGN = (props: SvgIconProps) => (
   <SvgIcon {...props} component={xOGNSvg} inheritViewBox />

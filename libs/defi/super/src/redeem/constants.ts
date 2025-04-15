@@ -12,7 +12,7 @@ export const redeemRoutes: SwapRoute<SuperOethRedeemAction, Meta>[] = [
   {
     tokenIn: tokens.base.superOETHb,
     tokenOut: tokens.base.WETH,
-    action: 'redeem-vault-async-superOethb',
+    action: 'redeem-vault-async-superOeth',
     meta: {
       icon: superOETH,
       waitTime: defineMessage({ defaultMessage: 'a few days' }),
@@ -22,7 +22,7 @@ export const redeemRoutes: SwapRoute<SuperOethRedeemAction, Meta>[] = [
   {
     tokenIn: tokens.base.superOETHb,
     tokenOut: tokens.base.WETH,
-    action: 'swap-aerodrome-superOethb',
+    action: 'swap-aerodrome-superOeth',
     meta: {
       icon: Aerodrome,
       waitTime: defineMessage({

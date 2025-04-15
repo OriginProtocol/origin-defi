@@ -1,7 +1,14 @@
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, base, mainnet, optimism, plume, sonic } from 'viem/chains';
+import {
+  arbitrum,
+  base,
+  mainnet,
+  optimism,
+  plumeMainnet,
+  sonic,
+} from 'viem/chains';
 
 import { ARMstETHWETHPoolABI } from './abis/ARMstETHWETHPool';
 import { DAIABI } from './abis/DAI';
@@ -287,7 +294,7 @@ export const tokens = {
       address: '0xdbfefd2e8460a6ee4955a68582f85708baea60a3',
       chainId: base.id,
       abi: OETHABI,
-      name: 'Super OETH',
+      name: 'Super OETH Base',
       decimals: 18,
       symbol: 'superOETHb',
     },
@@ -296,7 +303,7 @@ export const tokens = {
       address: '0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6',
       chainId: base.id,
       abi: WOETHABI,
-      name: 'Wrapped Super OETH',
+      name: 'Wrapped Super OETH Base',
       decimals: 18,
       symbol: 'wsuperOETHb',
     },
@@ -352,11 +359,47 @@ export const tokens = {
     PLUME: {
       id: '98865:PLUME',
       address: undefined,
-      chainId: plume.id,
+      chainId: plumeMainnet.id,
       abi: erc20Abi,
       name: 'Plume',
       decimals: 18,
       symbol: 'PLUME',
+    },
+    WPLUME: {
+      id: '98865:WPLUME',
+      address: '0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1',
+      chainId: plumeMainnet.id,
+      abi: erc20Abi,
+      name: 'Wrapped Plume',
+      decimals: 18,
+      symbol: 'PLUME',
+    },
+    WETH: {
+      id: '98865:WETH',
+      address: '0xca59cA09E5602fAe8B629DeE83FfA819741f14be',
+      chainId: plumeMainnet.id,
+      abi: erc20Abi,
+      name: 'WETH',
+      decimals: 18,
+      symbol: 'WETH',
+    },
+    superOETHp: {
+      id: '98865:superOETHp',
+      address: ZERO_ADDRESS, // TODO update with real address
+      chainId: plumeMainnet.id,
+      abi: OETHABI,
+      name: 'Super OETH Plume',
+      decimals: 18,
+      symbol: 'superOETHp',
+    },
+    wsuperOETHp: {
+      id: '98865:wsuperOETHp',
+      address: ZERO_ADDRESS, // TODO update with real address
+      chainId: plumeMainnet.id,
+      abi: WOETHABI,
+      name: 'Wrapped Super OETH Plume',
+      decimals: 18,
+      symbol: 'wsuperOETHp',
     },
   },
   sonic: {
@@ -413,6 +456,7 @@ export const tokenList = [
   ...Object.values(tokens.arbitrum),
   ...Object.values(tokens.base),
   ...Object.values(tokens.optimism),
+  ...Object.values(tokens.plume),
   ...Object.values(tokens.sonic),
 ];
 

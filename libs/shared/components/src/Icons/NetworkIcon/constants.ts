@@ -6,7 +6,7 @@ import {
   gnosis,
   mainnet,
   optimism,
-  plume,
+  plumeMainnet,
   polygon,
   sonic,
 } from 'viem/chains';
@@ -63,7 +63,7 @@ export const supportedIcons = {
     iconColor: '#FFFFFF',
     backgroundColor: '#FF0420',
   },
-  [plume.id]: {
+  [plumeMainnet.id]: {
     icon: plumeCc,
     sizeRatio: 0.55,
     iconColor: '#FFFFFF',

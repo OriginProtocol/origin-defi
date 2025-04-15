@@ -83,9 +83,7 @@ export const getAvailableRoutes = <S = SwapAction, M = object>(
   }
 
   return swapRoutes.filter(
-    (r) =>
-      r.tokenIn.symbol === tokenIn.symbol &&
-      r.tokenOut.symbol === tokenOut.symbol,
+    (r) => r.tokenIn.id === tokenIn.id && r.tokenOut.id === tokenOut.id,
   );
 };
 

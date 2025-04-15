@@ -332,7 +332,7 @@ const swap: Swap = async (
   return null;
 };
 
-export const swapZapperSuperOethb = {
+export const swapZapperSuperOeth = {
   ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
