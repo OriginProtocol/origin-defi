@@ -12,6 +12,7 @@ import OGVSvg from './OGV.svg?react';
 import OGVOutlinedSvg from './OGV_outlined.svg?react';
 import OSSvg from './OS.svg?react';
 import OUSDSvg from './OUSD.svg?react';
+import PLUMESvg from './PLUME.svg?react';
 import primeETHSvg from './primeETH.svg?react';
 import rETHSvg from './rETH.svg?react';
 import sSvg from './S.svg?react';
@@ -80,6 +81,9 @@ export const OS = (props: SvgIconProps) => (
 );
 export const OUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={OUSDSvg} viewBox="0 0 300 300" />
+);
+export const PLUME = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={PLUMESvg} inheritViewBox />
 );
 export const rETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={rETHSvg} viewBox="0 0 600 600" />
