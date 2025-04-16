@@ -151,8 +151,8 @@ const networkAlreadyIncludedTokenIds = [
   '8453:wsuperOETHb',
   '10:superOETHo',
   '10:wsuperOETHo',
-  '98865:superOETHp',
-  '98865:wsuperOETHp',
+  '98866:superOETHp',
+  '98866:wsuperOETHp',
 ];
 
 export const TokenIcon = ({

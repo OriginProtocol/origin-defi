@@ -357,7 +357,7 @@ export const tokens = {
   },
   plume: {
     PLUME: {
-      id: '98865:PLUME',
+      id: '98866:PLUME',
       address: undefined,
       chainId: plumeMainnet.id,
       abi: erc20Abi,
@@ -366,7 +366,7 @@ export const tokens = {
       symbol: 'PLUME',
     },
     WPLUME: {
-      id: '98865:WPLUME',
+      id: '98866:WPLUME',
       address: '0xEa237441c92CAe6FC17Caaf9a7acB3f953be4bd1',
       chainId: plumeMainnet.id,
       abi: erc20Abi,
@@ -375,7 +375,7 @@ export const tokens = {
       symbol: 'PLUME',
     },
     WETH: {
-      id: '98865:WETH',
+      id: '98866:WETH',
       address: '0xca59cA09E5602fAe8B629DeE83FfA819741f14be',
       chainId: plumeMainnet.id,
       abi: erc20Abi,
@@ -384,7 +384,7 @@ export const tokens = {
       symbol: 'WETH',
     },
     superOETHp: {
-      id: '98865:superOETHp',
+      id: '98866:superOETHp',
       address: ZERO_ADDRESS, // TODO update with real address
       chainId: plumeMainnet.id,
       abi: OETHABI,
@@ -393,7 +393,7 @@ export const tokens = {
       symbol: 'superOETHp',
     },
     wsuperOETHp: {
-      id: '98865:wsuperOETHp',
+      id: '98866:wsuperOETHp',
       address: ZERO_ADDRESS, // TODO update with real address
       chainId: plumeMainnet.id,
       abi: WOETHABI,
