@@ -64,6 +64,7 @@ export const useDappHref = () => {
   const isOeth = useMatch('oeth/*');
   const isOusd = useMatch('ousd/*');
   const isSuper = useMatch('super/*');
+  const isSuperP = useMatch('superp/*');
 
   if (isOeth) {
     return oTokenConfig[tokens.mainnet.OETH.id]?.dappHref ?? ORIGIN_DAPP_URL;
@@ -73,6 +74,11 @@ export const useDappHref = () => {
   }
   if (isSuper) {
     return oTokenConfig[tokens.base.superOETHb.id]?.dappHref ?? ORIGIN_DAPP_URL;
+  }
+  if (isSuperP) {
+    return (
+      oTokenConfig[tokens.plume.superOETHp.id]?.dappHref ?? ORIGIN_DAPP_URL
+    );
   }
 
   return ORIGIN_DAPP_URL;

@@ -87,7 +87,7 @@ export const { Provider: PoYProvider, useTracked: usePoYState } =
           if (data) {
             draft.data = data;
             if (!draft.selectedId) {
-              draft.selectedId = data[1].id;
+              draft.selectedId = data[1]?.id;
             }
           }
         }),

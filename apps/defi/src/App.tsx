@@ -1,12 +1,14 @@
 import { Stack } from '@mui/material';
 import { Topnav, trackEvent, trackSentryError } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import { TrackingProvider } from '@origin/shared/providers';
+import { TrackingProvider, useChainIdListener } from '@origin/shared/providers';
 import { Outlet } from 'react-router';
 
 import { routes } from './routes';
 
 export const App = () => {
+  useChainIdListener();
+
   return (
     <ErrorBoundary
       ErrorComponent={<ErrorPage height={1} width={1} />}

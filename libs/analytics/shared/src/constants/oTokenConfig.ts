@@ -1,6 +1,6 @@
 import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
-import { arbitrum, base, mainnet, sonic } from 'viem/chains';
+import { arbitrum, base, mainnet, plumeMainnet, sonic } from 'viem/chains';
 
 import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
@@ -77,6 +77,20 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     lineChartColor: '#7A26F3',
     currency: 'ETH',
     currencyOptions: ['ETH', 'USD'],
+    currencyDigits: 4,
+  },
+  [tokens.plume.superOETHp.id]: {
+    from: '2024-08-28T00:00:00.000000Z',
+    availableNetworks: [plumeMainnet],
+    pageHref: 'superp',
+    dappHref: `${ORIGIN_DAPP_URL}/#/super?chainId=${plumeMainnet.id}`,
+    dripperToken: tokens.plume.WETH,
+    showCirculatingSplit: true,
+    protocolRevenueCardDefaultLimit: 30,
+    defaultApyTrailing: 'apy7',
+    lineChartColor: '#7A26F3',
+    currency: 'PLUME',
+    currencyOptions: ['PLUME', 'USD'],
     currencyDigits: 4,
   },
   [tokens.mainnet['ARM-WETH-stETH'].id]: {
