@@ -39,7 +39,7 @@ export const ClaimForm = (props: StackProps) => {
       select: (data) => data?.filter((r) => !r.claimed),
       refetchInterval,
     });
-  const { token, vault, weth } = useSuperOethConfig();
+  const { vault, weth } = useSuperOethConfig();
 
   const args =
     selectedClaimIds.length === 1

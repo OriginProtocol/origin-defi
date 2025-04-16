@@ -1,11 +1,9 @@
 import { Stack, Typography } from '@mui/material';
-import { NetworkIcon } from '@origin/shared/components';
+import { NetworkIcon, SliderSwitch } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
-import { useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 
-import { ColorChip } from './ColorChip';
-
-import type { StackProps } from '@mui/material';
+import type { StackProps, Theme } from '@mui/material';
 import type { SupportedChain } from '@origin/shared/components';
 
 type ChainsChipProps = {
@@ -21,10 +19,37 @@ export const ChainsChip = ({
   ...rest
 }: ChainsChipProps) => {
   const intl = useIntl();
+  const { chainId } = useAccount();
   const { switchChain } = useSwitchChain();
 
+  const handleChainChange = (newVal: string | number) => {
+    switchChain({ chainId: newVal as SupportedChain });
+  };
+
+  const chainOptions = chainIds.map((id) => ({
+    label: (
+      <NetworkIcon
+        key={id}
+        chainId={id as SupportedChain}
+        size={iconSize}
+        sx={{ p: 0, m: 0 }}
+      />
+    ),
+    value: id,
+  }));
+
   return (
-    <ColorChip spacing={1.5} {...rest}>
+    <Stack
+      direction="row"
+      spacing={1.5}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Typography
         variant="caption1"
         sx={{
@@ -33,7 +58,19 @@ export const ChainsChip = ({
       >
         {intl.formatMessage({ defaultMessage: 'Available on' })}
       </Typography>
-      <Stack
+      <SliderSwitch
+        options={chainOptions}
+        value={chainId ?? chainOptions[0].value}
+        onChange={handleChainChange}
+        sx={{ borderRadius: 2, backgroundColor: 'background.default' }}
+        selectedSx={{
+          borderRadius: 2,
+          backgroundColor: 'background.highlight',
+          boxShadow: (theme: Theme) =>
+            `inset 0 0 0 2px ${theme.palette.background.default},inset 0 0 0 3px ${theme.palette.divider}`,
+        }}
+      />
+      {/* <Stack
         direction="row"
         spacing={1}
         sx={{
@@ -59,7 +96,7 @@ export const ChainsChip = ({
             })}
           />
         ))}
-      </Stack>
-    </ColorChip>
+      </Stack> */}
+    </Stack>
   );
 };
