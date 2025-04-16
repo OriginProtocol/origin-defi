@@ -17,7 +17,8 @@ import {
   OETH,
   OS,
   OUSD,
-  superOETH,
+  superOETHb,
+  superOETHp,
 } from '@origin/shared/icons';
 import { defineMessage } from 'react-intl';
 
@@ -42,9 +43,9 @@ export const routes: RouteObject[] = [
         index: false,
         path: 'super',
         handle: {
-          title: defineMessage({ defaultMessage: 'Super OETH' }),
-          icon: superOETH,
-          breadcrumb: defineMessage({ defaultMessage: 'Super OETH' }),
+          title: defineMessage({ defaultMessage: 'Super OETHb' }),
+          icon: superOETHb,
+          breadcrumb: defineMessage({ defaultMessage: 'Super OETHb' }),
         },
         children: [
           {
@@ -75,6 +76,37 @@ export const routes: RouteObject[] = [
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
             Component: superOeth.CollateralsView,
+          },
+        ],
+      },
+      {
+        index: false,
+        path: 'superp',
+        handle: {
+          title: defineMessage({ defaultMessage: 'Super OETHp' }),
+          icon: superOETHp,
+          breadcrumb: defineMessage({ defaultMessage: 'Super OETHp' }),
+        },
+        children: [
+          {
+            index: true,
+            element: <OverviewView token={tokens.plume.superOETHp} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Overview' }),
+              icon: FaEyeRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Overview' }),
+            },
+          },
+          {
+            path: 'poy',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Proof of Yield' }),
+              icon: FaClockRegular,
+              breadcrumb: defineMessage({
+                defaultMessage: 'Proof of Yield',
+              }),
+            },
+            element: <PoYView token={tokens.plume.superOETHp} />,
           },
         ],
       },

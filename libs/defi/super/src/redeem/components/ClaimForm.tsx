@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import { SectionCard, useTxButton } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
-import { contracts, tokens } from '@origin/shared/contracts';
 import {
   FaArrowUpRightRegular,
   FaCircleCheckRegular,
@@ -24,7 +23,7 @@ import { add, eq, format, from } from 'dnum';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { useWithdrawalRequests } from '../hooks';
+import { useSuperOethConfig, useWithdrawalRequests } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 import type { Dnum } from 'dnum';
@@ -40,16 +39,17 @@ export const ClaimForm = (props: StackProps) => {
       select: (data) => data?.filter((r) => !r.claimed),
       refetchInterval,
     });
+  const { vault, weth } = useSuperOethConfig();
 
   const args =
     selectedClaimIds.length === 1
       ? {
-          contract: contracts.base.superOETHbVault,
+          contract: vault,
           functionName: 'claimWithdrawal',
           args: [selectedClaimIds[0]],
         }
       : {
-          contract: contracts.base.superOETHbVault,
+          contract: vault,
           functionName: 'claimWithdrawals',
           args: [selectedClaimIds],
         };
@@ -58,9 +58,9 @@ export const ClaimForm = (props: StackProps) => {
       selectedClaimIds.reduce((acc, curr) => {
         const req = requests?.find((r) => r.requestId === curr);
 
-        return add([req?.amount ?? 0n, tokens.base.WETH.decimals], acc);
+        return add([req?.amount ?? 0n, weth.decimals], acc);
       }, from(0)),
-    [requests, selectedClaimIds],
+    [requests, selectedClaimIds, weth?.decimals],
   );
   const { params, callbacks, gasPrice, isWriteGasLoading } = useTxButton({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -69,7 +69,7 @@ export const ClaimForm = (props: StackProps) => {
       type: 'claim-withdrawal',
       status: 'idle',
       amountIn: selectedAmount[0],
-      tokenIdIn: tokens.base.WETH.id,
+      tokenIdIn: weth.id,
     },
     enableGas: true,
   });
@@ -169,7 +169,7 @@ export const ClaimForm = (props: StackProps) => {
               : ` ${format(selectedAmount, {
                   digits: getFormatPrecision(selectedAmount),
                   decimalsRounding: 'ROUND_DOWN',
-                })} ${tokens.base.WETH.symbol}`,
+                })} ${weth.symbol}`,
           },
         )}
       />
@@ -184,7 +184,8 @@ type ClaimRowProps = {
 } & StackProps;
 
 const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
-  const amt = [request?.amount ?? 0n, tokens.base.WETH.decimals] as Dnum;
+  const { weth } = useSuperOethConfig();
+  const amt = [request?.amount ?? 0n, weth.decimals] as Dnum;
   const disabled = !request.claimable;
 
   return (
@@ -224,9 +225,7 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </Typography>
-            <Typography variant="caption1">
-              {tokens.base.WETH.symbol}
-            </Typography>
+            <Typography variant="caption1">{weth.symbol}</Typography>
           </Stack>
         }
         onChange={onSelect}

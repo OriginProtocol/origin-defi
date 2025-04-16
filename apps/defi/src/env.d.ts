@@ -10,11 +10,13 @@ interface ImportMetaEnv {
   readonly VITE_ALCHEMY_BASE_RPC?: string;
   readonly VITE_ALCHEMY_OP_MAINNET_RPC?: string;
   readonly VITE_ALCHEMY_SONIC_MAINNET_RPC?: string;
+  readonly VITE_ALCHEMY_PLUME_RPC?: string;
   readonly VITE_CUSTOM_RPC?: string;
   readonly VITE_CUSTOM_ARBITRUM_RPC?: string;
   readonly VITE_CUSTOM_BASE_RPC?: string;
   readonly VITE_CUSTOM_OP_MAINNET_RPC?: string;
   readonly VITE_CUSTOM_SONIC_RPC?: string;
+  readonly VITE_CUSTOM_PLUME_RPC?: string;
   readonly VITE_GTM_CONTAINER_ID?: string;
   readonly VITE_SENTRY_DSN?: string;
   readonly VITE_STRAPI_URL: string;

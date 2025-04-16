@@ -7,6 +7,7 @@ const currencyOptions = {
   ETH: defineMessage({ defaultMessage: 'ETH' }),
   S: defineMessage({ defaultMessage: 'S' }),
   USD: defineMessage({ defaultMessage: 'USD' }),
+  PLUME: defineMessage({ defaultMessage: 'PLUME' }),
 };
 
 export type Currency = keyof typeof currencyOptions;

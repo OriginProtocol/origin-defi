@@ -118,22 +118,23 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
 
       useEffect(() => {
         const routes = getFilteredSwapRoutes(swapRoutes, chain);
-        const available = getAvailableRoutes(
-          routes,
-          state.tokenIn,
-          state.tokenOut,
-        );
+
         setState((prev) => ({
           ...prev,
-          swapRoutes: routes,
-          ...(isNilOrEmpty(available) && {
-            tokenIn: routes[0]?.tokenIn,
-            amountIn: 0n,
-            amountOut: 0n,
-            tokenOut: routes[0]?.tokenOut,
-            estimatedSwapRoutes: [],
-            selectedSwapRoute: null,
-          }),
+          ...(isNilOrEmpty(routes)
+            ? {
+                status: 'noAvailableRoute',
+              }
+            : {
+                swapRoutes: routes,
+                tokenIn: routes[0]?.tokenIn,
+                tokenOut: routes[0]?.tokenOut,
+              }),
+          isSwapRoutesLoading: false,
+          amountIn: 0n,
+          amountOut: 0n,
+          selectedSwapRoute: null,
+          estimatedSwapRoutes: [],
         }));
       }, [chain, state.tokenIn, state.tokenOut, swapRoutes]);
 

@@ -1,5 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import {
+  ChainsChip,
   ColorChip,
   dailyStatMapper,
   useOTokenStatsQuery,
@@ -11,6 +12,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+import { base, plumeMainnet } from 'viem/chains';
 
 import type { StackProps } from '@mui/material';
 
@@ -76,6 +78,7 @@ export const PageTitleSection = (props: StackProps) => {
           iconColor="primary.main"
         />
       </ColorChip>
+      <ChainsChip chainIds={[base.id, plumeMainnet.id]} minHeight={40} />
     </Stack>
   );
 };

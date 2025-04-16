@@ -657,4 +657,40 @@ export const priceOptions = {
       return [os_ws, tokens.sonic.OS.decimals];
     },
   },
+  // TODO update when price feeds are available
+  '98866:PLUME_USD': {
+    id: '98866:PLUME_USD',
+    type: 'rest',
+    config: async () => from(1),
+  },
+  '98866:superOETHp_98865:PLUME': {
+    id: '98866:superOETHp_98865:PLUME',
+    type: 'rest',
+    config: async () => from(1),
+  },
+  '98866:superOETHp_USD': {
+    id: '98866:superOETHp_USD',
+    type: 'derived',
+    dependsOn: ['98866:superOETHp_98865:PLUME', '98866:PLUME_USD'],
+  },
+  '98866:wsuperOETHp_98865:PLUME': {
+    id: '98866:wsuperOETHp_98865:PLUME',
+    type: 'rest',
+    config: async () => from(1),
+  },
+  '98866:wsuperOETHp_USD': {
+    id: '98866:wsuperOETHp_USD',
+    type: 'derived',
+    dependsOn: ['98866:wsuperOETHp_98865:PLUME', '98866:PLUME_USD'],
+  },
+  '98866:WETH_98865:PLUME': {
+    id: '98866:WETH_98865:PLUME',
+    type: 'rest',
+    config: async () => from(1),
+  },
+  '98866:WETH_USD': {
+    id: '98866:WETH_USD',
+    type: 'derived',
+    dependsOn: ['98866:WETH_98865:PLUME', '98866:PLUME_USD'],
+  },
 } as const;

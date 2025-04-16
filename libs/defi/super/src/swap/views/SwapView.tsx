@@ -12,13 +12,23 @@ import { ORIGIN_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
+import { plumeMainnet } from 'wagmi/chains';
+import { base } from 'wagmi/chains';
 
 import { oethSwapActions } from '../actions';
 import { PageTitleSection } from '../components/PageTitleSection';
-import { superOethbSwapRoutes } from '../constants';
+import { superOethSwapRoutes } from '../constants';
 
 export const SwapView = () => {
   const intl = useIntl();
+  const { chainId } = useAccount();
+
+  const token =
+    {
+      [base.id]: tokens.base.superOETHb,
+      [plumeMainnet.id]: tokens.plume.superOETHp,
+    }[chainId ?? base.id] ?? tokens.base.superOETHb;
 
   return (
     <Page>
@@ -44,7 +54,7 @@ export const SwapView = () => {
           >
             <Swapper
               swapActions={oethSwapActions}
-              swapRoutes={superOethbSwapRoutes}
+              swapRoutes={superOethSwapRoutes}
               buttonsProps={{ variant: 'action' }}
               trackEvent={trackEvent}
             />
@@ -57,11 +67,11 @@ export const SwapView = () => {
           >
             <Stack spacing={4}>
               <DailyStatCard
-                token={tokens.base.superOETHb}
+                token={token}
                 stats={['supply_distribution', 'price']}
               />
               <AnalyticsCard
-                token={tokens.base.superOETHb}
+                token={token}
                 title="superOETH"
                 href={`${ORIGIN_ANALYTICS_URL}/super`}
               />

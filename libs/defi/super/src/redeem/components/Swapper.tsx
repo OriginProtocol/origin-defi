@@ -40,6 +40,7 @@ import {
 import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
+import { plumeMainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import { RedeemActionCard } from './RedeemActionCard';
@@ -235,7 +236,7 @@ function SwapperWrapped({
   onError,
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { isConnected } = useAccount();
+  const { isConnected, chainId } = useAccount();
   const [
     {
       amountIn,
@@ -359,11 +360,16 @@ function SwapperWrapped({
           }}
         >
           <RedeemActionCard
-            action="redeem-vault-async-superOethb"
+            action="redeem-vault-async-superOeth"
             sx={{ width: 1 }}
           />
+
           <RedeemActionCard
-            action="swap-aerodrome-superOethb"
+            action={
+              chainId === plumeMainnet.id
+                ? 'swap-magpie-superOeth'
+                : 'swap-aerodrome-superOeth'
+            }
             sx={{ width: 1 }}
           />
         </Stack>

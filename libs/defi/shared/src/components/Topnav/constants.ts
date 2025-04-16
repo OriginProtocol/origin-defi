@@ -88,5 +88,6 @@ export const balanceTokens = [
   tokens.sonic.WETH,
   tokens.sonic.OS,
   tokens.sonic.wOS,
+  tokens.plume.PLUME,
   ...(import.meta.env.DEV ? [tokens.optimism.ETH, tokens.optimism.WETH] : []),
 ];

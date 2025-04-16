@@ -1,6 +1,6 @@
 import { alpha, Card, Stack, SvgIcon, Typography } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
-import { OETH } from '@origin/shared/icons';
+import { superOETH } from '@origin/shared/icons';
 import {
   routeEq,
   useHandleSelectSwapRoute,
@@ -46,7 +46,7 @@ export const RedeemActionCard = ({
   const isComingSoon =
     (route as SwapRoute<SuperOethRedeemAction, Meta>)?.meta?.comingSoon ??
     false;
-  const routeLabel = swapActions[action].routeLabel;
+  const routeLabel = swapActions[action]?.routeLabel;
   const isDisabled = isComingSoon;
 
   return (
@@ -126,10 +126,12 @@ export const RedeemActionCard = ({
               fontWeight: 500,
             }}
           >
-            {intl.formatMessage(routeLabel ?? { defaultMessage: 'Route' })}
+            {routeLabel
+              ? intl.formatMessage(routeLabel)
+              : intl.formatMessage({ defaultMessage: 'Route' })}
           </Typography>
           <SvgIcon
-            component={route?.meta?.icon ?? OETH}
+            component={route?.meta?.icon ?? superOETH}
             sx={{ fontSize: 20 }}
           />
         </Stack>
@@ -137,11 +139,11 @@ export const RedeemActionCard = ({
           <ValueLabel
             {...valueLabelProps}
             label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
-            value={intl.formatMessage(
-              route?.meta?.waitTime ?? {
-                defaultMessage: '~1 min',
-              },
-            )}
+            value={
+              route?.meta?.waitTime
+                ? intl.formatMessage(route?.meta?.waitTime)
+                : intl.formatMessage({ defaultMessage: '~1 min' })
+            }
             valueProps={{
               ...valueLabelProps.valueProps,
               ...(route?.meta &&

@@ -2,6 +2,8 @@ import { Container, Stack, Typography } from '@mui/material';
 import { Page, SonicBanner } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+import { useSwitchChain } from 'wagmi';
+import { base, plumeMainnet } from 'wagmi/chains';
 
 import { ARMRow } from '../components/ARMRow';
 import { GovernanceRow } from '../components/GovernanceRow';
@@ -10,6 +12,7 @@ import { TokenRow } from '../components/TokenRow';
 
 export const HomeView = () => {
   const intl = useIntl();
+  const { switchChain } = useSwitchChain();
 
   return (
     <Page showFooterMargin>
@@ -65,6 +68,20 @@ export const HomeView = () => {
               defaultMessage: 'Supercharged LST',
             })}
             href="super"
+            onClick={() => {
+              switchChain({ chainId: base.id });
+            }}
+          />
+          <TokenRow
+            token={tokens.plume.superOETHp}
+            currency="ETH"
+            productDescription={intl.formatMessage({
+              defaultMessage: 'Supercharged LST',
+            })}
+            href="super"
+            onClick={() => {
+              switchChain({ chainId: plumeMainnet.id });
+            }}
           />
           <TokenRow
             token={tokens.mainnet.OETH}

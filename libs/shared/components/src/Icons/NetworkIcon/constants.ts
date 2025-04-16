@@ -6,6 +6,7 @@ import {
   gnosis,
   mainnet,
   optimism,
+  plumeMainnet,
   polygon,
   sonic,
 } from 'viem/chains';
@@ -17,6 +18,7 @@ import bscCc from './components/bsc_cc.svg?react';
 import gnosisCc from './components/gnosis_cc.svg?react';
 import mainnetMulti from './components/mainnet_multi.svg?react';
 import optimismCc from './components/optimism_cc.svg?react';
+import plumeCc from './components/plume-cc.svg?react';
 import polygonCc from './components/polygon_cc.svg?react';
 import sonicWhite from './components/sonic_white.svg?react';
 
@@ -60,6 +62,12 @@ export const supportedIcons = {
     sizeRatio: 0.8,
     iconColor: '#FFFFFF',
     backgroundColor: '#FF0420',
+  },
+  [plumeMainnet.id]: {
+    icon: plumeCc,
+    sizeRatio: 0.55,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#F53A39',
   },
   [polygon.id]: {
     icon: polygonCc,

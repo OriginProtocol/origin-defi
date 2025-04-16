@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import {
+  ChainsChip,
   HistoryCard,
   Page,
   PageSection,
@@ -11,7 +12,7 @@ import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { getTokenBySymbol, tokens } from '@origin/shared/contracts';
 import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
-import { base } from 'viem/chains';
+import { base, plumeMainnet } from 'viem/chains';
 
 import { TokenSwitch } from '../components/TokenSwitch';
 import { WsuperOethbStats } from '../components/WsuperOethbStatsCard';
@@ -32,7 +33,13 @@ export const PortfolioView = () => {
           defaultMessage: 'Earnings and transaction history',
         })}
         icon={superOETH}
-      />
+      >
+        <ChainsChip
+          chainIds={[base.id, plumeMainnet.id]}
+          minHeight={40}
+          sx={{ mt: 3 }}
+        />
+      </PageTitle>
       <PageSection>
         <Stack spacing={5}>
           <TokenSwitch />

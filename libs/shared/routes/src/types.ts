@@ -13,16 +13,16 @@ export type OethRoute =
   | 'unwrap-oeth-woeth'
   | 'wrap-oeth-oeth';
 
-export type SuperOethbRoute =
-  | 'mint-vault-oeth'
-  | 'redeem-vault-async-superOethb'
-  | 'swap-aerodrome-superOethb'
-  | 'swap-curve-superOethb'
-  | 'swap-magpie-superOethb'
-  | 'swap-openOcean-superOethb'
-  | 'swap-zapper-superOethb'
-  | 'unwrap-oeth-woeth'
-  | 'wrap-oeth-oeth';
+export type SuperOethRoute =
+  | 'mint-vault-superOeth'
+  | 'redeem-vault-async-superOeth'
+  | 'swap-aerodrome-superOeth'
+  | 'swap-curve-superOeth'
+  | 'swap-magpie-superOeth'
+  | 'swap-openOcean-superOeth'
+  | 'swap-zapper-superOeth'
+  | 'unwrap-wsuperOeth-superOeth'
+  | 'wrap-superOeth-wsuperOeth';
 
 export type OSRoute =
   | 'mint-vault-os'

@@ -1,5 +1,5 @@
 import type { SvgIconProps } from '@mui/material';
-import type { SuperOethbRoute } from '@origin/shared/routes';
+import type { SuperOethRoute } from '@origin/shared/routes';
 import type { ComponentType } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 
@@ -11,8 +11,10 @@ export type Meta = {
 };
 
 export type SuperOethRedeemAction = Extract<
-  SuperOethbRoute,
-  'redeem-vault-async-superOethb' | 'swap-aerodrome-superOethb'
+  SuperOethRoute,
+  | 'redeem-vault-async-superOeth'
+  | 'swap-aerodrome-superOeth'
+  | 'swap-magpie-superOeth'
 >;
 
 export type WithdrawalRequest = {
